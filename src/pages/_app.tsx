@@ -1,6 +1,25 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+import '@/styles/globals.css';
+import '@/styles/reset.css';
+import type { AppProps } from 'next/app';
+import { MantineProvider } from '@mantine/core';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { DataSourceEventsProvider } from '@/lib/dataSource/components/DataSourceEventsProvider';
+
+const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+	return <MantineProvider
+		withGlobalStyles
+		withNormalizeCSS
+		theme={{
+			colorScheme: 'dark',
+			loader: 'oval',
+		}}
+	>
+		<QueryClientProvider client={queryClient}>
+			<DataSourceEventsProvider>
+				<Component {...pageProps} />
+			</DataSourceEventsProvider>
+		</QueryClientProvider>
+	</MantineProvider>;
 }
