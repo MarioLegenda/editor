@@ -1,11 +1,13 @@
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren } from 'react';
 import { useOnAuthStateChange } from '@/lib/dataSource/subscriptions/useOnAuthStateChange';
+import { useOnce } from '@/lib/helpers/useOnce';
 
 export function DataSourceEventsProvider({children}: PropsWithChildren) {
 	const onAuthStateChange = useOnAuthStateChange();
 
-	useEffect(() => {
+	useOnce(() => {
 		onAuthStateChange();
-	}, []);
+	});
+
 	return <>{children}</>;
 }

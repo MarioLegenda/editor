@@ -1,3 +1,5 @@
+import { isBrowser } from '@/lib/helpers/isBrowser';
+
 export function useIsBrowser() {
-	return typeof window !== undefined;
+	return isBrowser();
 }

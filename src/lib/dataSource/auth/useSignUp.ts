@@ -8,7 +8,7 @@ export function useSignUp() {
 			email: values.email,
 			password: values.password,
 			options: {
-				emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_HOST}/confirm`,
+				emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_HOST}/sign-in`,
 				data: {
 					name: values.name,
 					lastName: values.lastName,
