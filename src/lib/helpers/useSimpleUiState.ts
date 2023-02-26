@@ -1,7 +1,19 @@
 import { useCallback, useState } from 'react';
 
+function getTrueState<T extends string>(states: Record<T, boolean>): T | null {
+	const keys = Object.keys(states);
+
+	for (const key of keys) {
+		if (states[key as T]) {
+			return key as T;
+		}
+	}
+
+	return null;
+}
+
 export function useSimpleUiState<T extends string>(states: Record<T, boolean>) {
-	const [current, setCurrent] = useState<T>();
+	const [current, setCurrent] = useState<T | null>(getTrueState(states));
 	const [internalStates, setInternalStates] = useState(states);
 
 	const onSet = useCallback((state: T) => {
@@ -31,7 +43,7 @@ export function useSimpleUiState<T extends string>(states: Record<T, boolean>) {
 		}
 
 		setInternalStates(t);
-		setCurrent(undefined);
+		setCurrent(null);
 	}, [current, internalStates]);
 
 	return {
