@@ -31,7 +31,6 @@ export function DeleteProjectModal({show, onCancel, projectName, id, userId, onD
 	}, [isLoading, isSuccess]);
 
 	const form = useForm({
-		validateInputOnChange: true,
 		initialValues: {
 			name: '',
 		},

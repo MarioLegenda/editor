@@ -5,13 +5,13 @@ import { isProjectList } from '@/lib/dataSource/projects/check/isProjectList';
 
 export function useGetProjects(initialPage = 0, initialLimit = 15) {
 	const [page, setPage] = useState(initialPage);
-	const [limit, setLimit] = useState(initialLimit);
 
 	const query = useQuery<Project[]>(['projects', page], async (): Promise<Project[]> => {
+		console.log(page, page * initialLimit, (page + 1) * initialLimit - 1);
 		const { data: projects, error } = await getClient()
 			.from('project')
-			.select('*')
-			.range(page * limit, limit)
+			.select('name,description,id,color,user_id')
+			.range(page * initialLimit, (page + 1) * initialLimit - 1)
 			.order('created_at', {ascending: false});
 
 		if (error) {
@@ -25,7 +25,8 @@ export function useGetProjects(initialPage = 0, initialLimit = 15) {
 		return [];
 	}, {
 		keepPreviousData: true,
-		staleTime: 0,
+		staleTime: Infinity,
+		retry: 3,
 	});
 
 	return {
@@ -33,6 +34,6 @@ export function useGetProjects(initialPage = 0, initialLimit = 15) {
 		pageUp: () => setPage(page => page + 1),
 		pageDown: () => setPage(page => page - 1),
 		setPage: (page: number) => setPage(page),
-		setLimit: (limit: number) => setLimit(limit),
+		currentPage: page + 1,
 	};
 }

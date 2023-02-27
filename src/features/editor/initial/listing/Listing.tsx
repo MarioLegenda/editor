@@ -1,10 +1,12 @@
 import * as styles from '@/styles/editor/initial/Listing.styles';
 import { useGetProjects } from '@/lib/dataSource/projects/useGetProjects';
-import { Loader } from '@mantine/core';
+import { Loader, Pagination } from '@mantine/core';
 import { Error } from '@/lib/components/notifications/Error';
 import { Box } from '@/features/editor/initial/Box';
 import { Item } from '@/features/editor/initial/listing/Item';
 import { useEffect, useState } from 'react';
+import { useLoadProjectTotalCount } from '@/features/editor/initial/listing/hooks/useLoadProjectTotalCount';
+import { useTotal } from '@/lib/stateManagement/project/getters';
 
 function removeItem(id: string, data: Project[]) {
 	const idx = data.findIndex((item) => item.id === id);
@@ -16,23 +18,28 @@ function removeItem(id: string, data: Project[]) {
 	const newData = [...data];
 
 	if (newData.length === 0) {
-		return null;
+		return [];
 	}
 
 	return newData;
 }
 
+const INITIAL_LIMIT = 8;
+const INITIAL_PAGE = 0;
+
 export function Listing() {
-	const {query: {isLoading, isError, isSuccess, data}} = useGetProjects();
-	const [listing, setListing] = useState<Project[] | null>(null);
+	const {query: {isLoading, isError, isSuccess, data}, setPage, currentPage} = useGetProjects(INITIAL_PAGE, INITIAL_LIMIT);
+	const [listing, setListing] = useState<Project[]>([]);
+	useLoadProjectTotalCount();
+	const total = useTotal()();
 
 	useEffect(() => {
 		if (data && isSuccess) {
-			setListing(data.length === 0 ? null : data);
+			setListing(data.length === 0 ? [] : data);
 		}
 
 		if (listing && isError) {
-			setListing(null);
+			setListing([]);
 		}
 	}, [data, isSuccess, isError]);
 
@@ -40,19 +47,25 @@ export function Listing() {
 		{isError && <Box>
 			<Error />
 		</Box>}
-		
+
 		{isLoading && <Box>
 			<div css={styles.loader}>
-				<Loader size="sm" />
+				<Loader size="md" />
 			</div>
 		</Box>}
 
-		{!isLoading && isSuccess && listing && listing.length !== 0 && <div css={styles.listing}>
-			{listing.map((item) => <Item key={item.id} item={item} onDelete={() => setListing(removeItem(item.id, listing))} />)}
-		</div>}
+		<div css={styles.listingGrid}>
+			{!isLoading && isSuccess && listing.length !== 0 && <div css={styles.listing}>
+				{listing.map((item) => <Item key={item.id} item={item} onDelete={() => setListing(removeItem(item.id, listing))} />)}
+			</div>}
 
-		{!isLoading && isSuccess && !listing && <p css={[styles.listing, styles.noProjects]}>
-			No projects to show
-		</p>}
+			{!isLoading && isSuccess && listing.length === 0 && <p css={[styles.noProjects]}>
+				No projects to show
+			</p>}
+
+			{!isLoading && isSuccess && typeof total === 'number' && <div css={styles.pagination}>
+				<Pagination page={currentPage} onChange={(page) => setPage(page - 1)} total={total / INITIAL_LIMIT} />;
+			</div>}
+		</div>
 	</div>;
 }

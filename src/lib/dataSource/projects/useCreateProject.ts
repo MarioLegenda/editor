@@ -3,6 +3,7 @@ import getClient from '@/lib/supabase/client';
 import { useCallback } from 'react';
 import { useAccount } from '@/lib/stateManagement/auth/getters';
 import randomColor from 'randomcolor';
+import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
 
 export function useCreateProject() {
 	const account = useAccount();
@@ -15,7 +16,9 @@ export function useCreateProject() {
 			]);
 
 		if (error) {
-			throw new Error('Cannot create project.');
+			throw new DataSourceError('Cannot create project.', {
+				code: error.code,
+			});
 		}
 
 		return data;

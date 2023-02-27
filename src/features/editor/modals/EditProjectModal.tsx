@@ -10,6 +10,8 @@ import { useEffect } from 'react';
 import { Error } from '@/lib/components/notifications/Error';
 import { useEditProject } from '@/lib/dataSource/projects/useEditProject';
 import * as styles from '@/styles/editor/modals/DeleteProjectModal.styles';
+import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
+import { ErrorCodes } from '@/lib/dataSource/error/errorCodes';
 
 interface Props {
   item: EditProject;
@@ -21,13 +23,7 @@ interface Props {
 
 export function EditProjectModal({show, onCancel, item, id, onDone}: Props) {
 	const theme = useMantineTheme();
-	const {mutation: {isLoading, isSuccess, isError, data}, editProject} = useEditProject(id);
-
-	useEffect(() => {
-		if (!isLoading && isSuccess && data) {
-			onDone(data);
-		}
-	}, [isLoading, isSuccess, data]);
+	const {mutation: {isLoading, isSuccess, isError, data, error}, editProject} = useEditProject(id);
 
 	const form = useForm({
 		validateInputOnChange: true,
@@ -59,6 +55,18 @@ export function EditProjectModal({show, onCancel, item, id, onDone}: Props) {
 		}
 	});
 
+	useEffect(() => {
+		if (error && (error as DataSourceError<AppError>).data.code === ErrorCodes.ENTRY_EXISTS) {
+			form.setFieldError('name', 'Project with this name already exists.');
+		}
+	}, [error]);
+
+	useEffect(() => {
+		if (!isLoading && isSuccess && data) {
+			onDone(data);
+		}
+	}, [isLoading, isSuccess, data]);
+
 	return <>
 		{show && <Modal
 			centered
@@ -69,27 +77,29 @@ export function EditProjectModal({show, onCancel, item, id, onDone}: Props) {
 			overlayBlur={3}
 		>
 			<form onSubmit={form.onSubmit(editProject)}>
-				<h2 css={[styles.heading, formStyles.spacing]}>Edit project <strong>{item.name}</strong></h2>
+				<>
+					<h2 css={[styles.heading, formStyles.spacing]}>Edit project <strong>{item.name}</strong></h2>
 
-				{isError && <div css={formStyles.spacing}><Error disallowClose /></div>}
+					{isError && error && (error as DataSourceError<AppError>).data.code !== ErrorCodes.ENTRY_EXISTS && <div css={formStyles.spacing}><Error disallowClose /></div>}
 
-				<div css={formStyles.spacing}>
-					<TextInput autoFocus withAsterisk name="name" placeholder="Name" {...form.getInputProps('name')} />
-				</div>
+					<div css={formStyles.spacing}>
+						<TextInput autoFocus withAsterisk name="name" placeholder="Name" {...form.getInputProps('name')} />
+					</div>
 
-				<div css={formStyles.spacing}>
-					<Textarea name="description" autosize minRows={3} placeholder="Description (max 200 chars)" {...form.getInputProps('description')} />
-				</div>
+					<div css={formStyles.spacing}>
+						<Textarea name="description" autosize minRows={3} placeholder="Description (max 200 chars)" {...form.getInputProps('description')} />
+					</div>
 
-				<Group position="right" mt="lg">
-					<Button onClick={onCancel} type="button" size="md" variant="light" color="gray">
-            Cancel
-					</Button>
+					<Group position="right" mt="lg">
+						<Button onClick={onCancel} type="button" size="md" variant="light" color="gray">
+							Cancel
+						</Button>
 
-					<Button type="submit" size="md" color="blue">
-            Edit
-					</Button>
-				</Group>
+						<Button type="submit" size="md" color="blue">
+							Edit
+						</Button>
+					</Group>
+				</>
 			</form>
 		</Modal>}
 	</>;

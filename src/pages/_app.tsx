@@ -5,6 +5,7 @@ import { MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { DataSourceEventsProvider } from '@/lib/dataSource/components/DataSourceEventsProvider';
 import { RecoilRoot } from 'recoil';
+import { NotificationsProvider } from '@mantine/notifications';
 
 const queryClient = new QueryClient();
 
@@ -17,12 +18,14 @@ export default function App({ Component, pageProps }: AppProps) {
 			loader: 'oval',
 		}}
 	>
-		<QueryClientProvider client={queryClient}>
-			<RecoilRoot>
-				<DataSourceEventsProvider>
-					<Component {...pageProps} />
-				</DataSourceEventsProvider>
-			</RecoilRoot>
-		</QueryClientProvider>
+		<NotificationsProvider>
+			<QueryClientProvider client={queryClient}>
+				<RecoilRoot>
+					<DataSourceEventsProvider>
+						<Component {...pageProps} />
+					</DataSourceEventsProvider>
+				</RecoilRoot>
+			</QueryClientProvider>
+		</NotificationsProvider>
 	</MantineProvider>;
 }

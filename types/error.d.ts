@@ -1,0 +1,3 @@
+interface AppError {
+  code: string,
+}

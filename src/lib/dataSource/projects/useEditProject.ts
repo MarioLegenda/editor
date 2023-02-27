@@ -2,6 +2,7 @@ import { useMutation } from 'react-query';
 import getClient from '@/lib/supabase/client';
 import { useCallback } from 'react';
 import { useAccount } from '@/lib/stateManagement/auth/getters';
+import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
 
 export function useEditProject(id: string) {
 	const account = useAccount();
@@ -14,7 +15,9 @@ export function useEditProject(id: string) {
 			.eq('user_id', values.userId);
 
 		if (error) {
-			throw new Error('Cannot create project.');
+			throw new DataSourceError('Cannot create project.', {
+				code: error.code,
+			});
 		}
 
 		return {

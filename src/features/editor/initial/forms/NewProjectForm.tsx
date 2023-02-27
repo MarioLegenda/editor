@@ -10,19 +10,15 @@ import { max } from '@/lib/validation/max';
 import { useCreateProject } from '@/lib/dataSource/projects/useCreateProject';
 import { useEffect } from 'react';
 import { Error } from '@/lib/components/notifications/Error';
+import { ErrorCodes } from '@/lib/dataSource/error/errorCodes';
+import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
 
 interface Props {
 	onCancel: () => void;
 }
 
 export function NewProjectForm({onCancel}: Props) {
-	const {mutation: {isLoading, isSuccess, isError}, createProject} = useCreateProject();
-
-	useEffect(() => {
-		if (!isLoading && isSuccess) {
-			onCancel();
-		}
-	}, [isLoading, isSuccess]);
+	const {mutation: {isLoading, isSuccess, isError, error}, createProject} = useCreateProject();
 
 	const form = useForm({
 		validateInputOnChange: true,
@@ -54,29 +50,43 @@ export function NewProjectForm({onCancel}: Props) {
 		}
 	});
 
+	useEffect(() => {
+		if (!isLoading && isSuccess) {
+			onCancel();
+		}
+	}, [isLoading, isSuccess]);
+
+	useEffect(() => {
+		if (error && (error as DataSourceError<AppError>).data.code === ErrorCodes.ENTRY_EXISTS) {
+			form.setFieldError('name', 'Project with this name already exists.');
+		}
+	}, [error]);
+
 	return <form onSubmit={form.onSubmit(createProject)}>
-		<h1 css={styles.heading}>CREATE NEW PROJECT</h1>
+		<>
+			<h1 css={styles.heading}>CREATE NEW PROJECT</h1>
 
-		{isError && <div css={formStyles.spacing}><Error disallowClose /></div>}
+			{isError && error && (error as DataSourceError<AppError>).data.code !== ErrorCodes.ENTRY_EXISTS && <div css={formStyles.spacing}><Error disallowClose /></div>}
 
-		<div css={formStyles.spacing}>
-			<TextInput autoFocus withAsterisk name="name" placeholder="Name" {...form.getInputProps('name')}
-			/>
-		</div>
+			<div css={formStyles.spacing}>
+				<TextInput autoFocus withAsterisk name="name" placeholder="Name" {...form.getInputProps('name')}
+				/>
+			</div>
 
-		<div css={formStyles.spacing}>
-			<Textarea name="description" autosize minRows={3} placeholder="Description (max 200 chars)" {...form.getInputProps('description')}
-			/>
-		</div>
+			<div css={formStyles.spacing}>
+				<Textarea name="description" autosize minRows={3} placeholder="Description (max 200 chars)" {...form.getInputProps('description')}
+				/>
+			</div>
 
-		<Group position="right" mt="lg">
-			<Button onClick={onCancel} type="button" size="md" variant="light" color="gray">
-				Cancel
-			</Button>
+			<Group position="right" mt="lg">
+				<Button onClick={onCancel} type="button" size="md" variant="light" color="gray">
+					Cancel
+				</Button>
 
-			<Button type="submit" size="md" color="blue">
-				Create
-			</Button>
-		</Group>
+				<Button type="submit" size="md" color="blue">
+					Create
+				</Button>
+			</Group>
+		</>
 	</form>;
 }
