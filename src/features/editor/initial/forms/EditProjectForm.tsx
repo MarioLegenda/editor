@@ -7,16 +7,18 @@ import { combine } from '@/lib/validation/combine';
 import { required } from '@/lib/validation/required';
 import { min } from '@/lib/validation/min';
 import { max } from '@/lib/validation/max';
-import { useCreateProject } from '@/lib/dataSource/projects/useCreateProject';
 import { useEffect } from 'react';
 import { Error } from '@/lib/components/notifications/Error';
+import { useEditProject } from '@/lib/dataSource/projects/useEditProject';
 
 interface Props {
 	onCancel: () => void;
+	item: EditProject;
+	id: string;
 }
 
-export function NewProjectForm({onCancel}: Props) {
-	const {mutation: {isLoading, isSuccess, isError}, createProject} = useCreateProject();
+export function EditProjectForm({onCancel, item, id}: Props) {
+	const {mutation: {isLoading, isSuccess, isError}, editProject} = useEditProject(id);
 
 	useEffect(() => {
 		if (!isLoading && isSuccess) {
@@ -27,8 +29,8 @@ export function NewProjectForm({onCancel}: Props) {
 	const form = useForm({
 		validateInputOnChange: true,
 		initialValues: {
-			name: '',
-			description: '',
+			name: item.name,
+			description: item.description,
 		},
 		validate: {
 			name: (value: string) => {
@@ -54,19 +56,15 @@ export function NewProjectForm({onCancel}: Props) {
 		}
 	});
 
-	return <form onSubmit={form.onSubmit(createProject)}>
-		<h1 css={styles.heading}>CREATE NEW PROJECT</h1>
-
+	return <form onSubmit={form.onSubmit(editProject)}>
 		{isError && <div css={formStyles.spacing}><Error disallowClose /></div>}
 
 		<div css={formStyles.spacing}>
-			<TextInput autoFocus withAsterisk name="name" placeholder="Name" {...form.getInputProps('name')}
-			/>
+			<TextInput withAsterisk name="name" placeholder="Name" {...form.getInputProps('name')} />
 		</div>
 
 		<div css={formStyles.spacing}>
-			<Textarea name="description" autosize minRows={3} placeholder="Description (max 200 chars)" {...form.getInputProps('description')}
-			/>
+			<Textarea name="description" autosize minRows={3} placeholder="Description (max 200 chars)" {...form.getInputProps('description')} />
 		</div>
 
 		<Group position="right" mt="lg">
@@ -75,7 +73,7 @@ export function NewProjectForm({onCancel}: Props) {
 			</Button>
 
 			<Button type="submit" size="md" color="blue">
-				Create
+				Edit
 			</Button>
 		</Group>
 	</form>;

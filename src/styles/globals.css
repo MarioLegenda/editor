@@ -2,6 +2,8 @@
     --color-lightText: #626161;
     --color-primaryBackground: #1A1B1E;
     --color-lighterBackground: #222327;
+
+    --font-primary: 'Assisant', sans-serif;
 }
 
 body {

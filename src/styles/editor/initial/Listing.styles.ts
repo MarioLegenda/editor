@@ -7,6 +7,8 @@ export const root = css`
   align-items: center;
   gap: 24px;
   width: 100%;
+
+  font-family: var(--font-primary);
 `;
 
 export const loader = css`
@@ -25,4 +27,13 @@ export const listing = css`
   align-items: center;
   gap: 24px;
   width: 100%;
+`;
+
+export const noProjects = css`
+  color: var(--color-lightText);
+  font-size: 24px;
+  align-self: center;
+  width: 100%;
+  
+  margin-top: 64px;
 `;

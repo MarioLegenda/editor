@@ -11,7 +11,8 @@ export function useGetProjects(initialPage = 0, initialLimit = 15) {
 		const { data: projects, error } = await getClient()
 			.from('project')
 			.select('*')
-			.range(page * limit, limit);
+			.range(page * limit, limit)
+			.order('created_at', {ascending: false});
 
 		if (error) {
 			throw new Error(error.message);

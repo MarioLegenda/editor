@@ -3,6 +3,7 @@ import { css } from '@emotion/react';
 export const root = css`
   display: flex;
   justify-content: left;
+  flex-direction: column;
   text-decoration: none;
   color: white;
   width: 100%;
@@ -13,6 +14,15 @@ export const root = css`
   &:hover {
     background-color: var(--color-lighterBackground);
   }
+`;
+
+export const highlightItem = css`
+  background-color: var(--color-lighterBackground);
+`;
+
+export const content = css`
+  display: flex;
+  justify-content: left;
 `;
 
 export const item = css`
@@ -27,6 +37,11 @@ export const item = css`
     width: 50%;
     color: var(--color-lightText);
   }
+`;
+
+export const editForm = css`
+  width: 100%;
+  margin-top: 32px;
 `;
 
 export const menu = css`

@@ -1,8 +1,9 @@
 import { css } from '@emotion/react';
 
 export const heading = css`
-  font-size: 14px;
-  margin-bottom: 12px;
+  font-weight: bold;
+`;
+
+export const projectName = css`
   color: var(--color-lightText);
-  font-weight: 500;
 `;
