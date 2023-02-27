@@ -1,3 +1,4 @@
 interface AppError {
-  code: string,
+  code: string;
+  status?: number;
 }

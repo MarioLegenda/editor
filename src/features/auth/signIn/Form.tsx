@@ -4,21 +4,15 @@ import * as styles from '@/styles/shared/Form.styles';
 import { z } from 'zod';
 import { useSignIn } from '@/lib/dataSource/auth/useSignIn';
 import { useEffect } from 'react';
+import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
+import { ErrorCodes } from '@/lib/dataSource/error/errorCodes';
+import { Error } from '@/lib/components/notifications/Error';
 
 export function Form() {
 	const {
-		mutation: {isLoading, isError},
+		mutation: {isLoading, isError, error},
 		signIn,
 	} = useSignIn();
-
-	useEffect(() => {
-		if (!isLoading && !isError) {
-			// store jwt/refresh tokens to cookie
-			// update local storage with user and session
-			// store user to state
-			// redirect to editor
-		}
-	}, [isLoading, isError]);
 
 	const form = useForm({
 		validateInputOnChange: true,
@@ -41,26 +35,44 @@ export function Form() {
 		},
 	});
 
+	useEffect(() => {
+		if (!isLoading && !isError) {
+			// store jwt/refresh tokens to cookie
+			// update local storage with user and session
+			// store user to state
+			// redirect to editor
+		}
+	}, [isLoading, isError]);
+
+	useEffect(() => {
+		if (isError && (error as DataSourceError<AppError>).data.code === ErrorCodes.AUTH_ERROR) {
+			form.setFieldError('email', 'Email or password are invalid.');
+		}
+	}, [isError, error]);
+
 	return <form onSubmit={form.onSubmit(signIn)}>
-		<TextInput
-			css={styles.spacing}
-			withAsterisk
-			type="text"
-			label="Email"
-			placeholder="your@email.com"
-			{...form.getInputProps('email')}
-		/>
+		<>
+			{error && (error as DataSourceError<AppError>).data.code !== ErrorCodes.AUTH_ERROR && <Error disallowClose css={styles.spacing} />}
+			<TextInput
+				css={styles.spacing}
+				withAsterisk
+				type="text"
+				label="Email"
+				placeholder="your@email.com"
+				{...form.getInputProps('email')}
+			/>
 
-		<TextInput
-			withAsterisk
-			type="password"
-			label="Password"
-			placeholder="Your password"
-			{...form.getInputProps('password')}
-		/>
+			<TextInput
+				withAsterisk
+				type="password"
+				label="Password"
+				placeholder="Your password"
+				{...form.getInputProps('password')}
+			/>
 
-		<Group position="right" mt="md">
-			<Button type="submit" disabled={isLoading} loading={isLoading}>Sign up</Button>
-		</Group>
+			<Group position="right" mt="md">
+				<Button type="submit" disabled={isLoading} loading={isLoading}>Sign up</Button>
+			</Group>
+		</>
 	</form>;
 }

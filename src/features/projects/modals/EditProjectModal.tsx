@@ -2,10 +2,7 @@ import { Button, Group, Modal, Textarea, TextInput, useMantineTheme } from '@man
 
 import * as formStyles from '@/styles/shared/Form.styles';
 import { useForm } from '@mantine/form';
-import { combine } from '@/lib/validation/combine';
-import { required } from '@/lib/validation/required';
-import { min } from '@/lib/validation/min';
-import { max } from '@/lib/validation/max';
+import { combine, required, min, max } from '@/lib/validation/validations';
 import { useEffect } from 'react';
 import { Error } from '@/lib/components/notifications/Error';
 import { useEditProject } from '@/lib/dataSource/projects/useEditProject';

@@ -31,8 +31,6 @@ export function useGetProjects(initialPage = 0, initialLimit = 15) {
 
 	return {
 		query,
-		pageUp: () => setPage(page => page + 1),
-		pageDown: () => setPage(page => page - 1),
 		setPage: (page: number) => setPage(page),
 		currentPage: page + 1,
 	};

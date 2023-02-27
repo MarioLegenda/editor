@@ -1,12 +1,9 @@
 import { Button, Group, Textarea, TextInput } from '@mantine/core';
 
-import * as styles from '@/styles/editor/initial/NewProjectForm.styles';
+import * as styles from '@/styles/projects/NewProjectForm.styles';
 import * as formStyles from '@/styles/shared/Form.styles';
 import { useForm } from '@mantine/form';
-import { combine } from '@/lib/validation/combine';
-import { required } from '@/lib/validation/required';
-import { min } from '@/lib/validation/min';
-import { max } from '@/lib/validation/max';
+import { combine, required, min, max } from '@/lib/validation/validations';
 import { useCreateProject } from '@/lib/dataSource/projects/useCreateProject';
 import { useEffect } from 'react';
 import { Error } from '@/lib/components/notifications/Error';

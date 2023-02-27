@@ -1,4 +1,4 @@
-import * as styles from '@/styles/editor/initial/Initial.styles';
+import * as styles from '@/styles/projects/Initial.styles';
 import { Actions } from '@/features/projects/Actions';
 import { useSimpleUiState } from '@/lib/helpers/useSimpleUiState';
 import { NewProjectForm } from '@/features/projects/forms/NewProjectForm';

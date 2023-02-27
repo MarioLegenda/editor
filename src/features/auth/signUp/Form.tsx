@@ -2,10 +2,7 @@ import { Button, Group, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import * as styles from '@/styles/shared/Form.styles';
 import { z } from 'zod';
-import { min } from '@/lib/validation/min';
-import { combine } from '@/lib/validation/combine';
-import { required } from '@/lib/validation/required';
-import { max } from '@/lib/validation/max';
+import { combine, required, max, min } from '@/lib/validation/validations';
 import { useSignUp } from '@/lib/dataSource/auth/useSignUp';
 import { useEffect, useState } from 'react';
 

@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import { useRunInBrowser } from '@/lib/helpers/useRunInBrowser';
-import { Layout } from '@/features/editor/layout/Layout';
 
 export default function Home() {
 	const inBrowser = useRunInBrowser();
@@ -15,7 +14,7 @@ export default function Home() {
 			</Head>
 
 			<main>
-				{inBrowser && <Layout />}
+				{inBrowser && <div />}
 			</main>
 		</>
 	);

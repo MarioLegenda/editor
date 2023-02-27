@@ -1,7 +1,8 @@
 import { useRedirectIfSignedOut } from '@/lib/stateManagement/auth/hooks/useRedirectIfSignedOut';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useRunInBrowser } from '@/lib/helpers/useRunInBrowser';
-import { Main } from '@/features/projects/Main';
+import { Main as ProjectsMain } from '@/features/projects/Main';
+import { Main as EditorMain } from '@/features/editor/Main';
 import { InitialLayout } from '@/features/projects/layouts/InitialLayout';
 
 export default function Editor() {
@@ -11,12 +12,12 @@ export default function Editor() {
 	return <>
 		{isReady && <BrowserRouter>
 			<Routes>
-				<Route path="/editor" element={<InitialLayout>
-					<Main />
+				<Route path="/editor/projects" element={<InitialLayout>
+					<ProjectsMain />
 				</InitialLayout>} />
 
 				<Route path="/editor/:id" element={<InitialLayout>
-					<Main />
+					<EditorMain />
 				</InitialLayout>} />
 			</Routes>
 		</BrowserRouter>}

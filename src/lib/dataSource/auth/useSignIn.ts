@@ -1,6 +1,7 @@
 import { useMutation } from 'react-query';
 import getClient from '@/lib/supabase/client';
 import { useCallback } from 'react';
+import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
 
 export function useSignIn() {
 	const mutation = useMutation(async (values: LoginUser) => {
@@ -10,7 +11,11 @@ export function useSignIn() {
 		});
 
 		if (error) {
-			throw new Error('Cannot sign in user');
+			console.log(error.name, error.status);
+			throw new DataSourceError('Cannot sign in user',  {
+				code: error.name,
+				status: error.status,
+			});
 		}
 
 		return data;

@@ -1,7 +1,7 @@
-import * as styles from '@/styles/editor/initial/Item.styles';
+import * as styles from '@/styles/projects/Item.styles';
 import { Link } from 'react-router-dom';
 import { Avatar, Button, Menu } from '@mantine/core';
-import { IconDots, IconTrash, IconEdit } from '@tabler/icons';
+import { IconDots, IconEdit, IconTrash } from '@tabler/icons';
 import { useState } from 'react';
 import { DeleteProjectModal } from '@/features/projects/modals/DeleteProjectModal';
 import { EditProjectModal } from '@/features/projects/modals/EditProjectModal';
@@ -16,7 +16,7 @@ export function Item({item, onDelete}: Props) {
 	const [isDelete, setIsDelete] = useState(false);
 	const [internalItem, setInternalItem] = useState(item);
 
-	return <Link to="" css={[styles.root, isEdit ? styles.highlightItem : undefined]}>
+	return <Link to={`/editor/${item.id}`} css={[styles.root, isEdit ? styles.highlightItem : undefined]}>
 		<div css={styles.content}>
 			<Avatar css={styles.avatarBackground(internalItem.color)} radius="xl">{internalItem.name.substring(0, 1).toUpperCase()}</Avatar>
 			<div css={styles.item}>
@@ -25,7 +25,7 @@ export function Item({item, onDelete}: Props) {
 				<p>{internalItem.description}</p>
 			</div>
 
-			<div css={styles.menu}>
+			<div css={styles.menu} onClick={(e) => e.preventDefault()}>
 				<Menu width={200} position="bottom-end" withArrow transition="skew-down" transitionDuration={100}>
 					<Menu.Target>
 						<Button color="white" variant="subtle"><IconDots color="white" /></Button>

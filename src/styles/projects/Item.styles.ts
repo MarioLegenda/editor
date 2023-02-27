@@ -39,18 +39,9 @@ export const item = css`
   }
 `;
 
-export const editForm = css`
-  width: 100%;
-  margin-top: 32px;
-`;
-
 export const menu = css`
   align-self: center;
   position: relative;
-`;
-
-export const menuPosition = css`
-  position: relative;;
 `;
 
 export const avatarBackground = (color: string) => {

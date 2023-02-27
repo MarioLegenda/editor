@@ -1,6 +1,6 @@
 import { Button } from '@mantine/core';
 
-import * as styles from '@/styles/editor/initial/Actions.styles';
+import * as styles from '@/styles/projects/Actions.styles';
 import { Main as Search } from '@/features/projects/search/Main';
 import { SignOutButton } from '@/lib/dataSource/components/SignOutButton';
 

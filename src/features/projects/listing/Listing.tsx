@@ -1,4 +1,4 @@
-import * as styles from '@/styles/editor/initial/Listing.styles';
+import * as styles from '@/styles/projects/Listing.styles';
 import { useGetProjects } from '@/lib/dataSource/projects/useGetProjects';
 import { Loader, Pagination } from '@mantine/core';
 import { Error } from '@/lib/components/notifications/Error';
@@ -24,7 +24,7 @@ function removeItem(id: string, data: Project[]) {
 	return newData;
 }
 
-const INITIAL_LIMIT = 8;
+const INITIAL_LIMIT = 2;
 const INITIAL_PAGE = 0;
 
 export function Listing() {
@@ -63,8 +63,8 @@ export function Listing() {
 				No projects to show
 			</p>}
 
-			{!isLoading && isSuccess && typeof total === 'number' && <div css={styles.pagination}>
-				<Pagination page={currentPage} onChange={(page) => setPage(page - 1)} total={total / INITIAL_LIMIT} />;
+			{!isLoading && isSuccess && typeof total === 'number' && total > INITIAL_LIMIT && <div css={styles.pagination}>
+				<Pagination page={currentPage} onChange={(page) => setPage(page - 1)} total={total / INITIAL_LIMIT + 1} />
 			</div>}
 		</div>
 	</div>;
