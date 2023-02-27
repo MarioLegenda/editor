@@ -4,11 +4,13 @@ import { spacing } from '@/styles/global/base.styles';
 export const root = css`
   display: flex;
   justify-content: left;
-  align-items: center;
   gap: 24px;
   width: 100%;
 
   font-family: var(--font-primary);
+  
+  height: 80vh;
+  overflow: auto;
 `;
 
 export const loader = css`

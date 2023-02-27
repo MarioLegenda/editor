@@ -1,6 +1,7 @@
 import { Button, TextInput } from '@mantine/core';
 
 import * as styles from '@/styles/editor/initial/Actions.styles';
+import { Main } from '@/features/editor/initial/search/Main';
 
 interface Props {
 	onNewProject: () => void;
@@ -9,7 +10,7 @@ interface Props {
 export function Actions({onNewProject}: Props) {
 	return <div css={styles.root}>
 		<div>
-			<TextInput name="search" placeholder="Search projects..." />
+			<Main />
 		</div>
 
 		<div>

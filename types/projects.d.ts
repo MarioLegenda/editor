@@ -20,3 +20,10 @@ interface DeleteProject {
   id: string;
   userId: string;
 }
+
+interface ProjectAutocompleteList {
+  id: string;
+  value: string;
+  description: string;
+  color: string;
+}

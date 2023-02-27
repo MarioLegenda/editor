@@ -1,6 +1,5 @@
 import { Button, Group, Textarea, TextInput } from '@mantine/core';
 
-import * as styles from '@/styles/editor/initial/NewProjectForm.styles';
 import * as formStyles from '@/styles/shared/Form.styles';
 import { useForm } from '@mantine/form';
 import { combine } from '@/lib/validation/combine';
@@ -60,7 +59,7 @@ export function EditProjectForm({onCancel, item, id}: Props) {
 		{isError && <div css={formStyles.spacing}><Error disallowClose /></div>}
 
 		<div css={formStyles.spacing}>
-			<TextInput withAsterisk name="name" placeholder="Name" {...form.getInputProps('name')} />
+			<TextInput autoFocus withAsterisk name="name" placeholder="Name" {...form.getInputProps('name')} />
 		</div>
 
 		<div css={formStyles.spacing}>
