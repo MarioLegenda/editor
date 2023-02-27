@@ -2,7 +2,7 @@ import { Autocomplete, Loader } from '@mantine/core';
 import { useCallback, useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import { useSearchProjects } from '@/lib/dataSource/projects/useSearchProjects';
-import { AutoCompleteItem } from '@/features/editor/initial/search/AutocompleteItem';
+import { AutoCompleteItem } from '@/features/projects/search/AutocompleteItem';
 
 export function Main() {
 	const [text, setText] = useState('');

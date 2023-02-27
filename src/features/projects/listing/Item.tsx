@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Avatar, Button, Menu } from '@mantine/core';
 import { IconDots, IconTrash, IconEdit } from '@tabler/icons';
 import { useState } from 'react';
-import { DeleteProjectModal } from '@/features/editor/modals/DeleteProjectModal';
-import { EditProjectModal } from '@/features/editor/modals/EditProjectModal';
+import { DeleteProjectModal } from '@/features/projects/modals/DeleteProjectModal';
+import { EditProjectModal } from '@/features/projects/modals/EditProjectModal';
 
 interface Props {
 	item: Project;

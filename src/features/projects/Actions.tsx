@@ -1,7 +1,7 @@
 import { Button } from '@mantine/core';
 
 import * as styles from '@/styles/editor/initial/Actions.styles';
-import { Main as Search } from '@/features/editor/initial/search/Main';
+import { Main as Search } from '@/features/projects/search/Main';
 import { SignOutButton } from '@/lib/dataSource/components/SignOutButton';
 
 interface Props {

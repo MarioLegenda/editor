@@ -2,10 +2,10 @@ import * as styles from '@/styles/editor/initial/Listing.styles';
 import { useGetProjects } from '@/lib/dataSource/projects/useGetProjects';
 import { Loader, Pagination } from '@mantine/core';
 import { Error } from '@/lib/components/notifications/Error';
-import { Box } from '@/features/editor/initial/Box';
-import { Item } from '@/features/editor/initial/listing/Item';
+import { Box } from '@/features/projects/Box';
+import { Item } from '@/features/projects/listing/Item';
 import { useEffect, useState } from 'react';
-import { useLoadProjectTotalCount } from '@/features/editor/initial/listing/hooks/useLoadProjectTotalCount';
+import { useLoadProjectTotalCount } from '@/features/projects/listing/hooks/useLoadProjectTotalCount';
 import { useTotal } from '@/lib/stateManagement/project/getters';
 
 function removeItem(id: string, data: Project[]) {

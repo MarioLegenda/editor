@@ -1,9 +1,9 @@
 import * as styles from '@/styles/editor/initial/Initial.styles';
-import { Actions } from '@/features/editor/initial/Actions';
+import { Actions } from '@/features/projects/Actions';
 import { useSimpleUiState } from '@/lib/helpers/useSimpleUiState';
-import { NewProjectForm } from '@/features/editor/initial/forms/NewProjectForm';
-import { Box } from '@/features/editor/initial/Box';
-import { Listing } from '@/features/editor/initial/listing/Listing';
+import { NewProjectForm } from '@/features/projects/forms/NewProjectForm';
+import { Box } from '@/features/projects/Box';
+import { Listing } from '@/features/projects/listing/Listing';
 
 export function Main() {
 	const {current, set} = useSimpleUiState<'newProject' | 'listing'>({
