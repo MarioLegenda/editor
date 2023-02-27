@@ -1,4 +1,4 @@
-import { Button, TextInput } from '@mantine/core';
+import { Button } from '@mantine/core';
 
 import * as styles from '@/styles/editor/initial/Actions.styles';
 import { Main } from '@/features/editor/initial/search/Main';

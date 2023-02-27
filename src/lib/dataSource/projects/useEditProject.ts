@@ -7,7 +7,7 @@ export function useEditProject(id: string) {
 	const account = useAccount();
 
 	const mutation = useMutation(async (values: EditProject & {userId: string}) => {
-		const { data, error } = await getClient()
+		const { error } = await getClient()
 			.from('project')
 			.update({ name: values.name, description: values.description })
 			.eq('id', id)
@@ -17,7 +17,10 @@ export function useEditProject(id: string) {
 			throw new Error('Cannot create project.');
 		}
 
-		return data;
+		return {
+			name: values.name,
+			description: values.description,
+		};
 	});
 
 	return {

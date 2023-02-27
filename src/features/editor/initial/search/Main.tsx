@@ -6,11 +6,12 @@ import { AutoCompleteItem } from '@/features/editor/initial/search/AutocompleteI
 
 export function Main() {
 	const [text, setText] = useState('');
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [debouncedText, _] = useDebounce(text, 500);
 	const [listData, setListData] = useState<ProjectAutocompleteList[]>([]);
 
 	const {query: {isLoading, isError, isSuccess, data}, updateTerm} = useSearchProjects(debouncedText);
-	
+
 	useEffect(() => {
 		updateTerm(debouncedText);
 	}, [debouncedText]);

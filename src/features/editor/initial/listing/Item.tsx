@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Avatar, Button, Menu } from '@mantine/core';
 import { IconDots, IconTrash, IconEdit } from '@tabler/icons';
 import { useState } from 'react';
-import { EditProjectForm } from '@/features/editor/initial/forms/EditProjectForm';
 import { DeleteProjectModal } from '@/features/editor/modals/DeleteProjectModal';
+import { EditProjectModal } from '@/features/editor/modals/EditProjectModal';
 
 interface Props {
 	item: Project;
@@ -14,14 +14,15 @@ interface Props {
 export function Item({item, onDelete}: Props) {
 	const [isEdit, setIsEdit] = useState(false);
 	const [isDelete, setIsDelete] = useState(false);
+	const [internalItem, setInternalItem] = useState(item);
 
 	return <Link to="" css={[styles.root, isEdit ? styles.highlightItem : undefined]}>
 		<div css={styles.content}>
-			<Avatar css={styles.avatarBackground(item.color)} radius="xl">{item.name.substring(0, 1).toUpperCase()}</Avatar>
+			<Avatar css={styles.avatarBackground(internalItem.color)} radius="xl">{internalItem.name.substring(0, 1).toUpperCase()}</Avatar>
 			<div css={styles.item}>
-				<h3>{item.name}</h3>
+				<h3>{internalItem.name}</h3>
 
-				<p>{item.description}</p>
+				<p>{internalItem.description}</p>
 			</div>
 
 			<div css={styles.menu}>
@@ -42,19 +43,32 @@ export function Item({item, onDelete}: Props) {
 		</div>
 
 		<DeleteProjectModal
-			id={item.id}
-			userId={item.user_id}
-			projectName={item.name}
+			id={internalItem.id}
+			userId={internalItem.user_id}
+			projectName={internalItem.name}
 			show={isDelete}
 			onCancel={() => setIsDelete(false)}
 			onDeleted={() => {
-				onDelete(item.id);
+				onDelete(internalItem.id);
 				setIsDelete(false);
 			}}
 		/>
 
-		{isEdit && <div css={styles.editForm}>
-			<EditProjectForm onCancel={() => setIsEdit(false)} item={item} id={item.id} />
-		</div>}
+		<EditProjectModal
+			id={internalItem.id}
+			item={item}
+			show={isEdit}
+			onCancel={() => setIsEdit(false)}
+			onDone={(editedProject) => {
+				setInternalItem((item) => {
+					return {
+						...item,
+						name: editedProject.name,
+						description: editedProject.description
+					};
+				});
+				setIsEdit(false);
+			}}
+		/>
 	</Link>;
 }
