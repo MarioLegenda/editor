@@ -1,10 +1,11 @@
 import getClient from '@/lib/supabase/client';
 import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
 import { useQuery } from 'react-query';
+import { Query } from '@/lib/dataSource/enums/query';
 
 export function useGetTotal() {
-	return useQuery('projectTotal', async () => {
-		const {data, error} = await getClient().rpc('total_projects');
+	return useQuery(Query.GET_PROJECTS_TOTAL_QUERY, async () => {
+		const {data, error} = await getClient().rpc(Query.GET_PROJECTS_TOTAL_FUNCTION);
 
 		if (error) {
 			throw new DataSourceError('Cannot fetch total number of projects', {

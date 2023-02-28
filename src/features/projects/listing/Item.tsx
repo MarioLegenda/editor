@@ -5,6 +5,7 @@ import { IconDots, IconEdit, IconTrash } from '@tabler/icons';
 import { useState } from 'react';
 import { DeleteProjectModal } from '@/features/projects/modals/DeleteProjectModal';
 import { EditProjectModal } from '@/features/projects/modals/EditProjectModal';
+import { useSetTotal } from '@/lib/stateManagement/project/setters';
 
 interface Props {
 	item: Project;
@@ -15,6 +16,7 @@ export function Item({item, onDelete}: Props) {
 	const [isEdit, setIsEdit] = useState(false);
 	const [isDelete, setIsDelete] = useState(false);
 	const [internalItem, setInternalItem] = useState(item);
+	const setTotal = useSetTotal();
 
 	return <Link to={`/editor/${item.id}`} css={[styles.root, isEdit ? styles.highlightItem : undefined]}>
 		<div css={styles.content}>
@@ -51,6 +53,7 @@ export function Item({item, onDelete}: Props) {
 			onDeleted={() => {
 				onDelete(internalItem.id);
 				setIsDelete(false);
+				setTotal((prev) => prev ? prev - 1 : prev);
 			}}
 		/>
 

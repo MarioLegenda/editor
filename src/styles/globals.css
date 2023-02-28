@@ -2,6 +2,9 @@
     --color-lightText: #626161;
     --color-primaryBackground: #1A1B1E;
     --color-lighterBackground: #222327;
+    --color-primary: #1971C2;
+
+    --color-error: #E03131;
 
     --font-primary: 'Assisant', sans-serif;
 }

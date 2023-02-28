@@ -2,11 +2,12 @@ import { useQuery } from 'react-query';
 import { useState } from 'react';
 import getClient from '@/lib/supabase/client';
 import { isSearchProjectList } from '@/lib/dataSource/projects/check/isSearchProjectList';
+import { Query } from '@/lib/dataSource/enums/query';
 
 export function useSearchProjects(term: string) {
 	const [internalTerm, setTerm] = useState(term);
 
-	const query = useQuery<Project[]>(['searchProjects', internalTerm], async (values): Promise<Project[]> => {
+	const query = useQuery<Project[]>([Query.SEARCH_PROJECTS, internalTerm], async (values): Promise<Project[]> => {
 		const term = values.queryKey[1];
 		if (!term) {
 			return [];

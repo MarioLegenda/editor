@@ -5,5 +5,12 @@ export const heading = css`
 `;
 
 export const projectName = css`
-  color: var(--color-lightText);
+  color: var(--color-error);
+  display: inline-block;
+  background-color: var(--color-lighterBackground);
+  font-weight: 500;
+  
+  padding: 2px 8px 2px 8px;
+  
+  border-radius: 5px;
 `;

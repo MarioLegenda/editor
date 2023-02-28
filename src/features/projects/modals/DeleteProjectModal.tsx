@@ -84,7 +84,7 @@ export function DeleteProjectModal({show, onCancel, projectName, id, userId, onD
             Cancel
 					</Button>
 
-					<Button disabled={isLoading} type="submit" size="md" color="red">
+					<Button disabled={isLoading || !form.isValid('name')} type="submit" size="md" color="red">
             Delete
 					</Button>
 				</Group>

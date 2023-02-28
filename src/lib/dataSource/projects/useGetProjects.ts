@@ -2,11 +2,12 @@ import { useQuery } from 'react-query';
 import { useState } from 'react';
 import getClient from '@/lib/supabase/client';
 import { isProjectList } from '@/lib/dataSource/projects/check/isProjectList';
+import { Query } from '@/lib/dataSource/enums/query';
 
 export function useGetProjects(initialPage = 0, initialLimit = 15) {
 	const [page, setPage] = useState(initialPage);
 
-	const query = useQuery<Project[]>(['projects', page], async (): Promise<Project[]> => {
+	const query = useQuery<Project[]>([Query.GET_PAGINATED_PROJECTS, page], async (): Promise<Project[]> => {
 		console.log(page, page * initialLimit, (page + 1) * initialLimit - 1);
 		const { data: projects, error } = await getClient()
 			.from('project')
@@ -25,8 +26,9 @@ export function useGetProjects(initialPage = 0, initialLimit = 15) {
 		return [];
 	}, {
 		keepPreviousData: true,
-		staleTime: Infinity,
+		staleTime: 0,
 		retry: 3,
+		retryDelay: 2000,
 	});
 
 	return {
