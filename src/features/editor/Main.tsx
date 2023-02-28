@@ -6,12 +6,16 @@ import { useProjectDataResolver } from '@/features/editor/hooks/useProjectDataRe
 import { isProjectWithFiles } from '@/lib/dataSource/projects/check/isProjectWithFiles';
 import { useEffect } from 'react';
 import { useSetFilesystem, useSetProject } from '@/lib/stateManagement/project/setters';
+import { useFilesystem, useProject } from '@/lib/stateManagement/project/getters';
 
 export function Main() {
 	useRedirectIfSignedOut();
 	const {isLoading, notFound, data} = useProjectDataResolver();
 	const setProject = useSetProject();
 	const setFilesystem = useSetFilesystem();
+
+	const project = useProject();
+	const fileSystem = useFilesystem();
 
 	useEffect(() => {
 		if (isProjectWithFiles(data)) {
@@ -29,7 +33,7 @@ export function Main() {
 	return <>
 		<LoadingLayout notFound={notFound} loading={isLoading} />
 
-		{isProjectWithFiles(data) && <Layout
+		{project && fileSystem && <Layout
 			editor={<div>Editor</div>}
 			explorer={<ExplorerMain />}
 		/>}
