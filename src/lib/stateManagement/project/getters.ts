@@ -22,12 +22,26 @@ export function useFilesystem() {
 }
 
 export function useDirectoryFiles(parentId: string) {
-	const [files, setFiles] = useState<File[] | null>(null);
+	const [files, setFiles] = useState<File[]>([]);
 	const getFiles = useRecoilValue(directoryFilesSelectorFilter(parentId));
 
 	useEffect(() => {
 		getFiles().then((files) => {
-			setFiles(files);
+			const directories = files.filter((item) => item.is_directory);
+			directories.sort((a, b) => {
+				if(a.name < b.name) { return -1; }
+				if(a.name > b.name) { return 1; }
+				return 0;
+			});
+
+			const fs = files.filter((item) => !item.is_directory);
+			fs.sort((a, b) => {
+				if(a.name < b.name) { return -1; }
+				if(a.name > b.name) { return 1; }
+				return 0;
+			});
+
+			setFiles([...directories, ...fs]);
 		});
 	}, []);
 

@@ -29,13 +29,14 @@ interface ProjectAutocompleteList {
 }
 
 interface File {
+  id: string;
   name: string;
   project_id: string;
   user_id: string;
   parent: string;
   is_directory: boolean;
-  file_type: boolean;
-  file_extension: boolean;
+  file_type: FileType;
+  file_extension: ExtensionType;
 
   created_at: string;
   updated_at: string;

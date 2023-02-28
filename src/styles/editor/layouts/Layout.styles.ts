@@ -7,13 +7,9 @@ export const root = css`
 `;
 
 export const explorer = css`
-  grid-column: span 3 / span 3;
-  
-  border: 1px solid blue;
+  grid-column: span 2 / span 2;
 `;
 
 export const codeEditor = css`
-  grid-column: span 9 / span 9;
-  
-  border: 1px solid red;
+  grid-column: span 10 / span 10;
 `;

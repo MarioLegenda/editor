@@ -6,6 +6,6 @@ interface NewFile {
   isDirectory: boolean;
   parent: string;
   projectId: string;
-  fileType: FileType;
-  extension: ExtensionType[];
+  fileType: FileType | null;
+  extension: ExtensionType[] | null;
 }

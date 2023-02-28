@@ -1,10 +1,10 @@
 import { Header } from '@/features/editor/explorer/components/Header';
-import { Main as FileExplorer } from '@/features/editor/explorer/components/fileExplorer/Main';
+import { Root } from '@/features/editor/explorer/components/fileExplorer/Root';
 
 export function Main() {
 	return <>
 		<Header />
 
-		<FileExplorer />
+		<Root />
 	</>;
 }

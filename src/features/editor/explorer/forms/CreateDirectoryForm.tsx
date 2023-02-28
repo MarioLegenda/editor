@@ -3,19 +3,17 @@ import { combine, max, min, required } from '@/lib/validation/validations';
 import * as formStyles from '@/styles/shared/Form.styles';
 import { Button, Group, TextInput } from '@mantine/core';
 import { useCreateFile } from '@/lib/dataSource/projects/fileSystem/useCreateFile';
-import { FileMetadata } from '@/features/editor/explorer/helpers/FileMetadata';
 import { useCloseOnSuccess } from '@/lib/helpers/forms/useCloseOnSuccess';
 import { useFilesystem } from '@/lib/stateManagement/project/getters';
-import { LanguageIcon } from '@/lib/components/LanguageIcon';
+import { IconFolder } from '@tabler/icons';
 
 interface Props {
-  fileType: FileType;
-	parent: string;
+  parent: string;
   onCancel: () => void;
   projectId: string;
 }
 
-export function CreateFileForm({fileType, onCancel, projectId, parent}: Props) {
+export function CreateDirectoryForm({onCancel, projectId, parent}: Props) {
 	const {mutation: {isLoading, isSuccess}, createFile} = useCreateFile(projectId);
 	useCloseOnSuccess(isLoading, isSuccess, onCancel);
 	const files = useFilesystem();
@@ -34,19 +32,9 @@ export function CreateFileForm({fileType, onCancel, projectId, parent}: Props) {
 
 				if (errors) return errors[0];
 
-				const fileMetadata = FileMetadata.create(value);
-
-				if (fileMetadata.error()) {
-					return fileMetadata.error();
-				}
-				
-				if (fileMetadata.fileType() !== fileType) {
-					return `Invalid extension for ${fileMetadata.upperCaseFileType()}. ${fileMetadata.upperCaseFileType()} must have a '${fileMetadata.extension()}' extension.`;
-				}
-
 				for (const file of files) {
-					if (file.parent === parent && file.name === fileMetadata.original() && !file.is_directory) {
-						return `File with name ${fileMetadata.original()} already exists`;
+					if (file.parent === parent && file.is_directory && file.name === value) {
+						return `Directory with name ${value} already exists`;
 					}
 				}
 
@@ -56,20 +44,18 @@ export function CreateFileForm({fileType, onCancel, projectId, parent}: Props) {
 	});
 
 	return <form onSubmit={form.onSubmit((values) => {
-		const fileMetadata = FileMetadata.create(values.name);
-
 		createFile({
-			name: fileMetadata.original(),
+			name: values.name,
 			projectId: projectId,
 			parent: parent,
-			fileType: fileMetadata.fileType(),
-			extension: fileMetadata.extension(),
-			isDirectory: false,
+			fileType: null,
+			extension: null,
+			isDirectory: true,
 		});
 	})}>
 		<>
 			<div css={formStyles.spacing}>
-				<TextInput icon={<LanguageIcon fileType={fileType} />} data-autofocus withAsterisk name="name" placeholder="Name" {...form.getInputProps('name')} />
+				<TextInput icon={<IconFolder size={20} />} data-autofocus withAsterisk name="name" placeholder="Name" {...form.getInputProps('name')} />
 			</div>
 
 			<Group position="right" mt="lg">
