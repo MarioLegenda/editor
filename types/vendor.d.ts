@@ -1,0 +1,3 @@
+interface QueryLoader {
+  isLoading: boolean;
+}
