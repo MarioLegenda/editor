@@ -11,7 +11,6 @@ export function useSignIn() {
 		});
 
 		if (error) {
-			console.log(error.name, error.status);
 			throw new DataSourceError('Cannot sign in user',  {
 				code: error.name,
 				status: error.status,

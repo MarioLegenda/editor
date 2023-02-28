@@ -8,7 +8,6 @@ export function useGetProjects(initialPage = 0, initialLimit = 15) {
 	const [page, setPage] = useState(initialPage);
 
 	const query = useQuery<Project[]>([Query.GET_PAGINATED_PROJECTS, page], async (): Promise<Project[]> => {
-		console.log(page, page * initialLimit, (page + 1) * initialLimit - 1);
 		const { data: projects, error } = await getClient()
 			.from('project')
 			.select('name,description,id,color,user_id')

@@ -24,7 +24,7 @@ function removeItem(id: string, data: Project[]) {
 	return newData;
 }
 
-const INITIAL_LIMIT = 2;
+const INITIAL_LIMIT = 8;
 const INITIAL_PAGE = 0;
 
 export function Listing() {
