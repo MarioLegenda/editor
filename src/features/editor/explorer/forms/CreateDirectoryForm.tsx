@@ -3,7 +3,7 @@ import { combine, max, min, required } from '@/lib/validation/validations';
 import * as formStyles from '@/styles/shared/Form.styles';
 import { Button, Group, TextInput } from '@mantine/core';
 import { useCreateFile } from '@/lib/dataSource/projects/fileSystem/useCreateFile';
-import { useCloseOnSuccess } from '@/lib/helpers/forms/useCloseOnSuccess';
+import { useRunOnDone } from '@/lib/helpers/forms/useRunOnDone';
 import { useFilesystem } from '@/lib/stateManagement/project/getters';
 import { IconFolder } from '@tabler/icons';
 
@@ -15,7 +15,7 @@ interface Props {
 
 export function CreateDirectoryForm({onCancel, projectId, parent}: Props) {
 	const {mutation: {isLoading, isSuccess}, createFile} = useCreateFile(projectId);
-	useCloseOnSuccess(isLoading, isSuccess, onCancel);
+	useRunOnDone(isLoading, isSuccess, onCancel);
 	const files = useFilesystem();
 
 	const form = useForm({

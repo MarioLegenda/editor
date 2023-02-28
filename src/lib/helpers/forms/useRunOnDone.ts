@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 
-export function useCloseOnSuccess(isLoading: boolean, isSuccess: boolean, onCancel: () => void) {
+export function useRunOnDone(isLoading: boolean, isSuccess: boolean, onDone: () => void) {
 	useEffect(() => {
 		if (!isLoading && isSuccess) {
-			onCancel();
+			onDone();
 		}
 	}, [isLoading, isSuccess]);
 }
