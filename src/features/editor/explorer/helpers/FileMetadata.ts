@@ -1,6 +1,6 @@
 export class FileMetadata {
 	private readonly type: FileType = 'default';
-	private readonly ext: ExtensionType[] = ['json'];
+	private readonly ext: ExtensionType[] | null = null;
 	private readonly originalFile: string = '';
 	private readonly fileName: string = '';
 
@@ -12,6 +12,14 @@ export class FileMetadata {
   
 	private constructor(original: string) {
 		const parsed = this.parseFile(original);
+		const invalid = this.validate(original);
+
+		if (invalid) {
+			this.constructionError = invalid;
+
+			return;
+		}
+
 		if (!Array.isArray(parsed)) return;
 
 		this.originalFile = original;
@@ -20,7 +28,7 @@ export class FileMetadata {
 		this.type = this.extToType(this.ext[0]);
 	}
 
-	extension(): ExtensionType[] {
+	extension(): ExtensionType[] | null {
 		return this.ext;
 	}
 
@@ -53,11 +61,19 @@ export class FileMetadata {
 		return 'default';
 	}
 
+	private validate(name: string): string {
+		if (new RegExp('^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$').test(name)) {
+			return 'Invalid file name given. File names can only contain alphanumeric characters and no more than one dot (.) for extension. Please, consult this regex expression: ^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$';
+		}
+
+		return '';
+	}
+
 	private parseFile(file: string): boolean | string[] {
 		const s = file.split('.');
 
 		if (s.length !== 2) {
-			this.constructionError = 'Invalid file name given.';
+			this.constructionError = 'Invalid file name given. File names can only contain alphanumeric characters and no more than one dot (.) for extension. Please, consult this regex expression: ^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$';
 
 			return false;
 		}

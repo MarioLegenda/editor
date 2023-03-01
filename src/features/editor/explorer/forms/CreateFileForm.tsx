@@ -36,11 +36,13 @@ export function CreateFileForm({fileType, onCancel, projectId, parent}: Props) {
 
 				const fileMetadata = FileMetadata.create(value);
 
+				console.log(fileMetadata);
+
 				if (fileMetadata.error()) {
 					return fileMetadata.error();
 				}
-				
-				if (fileMetadata.fileType() !== fileType) {
+
+				if (fileType !== 'default' && fileMetadata.fileType() !== fileType) {
 					return `Invalid extension for ${fileMetadata.upperCaseFileType()}. ${fileMetadata.upperCaseFileType()} must have a '${fileMetadata.extension()}' extension.`;
 				}
 

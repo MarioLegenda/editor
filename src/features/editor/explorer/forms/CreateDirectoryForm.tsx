@@ -32,6 +32,10 @@ export function CreateDirectoryForm({onCancel, projectId, parent}: Props) {
 
 				if (errors) return errors[0];
 
+				if (new RegExp('^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$').test(value)) {
+					return 'Invalid directory name given. File names can only contain alphanumeric characters. Please, consult this regex expression: ^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$';
+				}
+
 				for (const file of files) {
 					if (file.parent === parent && file.is_directory && file.name === value) {
 						return `Directory with name ${value} already exists`;
