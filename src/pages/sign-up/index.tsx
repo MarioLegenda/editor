@@ -1,4 +1,4 @@
-import { Layout } from '@/lib/layouts/Layout';
+import { Layout } from '@/features/shared/layouts/Layout';
 import { Main } from '@/features/auth/signUp/Main';
 import { useRedirectIfSignedIn } from '@/lib/stateManagement/auth/hooks/useRedirectIfSignedIn';
 import { useAuthState } from '@/lib/stateManagement/auth/getters';

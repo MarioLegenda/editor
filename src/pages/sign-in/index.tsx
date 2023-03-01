@@ -1,4 +1,4 @@
-import { Layout } from '@/lib/layouts/Layout';
+import { Layout } from '@/features/shared/layouts/Layout';
 import { Main } from '@/features/auth/signIn/Main';
 import { AuthState } from '@/lib/stateManagement/types/authState';
 import { useAuthState } from '@/lib/stateManagement/auth/getters';
