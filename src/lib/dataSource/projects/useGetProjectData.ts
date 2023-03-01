@@ -15,7 +15,7 @@ export function useGetProjectData(projectId: string | null) {
 			.from('project')
 			.select(`
      		*,
-     		files (id,name,parent,is_directory,created_at,updated_at,file_type,file_extension)
+     		files (id,name,project_id,parent,is_directory,created_at,updated_at,file_type,file_extension)
   		`).eq('id', projectId);
 
 		if (error) {

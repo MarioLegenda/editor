@@ -5,6 +5,8 @@ import { useCallback, useState } from 'react';
 import { useParentFiles, useSelectedFile } from '@/lib/stateManagement/project/getters';
 import { useSetSelectedFile } from '@/lib/stateManagement/project/setters';
 import { FileListing } from '@/features/editor/explorer/components/fileExplorer/FileListing';
+import { ContextMenuTrigger } from 'rctx-contextmenu';
+import { AbstractContextMenu } from '@/features/editor/explorer/components/fileExplorer/contextMenu/AbstractContextMenu';
 
 interface Props {
   item: File;
@@ -25,19 +27,26 @@ export function Directory({item, isRoot, childSpace}: Props) {
 	}, []);
 
 	return <div css={[styles.root]}>
-		<div
-			onClick={onOpen}
-			css={
-				[styles.content,
-					styles.move(isRoot ? 5 : nextChildSpace),
-					isOpen && selectedFile?.id !== item.id ? styles.softOpen : undefined,
-					selectedFile?.id === item.id ? styles.open : undefined
-				]}>
+		{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+		{/*
+          // @ts-ignore */}
+		<ContextMenuTrigger id={item.id}>
+			<div
+				onClick={onOpen}
+				css={
+					[styles.content,
+						styles.move(isRoot ? 5 : nextChildSpace),
+						isOpen && selectedFile?.id !== item.id ? styles.softOpen : undefined,
+						selectedFile?.id === item.id ? styles.open : undefined
+					]}>
 
-			{isOpen ? <DirOpen width={20} /> : <DirClosed width={20} />}
+				{isOpen ? <DirOpen width={20} /> : <DirClosed width={20} />}
 
-			<p>{item.name}</p>
-		</div>
+				<p>{item.name}</p>
+			</div>
+		</ContextMenuTrigger>
+
+		<AbstractContextMenu projectId={item.project_id} id={item.id} />
 
 		{isOpen && <FileListing childSpace={nextChildSpace} isRoot={false} files={files} />}
 	</div>;

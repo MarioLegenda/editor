@@ -6,10 +6,38 @@
     --color-primaryDark: #004994;
 
     --color-error: #E03131;
+    --color-lightError: #df5656;
 
     --font-primary: 'Assisant', sans-serif;
 }
 
 body {
     font-family: 'Assistant', sans-serif;
+}
+
+.contextmenu {
+    background-color: var(--color-lighterBackground) !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+.contextmenu__item {
+    background-color: var(--color-primaryBackground) !important;
+    border: none !important;
+    margin-bottom: 0 !important;
+}
+
+.contextmenu__item:hover {
+    background-color: var(--color-primaryDark) !important;
+}
+
+.submenu__item {
+    background-color: var(--color-primaryBackground) !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+.contextmenu .submenu > .contextmenu__item:after {
+    border-color: transparent transparent transparent white !important;
+    right: 15px !important;
 }
