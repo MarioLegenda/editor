@@ -14,6 +14,8 @@ interface Project {
   user_id: string;
   name: string;
   description: string;
+  created_at: string;
+  updated_at: string;
 }
 
 interface DeleteProject {
@@ -27,19 +29,3 @@ interface ProjectAutocompleteList {
   description: string;
   color: string;
 }
-
-interface File {
-  id: string;
-  name: string;
-  project_id: string;
-  user_id: string;
-  parent: string | null;
-  is_directory: boolean;
-  file_type: FileType | null;
-  file_extension: ExtensionType | null;
-
-  created_at: string;
-  updated_at: string;
-}
-
-type ProjectWithFiles = Project & {files: File[]};

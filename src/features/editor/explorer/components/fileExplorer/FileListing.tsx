@@ -2,7 +2,7 @@ import { Directory } from '@/features/editor/explorer/components/fileExplorer/Di
 import { File } from '@/features/editor/explorer/components/fileExplorer/File';
 
 interface Props {
-  files: File[];
+  files: AppFile[];
 	isRoot: boolean;
 	childSpace: number;
 }

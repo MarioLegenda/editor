@@ -7,7 +7,7 @@ export const projectTotalAtom = atom<number | null>({
 	default: null,
 });
 
-export const fileSystemAtom = atom<File[]>({
+export const fileSystemAtom = atom<AppFile[]>({
 	key: ProjectEnum.FILE_SYSTEM,
 	default: [],
 });
@@ -17,7 +17,7 @@ export const projectAtom = atom<Project | null>({
 	default: null,
 });
 
-export const selectedFileAtom = atom<File | null>({
+export const selectedFileAtom = atom<AppFile | null>({
 	key: ProjectEnum.SELECTED_FILE,
 	default: null,
 });

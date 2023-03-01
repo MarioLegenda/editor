@@ -12,6 +12,13 @@ export const content = css`
   align-items: center;
 `;
 
+export const buttonFix = css`
+  padding-left: 0;
+  padding-right: 0;
+  
+  margin-left: 8px;
+`;
+
 export const header = css`
   font-size: 14px;
   font-weight: 900;

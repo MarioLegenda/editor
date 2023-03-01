@@ -1,5 +1,5 @@
 import { Button, Menu } from '@mantine/core';
-import { IconFilePlus, IconFolderPlus } from '@tabler/icons';
+import { IconArrowBackUp, IconFilePlus, IconFolderPlus } from '@tabler/icons';
 import * as styles from '@/styles/editor/explorer/fileExplorer/Root.styles';
 import TypescriptIcon from '/public/editor/Typescript.svg';
 import JavascriptIcon from '/public/editor/Javascript.svg';
@@ -25,10 +25,12 @@ export function Root() {
 			<h2 css={styles.header}>{project.name.toUpperCase()}</h2>
 
 			<div>
+				<Button css={styles.buttonFix} compact size="xs" color="gray" variant="subtle"><IconArrowBackUp size={24} /></Button>
+
 				<Menu>
 					<Menu.Target>
-						<Button compact color="gray" size="xs" variant="subtle">
-							<IconFilePlus color="gray" />
+						<Button css={styles.buttonFix} compact color="gray" size="xs" variant="subtle">
+							<IconFilePlus color="white" />
 						</Button>
 					</Menu.Target>
 
@@ -41,8 +43,8 @@ export function Root() {
 					</Menu.Dropdown>
 				</Menu>
 
-				<Button onClick={() => setIsDirectoryModal(true)} compact color="gray" size="xs" variant="subtle">
-					<IconFolderPlus color="gray" />
+				<Button css={styles.buttonFix} onClick={() => setIsDirectoryModal(true)} compact color="gray" size="xs" variant="subtle">
+					<IconFolderPlus color="white" />
 				</Button>
 			</div>
 		</div>

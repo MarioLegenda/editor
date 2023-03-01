@@ -9,3 +9,17 @@ interface NewFile {
   fileType: FileType | null;
   extension: ExtensionType[] | null;
 }
+
+interface AppFile {
+  id: string;
+  name: string;
+  project_id: string;
+  user_id: string;
+  parent: string | null;
+  is_directory: boolean;
+  file_type: FileType | null;
+  file_extension: ExtensionType | null;
+
+  created_at: string;
+  updated_at: string;
+}

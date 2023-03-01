@@ -1,4 +1,4 @@
-export function sortFilesAlphabetically(files: File[], parentId: string): File[] {
+export function sortFilesAlphabetically(files: AppFile[], parentId: string): AppFile[] {
 	const directories = files.filter((item) => item.is_directory && item.parent === parentId);
 	directories.sort((a, b) => {
 		if(a.name < b.name) { return -1; }

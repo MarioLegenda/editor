@@ -9,7 +9,7 @@ import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { AbstractContextMenu } from '@/features/editor/explorer/components/fileExplorer/contextMenu/AbstractContextMenu';
 
 interface Props {
-  item: File;
+  item: AppFile;
   isRoot: boolean;
 	childSpace: number;
 }

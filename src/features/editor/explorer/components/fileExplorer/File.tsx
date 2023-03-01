@@ -4,7 +4,7 @@ import { useSelectedFile } from '@/lib/stateManagement/project/getters';
 import { useSetSelectedFile } from '@/lib/stateManagement/project/setters';
 
 interface Props {
-  item: File;
+  item: AppFile;
 	isRoot: boolean;
 	childSpace: number;
 }

@@ -26,7 +26,7 @@ export function useSelectedFile() {
 }
 
 export function useOneTimeDirectoryFiles(parentId: string) {
-	const [files, setFiles] = useState<File[]>([]);
+	const [files, setFiles] = useState<AppFile[]>([]);
 	const getFiles = useRecoilValue(directoryFilesSelectorFilter(parentId));
 
 	useEffect(() => {

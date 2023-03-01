@@ -20,5 +20,5 @@ export function useSetSelectedFile() {
 export function useAddFile() {
 	const setFiles = useSetFilesystem();
 
-	return (file: File) => setFiles((files) => [...files, file]);
+	return (file: AppFile) => setFiles((files) => [...files, file]);
 }

@@ -1,5 +1,5 @@
-export function isFile(item: unknown): item is File {
-	const a = item as File;
+export function isFile(item: unknown): item is AppFile {
+	const a = item as AppFile;
 
 	return a
     && Object.hasOwn(a, 'id')
