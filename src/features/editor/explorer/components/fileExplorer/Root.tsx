@@ -8,17 +8,17 @@ import JsonIcon from '/public/editor/Json.svg';
 import AnyFileIcon from '/public/editor/file.svg';
 import { useState } from 'react';
 import { CreateFileModal } from '@/features/editor/explorer/modals/CreateFileModal';
-import { useDirectoryFiles, useProject } from '@/lib/stateManagement/project/getters';
-import { Directory } from '@/features/editor/explorer/components/fileExplorer/Directory';
-import { File } from '@/features/editor/explorer/components/fileExplorer/File';
+import { useParentFiles, useProject, useSelectedFile } from '@/lib/stateManagement/project/getters';
 import { CreateDirectoryModal } from '@/features/editor/explorer/modals/CreateDirectoryModal';
+import { FileListing } from '@/features/editor/explorer/components/fileExplorer/FileListing';
 
 export function Root() {
 	const [createFileModalData, setCreateFileModalData] = useState<FileType | null>(null);
 	const [isDirectoryModal, setIsDirectoryModal] = useState(false);
 
 	const project = useProject();
-	const files = useDirectoryFiles(project.id);
+	const files = useParentFiles(project.id);
+	const selectedFile = useSelectedFile();
 
 	return <div css={styles.root}>
 		<div css={styles.content}>
@@ -46,21 +46,19 @@ export function Root() {
 				</Button>
 			</div>
 		</div>
-
-		<div css={styles.fileListing}>
-			{files.map((file) => file.is_directory ? <Directory isRoot key={file.id} item={file} /> : <File isRoot key={file.id} item={file} />)}
-		</div>
+		
+		<FileListing childSpace={3} isRoot={true} files={files} />
 
 		{isDirectoryModal && <CreateDirectoryModal
 			projectId={project.id}
-			parent={project.id}
+			parent={selectedFile ? selectedFile.id : project.id}
 			show={isDirectoryModal}
 			onCancel={() => setIsDirectoryModal(false)}
 		/>}
 
 		{createFileModalData && <CreateFileModal
 			projectId={project.id}
-			parent={project.id}
+			parent={selectedFile ? selectedFile.id : project.id}
 			fileType={createFileModalData}
 			show={Boolean(createFileModalData)}
 			onCancel={() => setCreateFileModalData(null)}

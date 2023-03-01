@@ -6,10 +6,6 @@ export const root = css`
   flex-direction: column;
 `;
 
-export const fileListing = css`
-  margin-top: 4px;
-`;
-
 export const content = css`
   display: flex;
   justify-content: space-between;

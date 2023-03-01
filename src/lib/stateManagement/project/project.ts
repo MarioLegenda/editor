@@ -1,5 +1,6 @@
 import { atom, selectorFamily } from 'recoil';
 import { Project as ProjectEnum } from '@/lib/stateManagement/types/project';
+import { sortFilesAlphabetically } from '@/lib/stateManagement/sorting/sortFilesAlphabetically';
 
 export const projectTotalAtom = atom<number | null>({
 	key: ProjectEnum.PROJECT_COUNT,
@@ -16,6 +17,11 @@ export const projectAtom = atom<Project | null>({
 	default: null,
 });
 
+export const selectedFileAtom = atom<File | null>({
+	key: ProjectEnum.SELECTED_FILE,
+	default: null,
+});
+
 export const directoryFilesSelectorFilter = selectorFamily({
 	key: ProjectEnum.SINGLE_DIRECTORY_FILES_FILTER,
 	get: parentId => ({getCallback}) => {
@@ -27,3 +33,15 @@ export const directoryFilesSelectorFilter = selectorFamily({
 	}
 });
 
+export const parentFileStructureSelectorFamily = selectorFamily({
+	key: ProjectEnum.DIRECTORY_FILE_STRUCTURE,
+	get: parentId => ({get}) => {
+		const files = get(fileSystemAtom);
+
+		if (typeof parentId === 'string') {
+			return sortFilesAlphabetically(files, parentId);
+		}
+
+		return [];
+	}
+});

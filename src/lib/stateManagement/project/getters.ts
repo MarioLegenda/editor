@@ -2,9 +2,9 @@ import { useRecoilValue } from 'recoil';
 import { useCallback, useEffect, useState } from 'react';
 import {
 	directoryFilesSelectorFilter,
-	fileSystemAtom,
+	fileSystemAtom, parentFileStructureSelectorFamily,
 	projectAtom,
-	projectTotalAtom
+	projectTotalAtom, selectedFileAtom
 } from '@/lib/stateManagement/project/project';
 
 export function useTotal() {
@@ -21,7 +21,11 @@ export function useFilesystem() {
 	return useRecoilValue(fileSystemAtom);
 }
 
-export function useDirectoryFiles(parentId: string) {
+export function useSelectedFile() {
+	return useRecoilValue(selectedFileAtom);
+}
+
+export function useOneTimeDirectoryFiles(parentId: string) {
 	const [files, setFiles] = useState<File[]>([]);
 	const getFiles = useRecoilValue(directoryFilesSelectorFilter(parentId));
 
@@ -46,5 +50,9 @@ export function useDirectoryFiles(parentId: string) {
 	}, []);
 
 	return files;
+}
+
+export function useParentFiles(parentId: string) {
+	return useRecoilValue(parentFileStructureSelectorFamily(parentId));
 }
 

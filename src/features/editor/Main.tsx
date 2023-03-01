@@ -7,8 +7,12 @@ import { isProjectWithFiles } from '@/lib/dataSource/projects/check/isProjectWit
 import { useEffect } from 'react';
 import { useSetFilesystem, useSetProject } from '@/lib/stateManagement/project/setters';
 import { useFilesystem, useProject } from '@/lib/stateManagement/project/getters';
+import { useFileInsertSubscription } from '@/lib/dataSource/subscriptions/useFileInsertSubscription';
+import { CodeEditor } from '@/features/editor/codeEditor/CodeEditor';
 
 export function Main() {
+	useFileInsertSubscription();
+	
 	useRedirectIfSignedOut();
 	const {isLoading, notFound, data} = useProjectDataResolver();
 	const setProject = useSetProject();
@@ -34,7 +38,7 @@ export function Main() {
 		<LoadingLayout notFound={notFound} loading={isLoading} />
 
 		{project && fileSystem && <Layout
-			editor={<div>Editor</div>}
+			editor={<CodeEditor value='This is my value' onChange={() => console.log} />}
 			explorer={<ExplorerMain />}
 		/>}
 	</>;
