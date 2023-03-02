@@ -6,6 +6,9 @@ import { useCreateFile } from '@/lib/dataSource/features/fileSystem/useCreateFil
 import { useRunOnDone } from '@/lib/helpers/forms/useRunOnDone';
 import { useFilesystem } from '@/lib/stateManagement/project/getters';
 import { IconFolder } from '@tabler/icons';
+import { useEffect } from 'react';
+import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
+import { useSetFilesystem } from '@/lib/stateManagement/project/setters';
 
 interface Props {
   parent: string;
@@ -14,9 +17,17 @@ interface Props {
 }
 
 export function CreateDirectoryForm({onCancel, projectId, parent}: Props) {
-	const {mutation: {isLoading, isSuccess}, createFile} = useCreateFile(projectId);
+	const {mutation: {isLoading, isSuccess, data}, createFile} = useCreateFile(projectId);
 	useRunOnDone(isLoading, isSuccess, onCancel);
 	const files = useFilesystem();
+	const setFiles = useSetFilesystem();
+
+	useEffect(() => {
+		if (isSuccess && data && isFile(data)) {
+			setFiles((files) => [...files, data]);
+			onCancel();
+		}
+	}, [isSuccess, data]);
 
 	const form = useForm({
 		initialValues: {
