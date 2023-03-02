@@ -11,7 +11,7 @@ export function useDeleteFile(projectId: string, fileId: string) {
 		const { error } = await getClient()
 			.from('files')
 			.update({
-				deleted_at: 'NOW()',
+				deleted_at: new Date().toISOString(),
 			})
 			.eq('id', fileId)
 			.eq('project_id', values.projectId)

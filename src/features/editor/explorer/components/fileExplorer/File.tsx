@@ -2,6 +2,10 @@ import * as styles from '@/styles/editor/explorer/fileExplorer/File.styles';
 import { LanguageIcon } from '@/lib/components/LanguageIcon';
 import { useSelectedFile } from '@/lib/stateManagement/project/getters';
 import { useSetSelectedFile } from '@/lib/stateManagement/project/setters';
+import { ContextMenuTrigger } from 'rctx-contextmenu';
+import {
+	AbstractContextMenu
+} from '@/features/editor/explorer/components/fileExplorer/contextMenu/AbstractContextMenu';
 
 interface Props {
   item: AppFile;
@@ -19,15 +23,21 @@ export function File({item, isRoot = false, childSpace}: Props) {
 			styles.root
 		]}
 		onClick={() => setSelectedFile(item)}>
+		{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+		{/*
+          // @ts-ignore */}
+		<ContextMenuTrigger id={item.id}>
+			<div css={[
+				styles.content,
+				styles.move(isRoot ? 5 : nextChildSpace),
+				selectedFile?.id === item.id ? styles.open : undefined
+			]}>
+				<LanguageIcon fileType={item.file_type as FileType} />
 
-		<div css={[
-			styles.content,
-			styles.move(isRoot ? 5 : nextChildSpace),
-			selectedFile?.id === item.id ? styles.open : undefined
-		]}>
-			<LanguageIcon fileType={item.file_type as FileType} />
+				<p>{item.name}</p>
+			</div>
+		</ContextMenuTrigger>
 
-			<p>{item.name}</p>
-		</div>
+		<AbstractContextMenu projectId={item.project_id} id={item.id} />
 	</div>;
 }

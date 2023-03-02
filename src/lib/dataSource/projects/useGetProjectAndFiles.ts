@@ -2,6 +2,7 @@ import getClient from '@/lib/supabase/client';
 import { isProject } from '@/lib/dataSource/projects/check/isProject';
 import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
 import { useCallback, useEffect, useState } from 'react';
+import { isFileListing } from '@/lib/dataSource/projects/check/isFileListing';
 
 export function useGetProjectAndFiles(projectId: string | null) {
 	const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +32,8 @@ export function useGetProjectAndFiles(projectId: string | null) {
 		const { data, error } = await getClient()
 			.from('files')
 			.select('*')
-			.eq('project_id', projectId);
+			.eq('project_id', projectId)
+			.is('deleted_at', null);
 		
 		if (error) {
 			throw new DataSourceError(error.message, {
@@ -39,13 +41,11 @@ export function useGetProjectAndFiles(projectId: string | null) {
 			});
 		}
 
-		if (Array.isArray(data)) {
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
-			return data as AppFile[];
+		if (isFileListing(data)) {
+			return data;
 		}
 
-		return data;
+		return [];
 	}, []);
 
 	useEffect(() => {
