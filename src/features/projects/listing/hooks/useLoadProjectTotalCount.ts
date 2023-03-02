@@ -1,4 +1,4 @@
-import { useGetTotal } from '@/lib/dataSource/projects/useGetTotal';
+import { useGetTotal } from '@/lib/dataSource/features/projects/useGetTotal';
 import { useEffect } from 'react';
 import { useSetTotal } from '@/lib/stateManagement/project/setters';
 

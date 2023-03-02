@@ -1,7 +1,7 @@
 import { Button, Group } from '@mantine/core';
 import { useRunOnDone } from '@/lib/helpers/forms/useRunOnDone';
 import { useSetFilesystem } from '@/lib/stateManagement/project/setters';
-import { useDeleteFile } from '@/lib/dataSource/projects/fileSystem/useDeleteFile';
+import { useDeleteFile } from '@/lib/dataSource/features/fileSystem/useDeleteFile';
 import { IconArrowBackUp } from '@tabler/icons';
 
 import * as styles from '@/styles/editor/modals/DeleteFileForm.styles';

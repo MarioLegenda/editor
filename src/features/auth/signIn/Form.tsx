@@ -2,7 +2,7 @@ import { Button, Group, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import * as styles from '@/styles/shared/Form.styles';
 import { z } from 'zod';
-import { useSignIn } from '@/lib/dataSource/auth/useSignIn';
+import { useSignIn } from '@/lib/dataSource/features/auth/useSignIn';
 import { useEffect } from 'react';
 import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
 import { ErrorCodes } from '@/lib/dataSource/error/errorCodes';

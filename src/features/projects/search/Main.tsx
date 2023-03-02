@@ -1,7 +1,7 @@
 import { Autocomplete, Loader } from '@mantine/core';
 import { useCallback, useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import { useSearchProjects } from '@/lib/dataSource/projects/useSearchProjects';
+import { useSearchProjects } from '@/lib/dataSource/features/projects/useSearchProjects';
 import { AutoCompleteItem } from '@/features/projects/search/AutocompleteItem';
 
 export function Main() {

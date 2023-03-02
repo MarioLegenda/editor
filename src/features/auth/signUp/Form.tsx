@@ -3,7 +3,7 @@ import { useForm } from '@mantine/form';
 import * as styles from '@/styles/shared/Form.styles';
 import { z } from 'zod';
 import { combine, required, max, min } from '@/lib/validation/validations';
-import { useSignUp } from '@/lib/dataSource/auth/useSignUp';
+import { useSignUp } from '@/lib/dataSource/features/auth/useSignUp';
 import { useEffect, useState } from 'react';
 
 interface Props {

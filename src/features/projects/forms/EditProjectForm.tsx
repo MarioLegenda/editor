@@ -4,7 +4,7 @@ import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
 import { ErrorCodes } from '@/lib/dataSource/error/errorCodes';
 import { Error } from '@/lib/components/notifications/Error';
 import { Button, Group, Textarea, TextInput } from '@mantine/core';
-import { useEditProject } from '@/lib/dataSource/projects/useEditProject';
+import { useEditProject } from '@/lib/dataSource/features/projects/useEditProject';
 import { useEffect } from 'react';
 import { useForm } from '@mantine/form';
 import { combine, max, min, required } from '@/lib/validation/validations';
@@ -68,7 +68,7 @@ export function EditProjectForm({onCancel, onDone, item, id}: Props) {
 			{isError && error && (error as DataSourceError<AppError>).data.code !== ErrorCodes.ENTRY_EXISTS && <div css={formStyles.spacing}><Error disallowClose /></div>}
 
 			<div css={formStyles.spacing}>
-				<TextInput autoFocus withAsterisk name="name" placeholder="Name" {...form.getInputProps('name')} />
+				<TextInput data-autofocus withAsterisk name="name" placeholder="Name" {...form.getInputProps('name')} />
 			</div>
 
 			<div css={formStyles.spacing}>

@@ -1,8 +1,8 @@
 import getClient from '@/lib/supabase/client';
-import { isProject } from '@/lib/dataSource/projects/check/isProject';
+import { isProject } from '@/lib/dataSource/features/projects/check/isProject';
 import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
 import { useCallback, useEffect, useState } from 'react';
-import { isFileListing } from '@/lib/dataSource/projects/check/isFileListing';
+import { isFileListing } from '@/lib/dataSource/features/fileSystem/check/isFileListing';
 
 export function useGetProjectAndFiles(projectId: string | null) {
 	const [isLoading, setIsLoading] = useState(true);

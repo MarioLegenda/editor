@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import { useState } from 'react';
 import getClient from '@/lib/supabase/client';
-import { isProjectList } from '@/lib/dataSource/projects/check/isProjectList';
+import { isProjectList } from '@/lib/dataSource/features/projects/check/isProjectList';
 import { Query } from '@/lib/dataSource/enums/query';
 
 export function useGetProjects(initialPage = 0, initialLimit = 15) {

@@ -4,12 +4,12 @@ import * as styles from '@/styles/projects/NewProjectForm.styles';
 import * as formStyles from '@/styles/shared/Form.styles';
 import { useForm } from '@mantine/form';
 import { combine, required, min, max } from '@/lib/validation/validations';
-import { useCreateProject } from '@/lib/dataSource/projects/useCreateProject';
+import { useCreateProject } from '@/lib/dataSource/features/projects/useCreateProject';
 import { useEffect } from 'react';
 import { Error } from '@/lib/components/notifications/Error';
 import { ErrorCodes } from '@/lib/dataSource/error/errorCodes';
 import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
-import { isProject } from '@/lib/dataSource/projects/check/isProject';
+import { isProject } from '@/lib/dataSource/features/projects/check/isProject';
 import { useNavigate } from 'react-router';
 
 interface Props {

@@ -1,6 +1,6 @@
 import { Button, Loader } from '@mantine/core';
 import { IconLogout } from '@tabler/icons';
-import { useSignOut } from '@/lib/dataSource/auth/useSignOut';
+import { useSignOut } from '@/lib/dataSource/features/auth/useSignOut';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { showNotification } from '@mantine/notifications';

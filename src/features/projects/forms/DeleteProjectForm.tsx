@@ -2,7 +2,7 @@ import * as styles from '@/styles/editor/modals/DeleteProjectModal.styles';
 import * as formStyles from '@/styles/shared/Form.styles';
 import { Error } from '@/lib/components/notifications/Error';
 import { Button, Group, TextInput } from '@mantine/core';
-import { useDeleteProject } from '@/lib/dataSource/projects/useDeleteProject';
+import { useDeleteProject } from '@/lib/dataSource/features/projects/useDeleteProject';
 import { useRunOnDone } from '@/lib/helpers/forms/useRunOnDone';
 import { useForm } from '@mantine/form';
 import { combine, max, min, required } from '@/lib/validation/validations';
@@ -61,7 +61,7 @@ export function DeleteProjectForm({projectName, id, userId, onDeleted, onCancel}
 			</div>}
 
 			<div css={formStyles.spacing}>
-				<TextInput autoFocus name="name" placeholder="Name" {...form.getInputProps('name')} />
+				<TextInput data-autofocus name="name" placeholder="Name" {...form.getInputProps('name')} />
 			</div>
 
 			<Group position="right" mt="lg">

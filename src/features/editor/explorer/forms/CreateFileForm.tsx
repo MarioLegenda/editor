@@ -2,13 +2,13 @@ import { useForm } from '@mantine/form';
 import { combine, max, min, required } from '@/lib/validation/validations';
 import * as formStyles from '@/styles/shared/Form.styles';
 import { Button, Group, TextInput } from '@mantine/core';
-import { useCreateFile } from '@/lib/dataSource/projects/fileSystem/useCreateFile';
+import { useCreateFile } from '@/lib/dataSource/features/fileSystem/useCreateFile';
 import { FileMetadata } from '@/features/editor/explorer/helpers/FileMetadata';
 import { useFilesystem } from '@/lib/stateManagement/project/getters';
 import { LanguageIcon } from '@/lib/components/LanguageIcon';
 import { useEffect } from 'react';
 import { useSetFilesystem } from '@/lib/stateManagement/project/setters';
-import { isFile } from '@/lib/dataSource/projects/check/isFile';
+import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
 
 interface Props {
   fileType: FileType;

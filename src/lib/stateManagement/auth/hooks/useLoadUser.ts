@@ -1,5 +1,5 @@
 import { useResetAccount, useSetAccount, useSetAuthState } from '@/lib/stateManagement/auth/setters';
-import { useGetUser } from '@/lib/dataSource/auth/useGetUser';
+import { useGetUser } from '@/lib/dataSource/features/auth/useGetUser';
 import { useEffect } from 'react';
 import { AuthState } from '@/lib/stateManagement/types/authState';
 

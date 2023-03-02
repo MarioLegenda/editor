@@ -1,5 +1,5 @@
 import * as styles from '@/styles/projects/Listing.styles';
-import { useGetProjects } from '@/lib/dataSource/projects/useGetProjects';
+import { useGetProjects } from '@/lib/dataSource/features/projects/useGetProjects';
 import { Loader, Pagination } from '@mantine/core';
 import { Error } from '@/lib/components/notifications/Error';
 import { Box } from '@/features/projects/Box';
