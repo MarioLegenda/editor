@@ -14,6 +14,7 @@ import AnyFileIcon from '/public/editor/file.svg';
 import { CreateDirectoryModal } from '@/features/editor/explorer/modals/CreateDirectoryModal';
 import { CreateFileModal } from '@/features/editor/explorer/modals/CreateFileModal';
 import { useState } from 'react';
+import { DeleteFileModal } from '@/features/editor/explorer/modals/DeleteFileModal';
 
 interface Props {
   id: string;
@@ -23,6 +24,7 @@ interface Props {
 export function AbstractContextMenu({id, projectId}: Props) {
 	const [isDirectoryModal, setIsDirectoryModal] = useState(false);
 	const [createFileModalData, setCreateFileModalData] = useState<FileType | null>(null);
+	const [isDeleteFileModal, setIsDeleteFileModal] = useState(false);
 
 	return <>
 		<ContextMenu id={id} appendTo="body" preventHideOnScroll={true} preventHideOnResize={true}>
@@ -38,7 +40,7 @@ export function AbstractContextMenu({id, projectId}: Props) {
 			<ContextMenuItem><Item leftIcon={<IconFiles size={18} />} name="Copy" /></ContextMenuItem>
 			<ContextMenuItem css={styles.divider}><Item leftIcon={<IconCalendarPlus size={18} />} name="Paste" /></ContextMenuItem>
 			<ContextMenuItem><Item leftIcon={<IconEdit size={18} />} name="Rename" /></ContextMenuItem>
-			<ContextMenuItem css={styles.danger}><Item leftIcon={<IconTrash size={18} />} name="Delete" danger /></ContextMenuItem>
+			<ContextMenuItem onClick={() => setIsDeleteFileModal(true)} css={styles.danger}><Item leftIcon={<IconTrash size={18} />} name="Delete" danger /></ContextMenuItem>
 		</ContextMenu>
 
 		{isDirectoryModal && <CreateDirectoryModal
@@ -46,6 +48,13 @@ export function AbstractContextMenu({id, projectId}: Props) {
 			parent={id}
 			show={isDirectoryModal}
 			onCancel={() => setIsDirectoryModal(false)}
+		/>}
+
+		{isDeleteFileModal && <DeleteFileModal
+			projectId={projectId}
+			fileId={id}
+			show={isDeleteFileModal}
+			onCancel={() => setIsDeleteFileModal(false)}
 		/>}
 
 		{createFileModalData && <CreateFileModal

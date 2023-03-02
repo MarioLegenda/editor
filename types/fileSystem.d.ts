@@ -10,6 +10,11 @@ interface NewFile {
   extension: ExtensionType[] | null;
 }
 
+interface FileToDelete {
+  projectId: string;
+  fileId: string;
+}
+
 interface AppFile {
   id: string;
   name: string;

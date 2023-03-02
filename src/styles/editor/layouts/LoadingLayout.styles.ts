@@ -19,6 +19,7 @@ export const projectNotFound = css`
 
 export const notFoundHeader = css`
   font-size: 128px;
+  color: var(--color-error);
 `;
 
 export const notFoundParagraph = css`

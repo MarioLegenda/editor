@@ -3,24 +3,22 @@ import { useGetProjectAndFiles } from '@/lib/dataSource/projects/useGetProjectAn
 import { useEffect } from 'react';
 import { useSetFilesystem, useSetProject } from '@/lib/stateManagement/project/setters';
 import { isProject } from '@/lib/dataSource/projects/check/isProject';
-import { useQueriesResolver } from '@/lib/helpers/reactQuery/useQueriesResolver';
 
 export function useProjectDataResolver() {
 	const projectId = useProjectSlug();
-	const {query} = useGetProjectAndFiles(projectId);
+	const { isLoading, data, isError } = useGetProjectAndFiles(projectId);
 	const setProject = useSetProject();
 	const setFiles = useSetFilesystem();
-	const {isLoading, data, isError} = useQueriesResolver<Project | null | AppFile[]>(query);
 
 	useEffect(() => {
 		if (!isLoading && data) {
-			for (const q of query) {
-				if (isProject(q.data)) {
-					setProject(q.data);
+			for (const q of data) {
+				if (isProject(q)) {
+					setProject(q);
 				}
 
-				if (Array.isArray(q.data)) {
-					setFiles(q.data);
+				if (Array.isArray(q)) {
+					setFiles(q);
 				}
 			}
 		}
