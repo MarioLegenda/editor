@@ -4,12 +4,9 @@ import { Layout } from '@/features/editor/layout/Layout';
 import {Main as ExplorerMain} from '@/features/editor/explorer/Main';
 import { useProjectDataResolver } from '@/lib/dataSource/projects/useProjectDataResolver';
 import { useFilesystem, useProject } from '@/lib/stateManagement/project/getters';
-import { useFileInsertSubscription } from '@/lib/dataSource/subscriptions/useFileInsertSubscription';
 import { CodeEditor } from '@/features/editor/codeEditor/CodeEditor';
 
 export function Main() {
-	useFileInsertSubscription();
-	
 	useRedirectIfSignedOut();
 	const {isLoading, notFound} = useProjectDataResolver();
 

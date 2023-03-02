@@ -7,6 +7,9 @@ import { FileMetadata } from '@/features/editor/explorer/helpers/FileMetadata';
 import { useRunOnDone } from '@/lib/helpers/forms/useRunOnDone';
 import { useFilesystem } from '@/lib/stateManagement/project/getters';
 import { LanguageIcon } from '@/lib/components/LanguageIcon';
+import { useEffect } from 'react';
+import { useSetFilesystem } from '@/lib/stateManagement/project/setters';
+import { isFile } from '@/lib/dataSource/projects/check/isFile';
 
 interface Props {
   fileType: FileType;
@@ -16,9 +19,16 @@ interface Props {
 }
 
 export function CreateFileForm({fileType, onCancel, projectId, parent}: Props) {
-	const {mutation: {isLoading, isSuccess}, createFile} = useCreateFile(projectId);
-	useRunOnDone(isLoading, isSuccess, onCancel);
+	const {mutation: {isLoading, isSuccess, data}, createFile} = useCreateFile(projectId);
 	const files = useFilesystem();
+	const setFiles = useSetFilesystem();
+
+	useEffect(() => {
+		if (isSuccess && data && isFile(data)) {
+			setFiles((files) => [...files, data]);
+			onCancel();
+		}
+	}, [isSuccess, data]);
 
 	const form = useForm({
 		initialValues: {
@@ -35,8 +45,6 @@ export function CreateFileForm({fileType, onCancel, projectId, parent}: Props) {
 				if (errors) return errors[0];
 
 				const fileMetadata = FileMetadata.create(value);
-
-				console.log(fileMetadata);
 
 				if (fileMetadata.error()) {
 					return fileMetadata.error();

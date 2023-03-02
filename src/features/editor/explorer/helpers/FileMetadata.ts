@@ -62,7 +62,7 @@ export class FileMetadata {
 	}
 
 	private validate(name: string): string {
-		if (new RegExp('^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$').test(name)) {
+		if (!new RegExp('^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$').test(name)) {
 			return 'Invalid file name given. File names can only contain alphanumeric characters and no more than one dot (.) for extension. Please, consult this regex expression: ^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$';
 		}
 
