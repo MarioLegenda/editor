@@ -1,11 +1,10 @@
 import { useQuery } from 'react-query';
 import { useState } from 'react';
-import getClient from '@/lib/supabase/client';
-import { isSearchProjectList } from '@/lib/dataSource/features/projects/check/isSearchProjectList';
 import { Query } from '@/lib/dataSource/enums/query';
+import { searchProjects } from '@/lib/dataSource/features/projects/implementation/searchProjects';
 
 export function useSearchProjects(term: string) {
-	const [internalTerm, setTerm] = useState(term);
+	const [internalTerm, setTerm] = useState<string>(term);
 
 	const query = useQuery<Project[]>([Query.SEARCH_PROJECTS, internalTerm], async (values): Promise<Project[]> => {
 		const term = values.queryKey[1];
@@ -13,22 +12,11 @@ export function useSearchProjects(term: string) {
 			return [];
 		}
 
-		const { data: projects, error } = await getClient()
-			.from('project')
-			.select('id,name,user_id,description,color')
-			.like('name', `%${term}%`)
-			.order('created_at', {ascending: true})
-			.range(0, 10);
-
-		if (error) {
-			throw new Error(error.message);
+		if (typeof term === 'string') {
+			return await searchProjects(term);
 		}
-
-		if (isSearchProjectList(projects)) {
-			return projects;
-		}
-
-		return [];
+		
+		throw new Error('\'term\' must be of type string');
 	}, {
 		staleTime: 0,
 	});

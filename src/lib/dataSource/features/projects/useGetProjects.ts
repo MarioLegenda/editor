@@ -1,28 +1,13 @@
 import { useQuery } from 'react-query';
 import { useState } from 'react';
-import getClient from '@/lib/supabase/client';
-import { isProjectList } from '@/lib/dataSource/features/projects/check/isProjectList';
 import { Query } from '@/lib/dataSource/enums/query';
+import { getProjects } from '@/lib/dataSource/features/projects/implementation/getProjects';
 
 export function useGetProjects(initialPage = 0, initialLimit = 15) {
 	const [page, setPage] = useState(initialPage);
 
 	const query = useQuery<Project[]>([Query.GET_PAGINATED_PROJECTS, page], async (): Promise<Project[]> => {
-		const { data: projects, error } = await getClient()
-			.from('project')
-			.select('name,description,id,color,user_id')
-			.range(page * initialLimit, (page + 1) * initialLimit - 1)
-			.order('created_at', {ascending: false});
-
-		if (error) {
-			throw new Error(error.message);
-		}
-
-		if (isProjectList(projects)) {
-			return projects;
-		}
-
-		return [];
+		return await getProjects(page, initialLimit);
 	}, {
 		keepPreviousData: true,
 		staleTime: 0,

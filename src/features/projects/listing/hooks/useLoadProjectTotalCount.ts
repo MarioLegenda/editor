@@ -7,8 +7,8 @@ export function useLoadProjectTotalCount() {
 	const setTotal = useSetTotal();
 
 	useEffect(() => {
-		if (!isLoading && isSuccess) {
-			setTotal(data as number);
+		if (!isLoading && isSuccess && typeof data === 'number') {
+			setTotal(data);
 		}
 	}, [isLoading, isSuccess, isError, data]);
 
