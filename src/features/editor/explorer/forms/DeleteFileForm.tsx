@@ -8,12 +8,13 @@ import * as styles from '@/styles/editor/modals/DeleteFileForm.styles';
 
 interface Props {
   onCancel: () => void;
+	isDirectory: boolean;
   projectId: string;
 	fileId: string;
 }
 
-export function DeleteFileForm({onCancel, projectId, fileId}: Props) {
-	const {mutation: {isLoading, isSuccess}, deleteFile} = useDeleteFile(projectId, fileId);
+export function DeleteFileForm({onCancel, projectId, fileId, isDirectory}: Props) {
+	const {mutation: {isLoading, isSuccess}, deleteFile} = useDeleteFile(fileId, isDirectory);
 	const setFiles = useSetFilesystem();
 
 	useRunOnDone(isLoading, isSuccess, () => {

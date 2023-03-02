@@ -38,6 +38,6 @@ export function File({item, isRoot = false, childSpace}: Props) {
 			</div>
 		</ContextMenuTrigger>
 
-		<AbstractContextMenu projectId={item.project_id} id={item.id} />
+		<AbstractContextMenu isDirectory={item.is_directory} projectId={item.project_id} id={item.id} />
 	</div>;
 }

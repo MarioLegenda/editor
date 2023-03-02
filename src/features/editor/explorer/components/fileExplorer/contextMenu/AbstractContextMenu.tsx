@@ -19,9 +19,10 @@ import { DeleteFileModal } from '@/features/editor/explorer/modals/DeleteFileMod
 interface Props {
   id: string;
 	projectId: string;
+	isDirectory: boolean;
 }
 
-export function AbstractContextMenu({id, projectId}: Props) {
+export function AbstractContextMenu({id, projectId, isDirectory}: Props) {
 	const [isDirectoryModal, setIsDirectoryModal] = useState(false);
 	const [createFileModalData, setCreateFileModalData] = useState<FileType | null>(null);
 	const [isDeleteFileModal, setIsDeleteFileModal] = useState(false);
@@ -52,6 +53,7 @@ export function AbstractContextMenu({id, projectId}: Props) {
 
 		{isDeleteFileModal && <DeleteFileModal
 			projectId={projectId}
+			isDirectory={isDirectory}
 			fileId={id}
 			show={isDeleteFileModal}
 			onCancel={() => setIsDeleteFileModal(false)}

@@ -1,27 +1,20 @@
 import { useMutation } from 'react-query';
-import getClient from '@/lib/supabase/client';
 import { useCallback } from 'react';
 import { useAccount } from '@/lib/stateManagement/auth/getters';
-import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
+import { deleteDirectory } from '@/lib/dataSource/features/fileSystem/implementation/deleteDirectory';
+import { deleteFile } from '@/lib/dataSource/features/fileSystem/implementation/deleteFile';
 
-export function useDeleteFile(projectId: string, fileId: string) {
+export function useDeleteFile(fileId: string, isDirectory: boolean) {
 	const account = useAccount();
 
 	const mutation = useMutation(async (values: FileToDelete) => {
-		const { error } = await getClient()
-			.from('files')
-			.update({
-				deleted_at: new Date().toISOString(),
-			})
-			.eq('id', fileId)
-			.eq('project_id', values.projectId)
-			.eq('user_id', account().id);
+		if (isDirectory) {
+			await deleteDirectory(fileId, values.projectId);
 
-		if (error) {
-			throw new DataSourceError('Cannot delete file.', {
-				code: error.code,
-			});
+			return;
 		}
+
+		await deleteFile(fileId, values.projectId, account().id);
 	});
 
 	return {

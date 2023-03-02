@@ -46,7 +46,7 @@ export function Directory({item, isRoot, childSpace}: Props) {
 			</div>
 		</ContextMenuTrigger>
 
-		<AbstractContextMenu projectId={item.project_id} id={item.id} />
+		<AbstractContextMenu projectId={item.project_id} isDirectory={item.is_directory} id={item.id} />
 
 		{isOpen && <FileListing childSpace={nextChildSpace} isRoot={false} files={files} />}
 	</div>;

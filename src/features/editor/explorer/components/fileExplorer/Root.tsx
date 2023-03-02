@@ -25,7 +25,7 @@ export function Root() {
 			<h2 css={styles.header}>{project.name.toUpperCase()}</h2>
 
 			<div>
-				<Button css={styles.buttonFix} compact size="xs" color="gray" variant="subtle"><IconArrowBackUp size={24} /></Button>
+				<Button css={styles.buttonFix} compact size="xs" color="gray" variant="subtle"><IconArrowBackUp color="gray" size={24} /></Button>
 
 				<Menu>
 					<Menu.Target>
