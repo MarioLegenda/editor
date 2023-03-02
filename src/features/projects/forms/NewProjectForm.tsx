@@ -9,13 +9,16 @@ import { useEffect } from 'react';
 import { Error } from '@/lib/components/notifications/Error';
 import { ErrorCodes } from '@/lib/dataSource/error/errorCodes';
 import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
+import { isProject } from '@/lib/dataSource/projects/check/isProject';
+import { useNavigate } from 'react-router';
 
 interface Props {
 	onCancel: () => void;
 }
 
 export function NewProjectForm({onCancel}: Props) {
-	const {mutation: {isLoading, isSuccess, isError, error}, createProject} = useCreateProject();
+	const {mutation: {isLoading, isSuccess, isError, error, data}, createProject} = useCreateProject();
+	const navigate = useNavigate();
 
 	const form = useForm({
 		validateInputOnChange: true,
@@ -48,10 +51,12 @@ export function NewProjectForm({onCancel}: Props) {
 	});
 
 	useEffect(() => {
-		if (!isLoading && isSuccess) {
-			onCancel();
+		if (!isLoading && isSuccess && data) {
+			if (isProject(data)) {
+				navigate(`/editor/project/${data.id}`);
+			}
 		}
-	}, [isLoading, isSuccess]);
+	}, [isLoading, isSuccess, data]);
 
 	useEffect(() => {
 		if (error && (error as DataSourceError<AppError>).data.code === ErrorCodes.ENTRY_EXISTS) {

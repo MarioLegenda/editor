@@ -22,7 +22,11 @@ export function useCreateProject() {
 			});
 		}
 
-		return data;
+		if (Array.isArray(data)) {
+			return data[0];
+		}
+
+		return null;
 	});
 
 	return {

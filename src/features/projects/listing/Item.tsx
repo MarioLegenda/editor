@@ -18,7 +18,7 @@ export function Item({item, onDelete}: Props) {
 	const [internalItem, setInternalItem] = useState(item);
 	const setTotal = useSetTotal();
 
-	return <Link to={`/editor/${item.id}`} css={[styles.root, isEdit ? styles.highlightItem : undefined]}>
+	return <Link to={`/editor/project/${item.id}`} css={[styles.root, isEdit ? styles.highlightItem : undefined]}>
 		<div css={styles.content}>
 			<Avatar css={styles.avatarBackground(internalItem.color)} radius="xl">{internalItem.name.substring(0, 1).toUpperCase()}</Avatar>
 			<div css={styles.item}>

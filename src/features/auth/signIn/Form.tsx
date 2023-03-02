@@ -36,15 +36,6 @@ export function Form() {
 	});
 
 	useEffect(() => {
-		if (!isLoading && !isError) {
-			// store jwt/refresh tokens to cookie
-			// update local storage with user and session
-			// store user to state
-			// redirect to editor
-		}
-	}, [isLoading, isError]);
-
-	useEffect(() => {
 		if (isError && (error as DataSourceError<AppError>).data.code === ErrorCodes.AUTH_ERROR) {
 			form.setFieldError('email', 'Email or password are invalid.');
 		}

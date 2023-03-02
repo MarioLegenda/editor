@@ -5,7 +5,7 @@ import { useAuthState } from '@/lib/stateManagement/auth/getters';
 import { useRedirectIfSignedIn } from '@/lib/stateManagement/auth/hooks/useRedirectIfSignedIn';
 
 export default function Index() {
-	useRedirectIfSignedIn('/editor');
+	useRedirectIfSignedIn('/editor/projects');
 	const authState = useAuthState();
 
 	return <Layout>

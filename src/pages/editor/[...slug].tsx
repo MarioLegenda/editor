@@ -16,7 +16,7 @@ export default function Editor() {
 					<ProjectsMain />
 				</InitialLayout>} />
 
-				<Route path="/editor/:id" element={<InitialLayout>
+				<Route path="/editor/project/:id" element={<InitialLayout>
 					<EditorMain />
 				</InitialLayout>} />
 			</Routes>
