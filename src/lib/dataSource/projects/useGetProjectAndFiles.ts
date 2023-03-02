@@ -1,6 +1,4 @@
-import { useQueries } from 'react-query';
 import getClient from '@/lib/supabase/client';
-import { Query } from '@/lib/dataSource/enums/query';
 import { isProject } from '@/lib/dataSource/projects/check/isProject';
 import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
 import { useCallback, useEffect, useState } from 'react';

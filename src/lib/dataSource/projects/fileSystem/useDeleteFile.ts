@@ -13,7 +13,9 @@ export function useDeleteFile(projectId: string, fileId: string) {
 			.update({
 				deleted_at: 'NOW()',
 			})
-			.eq('id', fileId);
+			.eq('id', fileId)
+			.eq('project_id', values.projectId)
+			.eq('user_id', account().id);
 
 		if (error) {
 			throw new DataSourceError('Cannot delete file.', {
