@@ -7,6 +7,7 @@ import { useFilesystem, useProject } from '@/lib/stateManagement/project/getters
 import { CodeEditor } from '@/features/editor/codeEditor/CodeEditor';
 import { useEffect } from 'react';
 import { Subscriber } from '@/lib/stateManagement/eventSubscriber/Subscriber';
+import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
 
 export function Main() {
 	useRedirectIfSignedOut();
@@ -18,6 +19,7 @@ export function Main() {
 	useEffect(() => {
 		return () => {
 			Subscriber.create().close();
+			SelectedFileSubscriber.create().close();
 		};
 	}, []);
 

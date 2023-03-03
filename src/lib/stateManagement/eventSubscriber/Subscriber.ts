@@ -19,12 +19,14 @@ export class Subscriber implements EventSubscriber{
 		}
 	}
 
-	subscribe<T>(name: string, subscriber: Subscription<T>) {
+	subscribe<T>(name: string, subscriber: Subscription<T>): Unsubscribe | null {
 		if (this.subscriptionBuffer[name]) {
-			return;
+			return null;
 		}
 
 		this.subscriptionBuffer[name] = subscriber;
+
+		return () => delete this.subscriptionBuffer[name];
 	}
 
 	close() {

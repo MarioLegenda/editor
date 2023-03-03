@@ -2,12 +2,12 @@ import * as styles from '@/styles/editor/explorer/fileExplorer/File.styles';
 import DirClosed from '/public/editor/folderClosed.svg';
 import DirOpen from '/public/editor/folderOpened.svg';
 import { useCallback, useEffect, useState } from 'react';
-import { useParentFiles, useSelectedFileSignal } from '@/lib/stateManagement/project/getters';
-import { useSetSelectedFileSignal } from '@/lib/stateManagement/project/setters';
+import { useParentFiles } from '@/lib/stateManagement/project/getters';
 import { FileListing } from '@/features/editor/explorer/components/fileExplorer/FileListing';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { AbstractContextMenu } from '@/features/editor/explorer/components/fileExplorer/contextMenu/AbstractContextMenu';
 import { Subscriber } from '@/lib/stateManagement/eventSubscriber/Subscriber';
+import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
 
 interface Props {
   item: AppFile;
@@ -17,21 +17,34 @@ interface Props {
 
 export function Directory({item, isRoot, childSpace}: Props) {
 	const [isOpen, setIsOpen] = useState(false);
-	const selectedFile = useSelectedFileSignal();
-	const setSelectedFile = useSetSelectedFileSignal();
+	const [selectedFile, setSelectedFile] = useState<string>();
 	const files = useParentFiles(item.id);
 	const nextChildSpace = childSpace + 3;
 
+	console.log(item.id);
+
 	useEffect(() => {
-		Subscriber.create().subscribe<AppFile>(item.id, (file) => {
+		const addedUnsubscribe = Subscriber.create().subscribe<AppFile>(item.id, (file) => {
 			setIsOpen(true);
 			setSelectedFile(file.id);
 		});
+
+		const selectedUnsubscribe = SelectedFileSubscriber.create().subscribe<string>(item.id, (selected) => {
+			setSelectedFile(selected);
+		});
+
+		return () => {
+			if (addedUnsubscribe && selectedUnsubscribe) {
+				addedUnsubscribe();
+				selectedUnsubscribe();
+			}
+		};
 	}, []);
 
 	const onOpen = useCallback(() => {
 		setIsOpen((open) => !open);
-		setSelectedFile(item.id);
+
+		SelectedFileSubscriber.create().publish(item.id, item.id);
 	}, [isOpen]);
 
 	return <div css={[styles.root]}>

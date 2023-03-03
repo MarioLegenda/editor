@@ -1,11 +1,11 @@
 import * as styles from '@/styles/editor/explorer/fileExplorer/File.styles';
 import { LanguageIcon } from '@/lib/components/LanguageIcon';
-import { useSelectedFileSignal } from '@/lib/stateManagement/project/getters';
-import { useSetSelectedFileSignal } from '@/lib/stateManagement/project/setters';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import {
 	AbstractContextMenu
 } from '@/features/editor/explorer/components/fileExplorer/contextMenu/AbstractContextMenu';
+import { useEffect, useState } from 'react';
+import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
 
 interface Props {
   item: AppFile;
@@ -14,15 +14,30 @@ interface Props {
 }
 
 export function File({item, isRoot = false, childSpace}: Props) {
-	const selectedFile = useSelectedFileSignal();
-	const setSelectedFile = useSetSelectedFileSignal();
+	const [selectedFile, setSelectedFile] = useState<string>();
 	const nextChildSpace = childSpace + 3;
-	
+
+	console.log(item.id);
+
+	useEffect(() => {
+		const unsubscribe = SelectedFileSubscriber.create().subscribe<string | undefined>(item.id, (selected) => {
+			setSelectedFile(selected);
+		});
+
+		return () => {
+			if (unsubscribe) {
+				unsubscribe();
+			}
+		};
+	}, []);
+
 	return <div
 		css={[
 			styles.root
 		]}
-		onClick={() => setSelectedFile(item.id)}>
+		onClick={() => {
+			SelectedFileSubscriber.create().publish(item.id, item.id);
+		}}>
 		{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 		{/*
           // @ts-ignore */}
