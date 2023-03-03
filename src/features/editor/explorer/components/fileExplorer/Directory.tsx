@@ -2,11 +2,12 @@ import * as styles from '@/styles/editor/explorer/fileExplorer/File.styles';
 import DirClosed from '/public/editor/folderClosed.svg';
 import DirOpen from '/public/editor/folderOpened.svg';
 import { useCallback, useEffect, useState } from 'react';
-import { useAddedFile, useParentFiles, useSelectedFileSignal } from '@/lib/stateManagement/project/getters';
-import { useSetAddedFile, useSetSelectedFileSignal } from '@/lib/stateManagement/project/setters';
+import { useParentFiles, useSelectedFileSignal } from '@/lib/stateManagement/project/getters';
+import { useSetSelectedFileSignal } from '@/lib/stateManagement/project/setters';
 import { FileListing } from '@/features/editor/explorer/components/fileExplorer/FileListing';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { AbstractContextMenu } from '@/features/editor/explorer/components/fileExplorer/contextMenu/AbstractContextMenu';
+import { Subscriber } from '@/lib/stateManagement/eventSubscriber/Subscriber';
 
 interface Props {
   item: AppFile;
@@ -19,25 +20,19 @@ export function Directory({item, isRoot, childSpace}: Props) {
 	const selectedFile = useSelectedFileSignal();
 	const setSelectedFile = useSetSelectedFileSignal();
 	const files = useParentFiles(item.id);
-	const addedFile = useAddedFile();
-	const setAddedFile = useSetAddedFile();
 	const nextChildSpace = childSpace + 3;
 
+	useEffect(() => {
+		Subscriber.create().subscribe<AppFile>(item.id, (file) => {
+			setIsOpen(true);
+			setSelectedFile(file.id);
+		});
+	}, []);
+
 	const onOpen = useCallback(() => {
-		if (isOpen) {
-			setAddedFile(null);
-		}
-		
 		setIsOpen((open) => !open);
 		setSelectedFile(item.id);
 	}, [isOpen]);
-
-	useEffect(() => {
-		if (addedFile && addedFile.parent === item.id) {
-			setIsOpen(true);
-			setSelectedFile(item.id);
-		}
-	}, [addedFile]);
 
 	return <div css={[styles.root]}>
 		{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}

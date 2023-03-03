@@ -5,6 +5,8 @@ import {Main as ExplorerMain} from '@/features/editor/explorer/Main';
 import { useProjectDataResolver } from '@/lib/dataSource/features/projects/useProjectDataResolver';
 import { useFilesystem, useProject } from '@/lib/stateManagement/project/getters';
 import { CodeEditor } from '@/features/editor/codeEditor/CodeEditor';
+import { useEffect } from 'react';
+import { Subscriber } from '@/lib/stateManagement/eventSubscriber/Subscriber';
 
 export function Main() {
 	useRedirectIfSignedOut();
@@ -12,6 +14,12 @@ export function Main() {
 
 	const project = useProject();
 	const fileSystem = useFilesystem();
+
+	useEffect(() => {
+		return () => {
+			Subscriber.create().close();
+		};
+	}, []);
 
 	return <>
 		<LoadingLayout notFound={notFound} loading={isLoading} />
