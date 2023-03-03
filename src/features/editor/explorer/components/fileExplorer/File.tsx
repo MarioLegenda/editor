@@ -6,6 +6,8 @@ import {
 } from '@/features/editor/explorer/components/fileExplorer/contextMenu/AbstractContextMenu';
 import { useEffect, useState } from 'react';
 import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
+import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
+import { useSetCodeEditorSelectedFile } from '@/lib/stateManagement/project/setters';
 
 interface Props {
   item: AppFile;
@@ -16,11 +18,16 @@ interface Props {
 export function File({item, isRoot = false, childSpace}: Props) {
 	const [selectedFile, setSelectedFile] = useState<string>();
 	const nextChildSpace = childSpace + 3;
-
-	console.log(item.id);
+	const setCodeEditorSelectedFile = useSetCodeEditorSelectedFile();
 
 	useEffect(() => {
-		const unsubscribe = SelectedFileSubscriber.create().subscribe<string | undefined>(item.id, (selected) => {
+		const unsubscribe = SelectedFileSubscriber.create().subscribe<AppFile | undefined>(item.id, (selected) => {
+			if (isFile(selected)) {
+				setSelectedFile(selected.id);
+
+				return;
+			}
+
 			setSelectedFile(selected);
 		});
 
@@ -36,7 +43,8 @@ export function File({item, isRoot = false, childSpace}: Props) {
 			styles.root
 		]}
 		onClick={() => {
-			SelectedFileSubscriber.create().publish(item.id, item.id);
+			SelectedFileSubscriber.create().publish(item.id, item);
+			setCodeEditorSelectedFile(item);
 		}}>
 		{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 		{/*

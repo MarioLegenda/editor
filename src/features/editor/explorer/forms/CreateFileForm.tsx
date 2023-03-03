@@ -26,7 +26,7 @@ export function CreateFileForm({fileType, onCancel, projectId, parent}: Props) {
 	useEffect(() => {
 		if (isSuccess && data && isFile(data)) {
 			setFiles((files) => [...files, data]);
-			Subscriber.create().publish(parent, data);
+			Subscriber.create().publish(parent, data.id);
 			onCancel();
 		}
 	}, [isSuccess, data]);

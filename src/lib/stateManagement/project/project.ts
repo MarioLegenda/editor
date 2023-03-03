@@ -17,30 +17,14 @@ export const projectAtom = atom<Project | null>({
 	default: null,
 });
 
-export const selectedFileSignalAtom = atom<string | null>({
+export const codeEditorSelectedFileSignalAtom = atom<AppFile | null>({
 	key: ProjectEnum.SELECTED_FILE,
-	default: null,
-});
-
-export const addedFileAtom = atom<AppFile | null>({
-	key: ProjectEnum.ADDED_FILE,
 	default: null,
 });
 
 export const rootFileAtom = atom<string | null>({
 	key: ProjectEnum.ROOT_FILE,
 	default: null,
-});
-
-export const directoryFilesSelectorFilter = selectorFamily({
-	key: ProjectEnum.SINGLE_DIRECTORY_FILES_FILTER,
-	get: parentId => ({getCallback}) => {
-		return getCallback(({snapshot}) => async () => {
-			const files = await snapshot.getPromise(fileSystemAtom);
-
-			return files.filter((item) => item.parent === parentId);
-		});
-	}
 });
 
 export const parentFileStructureSelectorFamily = selectorFamily({

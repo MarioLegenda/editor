@@ -24,6 +24,7 @@ interface AppFile {
   is_directory: boolean;
   file_type: FileType | null;
   file_extension: ExtensionType | null;
+  content: string;
 
   created_at: string;
   updated_at: string;

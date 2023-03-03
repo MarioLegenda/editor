@@ -1,9 +1,9 @@
-let subscriber: EventSubscriber | null = null;
+let subscriber: Subscriber | null = null;
 
-export class Subscriber implements EventSubscriber{
-	private subscriptionBuffer: SubscriptionBuffer<never> = {};
+export class Subscriber {
+	private subscriptionBuffer: Record<string, (payload: string) => void> = {};
 
-	static create(): EventSubscriber {
+	static create() {
 		if (!subscriber) {
 			subscriber = new Subscriber();
 		}
@@ -11,7 +11,7 @@ export class Subscriber implements EventSubscriber{
 		return subscriber;
 	}
 
-	publish<T extends never>(name: string, value: T) {
+	publish(name: string, value: string) {
 		const fn = this.subscriptionBuffer[name];
 
 		if (fn) {
@@ -19,7 +19,7 @@ export class Subscriber implements EventSubscriber{
 		}
 	}
 
-	subscribe<T>(name: string, subscriber: Subscription<T>): Unsubscribe | null {
+	subscribe(name: string, subscriber: Subscription<string>): Unsubscribe | null {
 		if (this.subscriptionBuffer[name]) {
 			return null;
 		}

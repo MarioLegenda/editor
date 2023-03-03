@@ -22,7 +22,7 @@ export function Directory({item, isRoot, childSpace}: Props) {
 	const nextChildSpace = childSpace + 3;
 
 	useEffect(() => {
-		const addedUnsubscribe = Subscriber.create().subscribe<AppFile>(item.id, (file) => {
+		const addedUnsubscribe = Subscriber.create().subscribe(item.id, () => {
 			setIsOpen(true);
 			setSelectedFile(item.id);
 			SelectedFileSubscriber.create().publish(item.id, item.id);
