@@ -1,9 +1,9 @@
 import * as styles from '@/styles/editor/explorer/fileExplorer/File.styles';
 import DirClosed from '/public/editor/folderClosed.svg';
 import DirOpen from '/public/editor/folderOpened.svg';
-import { useCallback, useState } from 'react';
-import { useParentFiles, useSelectedFile } from '@/lib/stateManagement/project/getters';
-import { useSetSelectedFile } from '@/lib/stateManagement/project/setters';
+import { useCallback, useEffect, useState } from 'react';
+import { useAddedFile, useParentFiles, useSelectedFileSignal } from '@/lib/stateManagement/project/getters';
+import { useSetAddedFile, useSetSelectedFileSignal } from '@/lib/stateManagement/project/setters';
 import { FileListing } from '@/features/editor/explorer/components/fileExplorer/FileListing';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { AbstractContextMenu } from '@/features/editor/explorer/components/fileExplorer/contextMenu/AbstractContextMenu';
@@ -16,15 +16,28 @@ interface Props {
 
 export function Directory({item, isRoot, childSpace}: Props) {
 	const [isOpen, setIsOpen] = useState(false);
-	const selectedFile = useSelectedFile();
-	const setSelectedFile = useSetSelectedFile();
+	const selectedFile = useSelectedFileSignal();
+	const setSelectedFile = useSetSelectedFileSignal();
 	const files = useParentFiles(item.id);
+	const addedFile = useAddedFile();
+	const setAddedFile = useSetAddedFile();
 	const nextChildSpace = childSpace + 3;
 
 	const onOpen = useCallback(() => {
+		if (isOpen) {
+			setAddedFile(null);
+		}
+		
 		setIsOpen((open) => !open);
-		setSelectedFile(item);
-	}, []);
+		setSelectedFile(item.id);
+	}, [isOpen]);
+
+	useEffect(() => {
+		if (addedFile && addedFile.parent === item.id) {
+			setIsOpen(true);
+			setSelectedFile(item.id);
+		}
+	}, [addedFile]);
 
 	return <div css={[styles.root]}>
 		{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
@@ -36,8 +49,8 @@ export function Directory({item, isRoot, childSpace}: Props) {
 				css={
 					[styles.content,
 						styles.move(isRoot ? 5 : nextChildSpace),
-						isOpen && selectedFile?.id !== item.id ? styles.softOpen : undefined,
-						selectedFile?.id === item.id ? styles.open : undefined
+						isOpen && selectedFile !== item.id ? styles.softOpen : undefined,
+						selectedFile === item.id ? styles.open : undefined
 					]}>
 
 				{isOpen ? <DirOpen width={20} /> : <DirClosed width={20} />}

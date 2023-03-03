@@ -17,8 +17,18 @@ export const projectAtom = atom<Project | null>({
 	default: null,
 });
 
-export const selectedFileAtom = atom<AppFile | null>({
+export const selectedFileSignalAtom = atom<string | null>({
 	key: ProjectEnum.SELECTED_FILE,
+	default: null,
+});
+
+export const addedFileAtom = atom<AppFile | null>({
+	key: ProjectEnum.ADDED_FILE,
+	default: null,
+});
+
+export const rootFileAtom = atom<string | null>({
+	key: ProjectEnum.ROOT_FILE,
 	default: null,
 });
 

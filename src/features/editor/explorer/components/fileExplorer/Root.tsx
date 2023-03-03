@@ -8,7 +8,7 @@ import JsonIcon from '/public/editor/Json.svg';
 import AnyFileIcon from '/public/editor/file.svg';
 import { useState } from 'react';
 import { CreateFileModal } from '@/features/editor/explorer/modals/CreateFileModal';
-import { useParentFiles, useProject, useSelectedFile } from '@/lib/stateManagement/project/getters';
+import { useParentFiles, useProject, useRootFile } from '@/lib/stateManagement/project/getters';
 import { CreateDirectoryModal } from '@/features/editor/explorer/modals/CreateDirectoryModal';
 import { FileListing } from '@/features/editor/explorer/components/fileExplorer/FileListing';
 
@@ -18,7 +18,7 @@ export function Root() {
 
 	const project = useProject();
 	const files = useParentFiles(project.id);
-	const selectedFile = useSelectedFile();
+	const rootFile = useRootFile();
 
 	return <div css={styles.root}>
 		<div css={styles.content}>
@@ -53,14 +53,14 @@ export function Root() {
 
 		{isDirectoryModal && <CreateDirectoryModal
 			projectId={project.id}
-			parent={selectedFile ? selectedFile.id : project.id}
+			parent={rootFile}
 			show={isDirectoryModal}
 			onCancel={() => setIsDirectoryModal(false)}
 		/>}
 
 		{createFileModalData && <CreateFileModal
 			projectId={project.id}
-			parent={selectedFile ? selectedFile.id : project.id}
+			parent={rootFile}
 			fileType={createFileModalData}
 			show={Boolean(createFileModalData)}
 			onCancel={() => setCreateFileModalData(null)}

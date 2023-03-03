@@ -7,7 +7,7 @@ import { FileMetadata } from '@/features/editor/explorer/helpers/FileMetadata';
 import { useFilesystem } from '@/lib/stateManagement/project/getters';
 import { LanguageIcon } from '@/lib/components/LanguageIcon';
 import { useEffect } from 'react';
-import { useSetFilesystem } from '@/lib/stateManagement/project/setters';
+import { useSetAddedFile, useSetFilesystem } from '@/lib/stateManagement/project/setters';
 import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
 
 interface Props {
@@ -21,10 +21,12 @@ export function CreateFileForm({fileType, onCancel, projectId, parent}: Props) {
 	const {mutation: {isLoading, isSuccess, data}, createFile} = useCreateFile(projectId);
 	const files = useFilesystem();
 	const setFiles = useSetFilesystem();
+	const setAddedFile = useSetAddedFile();
 
 	useEffect(() => {
 		if (isSuccess && data && isFile(data)) {
 			setFiles((files) => [...files, data]);
+			setAddedFile(data);
 			onCancel();
 		}
 	}, [isSuccess, data]);

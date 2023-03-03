@@ -1,7 +1,7 @@
 import * as styles from '@/styles/editor/explorer/fileExplorer/File.styles';
 import { LanguageIcon } from '@/lib/components/LanguageIcon';
-import { useSelectedFile } from '@/lib/stateManagement/project/getters';
-import { useSetSelectedFile } from '@/lib/stateManagement/project/setters';
+import { useSelectedFileSignal } from '@/lib/stateManagement/project/getters';
+import { useSetSelectedFileSignal } from '@/lib/stateManagement/project/setters';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import {
 	AbstractContextMenu
@@ -14,15 +14,15 @@ interface Props {
 }
 
 export function File({item, isRoot = false, childSpace}: Props) {
-	const selectedFile = useSelectedFile();
-	const setSelectedFile = useSetSelectedFile();
+	const selectedFile = useSelectedFileSignal();
+	const setSelectedFile = useSetSelectedFileSignal();
 	const nextChildSpace = childSpace + 3;
 	
 	return <div
 		css={[
 			styles.root
 		]}
-		onClick={() => setSelectedFile(item)}>
+		onClick={() => setSelectedFile(item.id)}>
 		{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 		{/*
           // @ts-ignore */}
@@ -30,7 +30,7 @@ export function File({item, isRoot = false, childSpace}: Props) {
 			<div css={[
 				styles.content,
 				styles.move(isRoot ? 5 : nextChildSpace),
-				selectedFile?.id === item.id ? styles.open : undefined
+				selectedFile === item.id ? styles.open : undefined
 			]}>
 				<LanguageIcon fileType={item.file_type as FileType} />
 

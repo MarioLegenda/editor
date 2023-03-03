@@ -1,5 +1,12 @@
 import { useSetRecoilState } from 'recoil';
-import { fileSystemAtom, projectAtom, projectTotalAtom, selectedFileAtom } from '@/lib/stateManagement/project/project';
+import {
+	addedFileAtom,
+	fileSystemAtom,
+	projectAtom,
+	projectTotalAtom,
+	rootFileAtom,
+	selectedFileSignalAtom
+} from '@/lib/stateManagement/project/project';
 
 export function useSetTotal() {
 	return useSetRecoilState(projectTotalAtom);
@@ -13,8 +20,16 @@ export function useSetProject() {
 	return useSetRecoilState(projectAtom);
 }
 
-export function useSetSelectedFile() {
-	return useSetRecoilState(selectedFileAtom);
+export function useSetSelectedFileSignal() {
+	return useSetRecoilState(selectedFileSignalAtom);
+}
+
+export function useSetRootFile() {
+	return useSetRecoilState(rootFileAtom);
+}
+
+export function useSetAddedFile() {
+	return useSetRecoilState(addedFileAtom);
 }
 
 export function useAddFile() {

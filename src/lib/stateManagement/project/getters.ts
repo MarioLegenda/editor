@@ -1,10 +1,11 @@
 import { useRecoilValue } from 'recoil';
 import { useCallback, useEffect, useState } from 'react';
 import {
+	addedFileAtom,
 	directoryFilesSelectorFilter,
 	fileSystemAtom, parentFileStructureSelectorFamily,
 	projectAtom,
-	projectTotalAtom, selectedFileAtom
+	projectTotalAtom, rootFileAtom, selectedFileSignalAtom
 } from '@/lib/stateManagement/project/project';
 
 export function useTotal() {
@@ -21,8 +22,16 @@ export function useFilesystem() {
 	return useRecoilValue(fileSystemAtom);
 }
 
-export function useSelectedFile() {
-	return useRecoilValue(selectedFileAtom);
+export function useSelectedFileSignal() {
+	return useRecoilValue(selectedFileSignalAtom);
+}
+
+export function useRootFile() {
+	return useRecoilValue(rootFileAtom) as string;
+}
+
+export function useAddedFile() {
+	return useRecoilValue(addedFileAtom) as AppFile;
 }
 
 export function useOneTimeDirectoryFiles(parentId: string) {

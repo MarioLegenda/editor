@@ -8,7 +8,7 @@ import { useFilesystem } from '@/lib/stateManagement/project/getters';
 import { IconFolder } from '@tabler/icons';
 import { useEffect } from 'react';
 import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
-import { useSetFilesystem } from '@/lib/stateManagement/project/setters';
+import { useSetAddedFile, useSetFilesystem } from '@/lib/stateManagement/project/setters';
 
 interface Props {
   parent: string;
@@ -21,10 +21,12 @@ export function CreateDirectoryForm({onCancel, projectId, parent}: Props) {
 	useRunOnDone(isLoading, isSuccess, onCancel);
 	const files = useFilesystem();
 	const setFiles = useSetFilesystem();
+	const setAddedFile = useSetAddedFile();
 
 	useEffect(() => {
 		if (isSuccess && data && isFile(data)) {
 			setFiles((files) => [...files, data]);
+			setAddedFile(data);
 			onCancel();
 		}
 	}, [isSuccess, data]);
