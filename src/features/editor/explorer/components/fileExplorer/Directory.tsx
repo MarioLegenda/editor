@@ -21,12 +21,11 @@ export function Directory({item, isRoot, childSpace}: Props) {
 	const files = useParentFiles(item.id);
 	const nextChildSpace = childSpace + 3;
 
-	console.log(item.id);
-
 	useEffect(() => {
 		const addedUnsubscribe = Subscriber.create().subscribe<AppFile>(item.id, (file) => {
 			setIsOpen(true);
-			setSelectedFile(file.id);
+			setSelectedFile(item.id);
+			SelectedFileSubscriber.create().publish(item.id, item.id);
 		});
 
 		const selectedUnsubscribe = SelectedFileSubscriber.create().subscribe<string>(item.id, (selected) => {
