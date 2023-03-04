@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 
 export function useSignOut() {
 	const mutation = useMutation(async () => {
-		const {error} = await getClient().auth.signOut();
+		const { error } = await getClient().auth.signOut();
 
 		if (error) {
 			throw new Error('Cannot sign in user');

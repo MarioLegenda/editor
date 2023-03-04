@@ -1,7 +1,11 @@
 import { useProjectSlug } from '@/lib/helpers/useProjectSlug';
 import { useGetProjectAndFiles } from '@/lib/dataSource/features/projects/useGetProjectAndFiles';
 import { useEffect } from 'react';
-import { useSetFilesystem, useSetProject, useSetRootFile } from '@/lib/stateManagement/project/setters';
+import {
+	useSetFilesystem,
+	useSetProject,
+	useSetRootFile,
+} from '@/lib/stateManagement/project/setters';
 import { isProject } from '@/lib/dataSource/features/projects/check/isProject';
 import { isFileListing } from '@/lib/dataSource/features/fileSystem/check/isFileListing';
 import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';

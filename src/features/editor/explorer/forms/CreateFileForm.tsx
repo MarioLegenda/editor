@@ -13,13 +13,21 @@ import { Subscriber } from '@/lib/stateManagement/eventSubscriber/Subscriber';
 
 interface Props {
   fileType: FileType;
-	parent: string;
+  parent: string;
   onCancel: () => void;
   projectId: string;
 }
 
-export function CreateFileForm({fileType, onCancel, projectId, parent}: Props) {
-	const {mutation: {isLoading, isSuccess, data}, createFile} = useCreateFile(projectId);
+export function CreateFileForm({
+	fileType,
+	onCancel,
+	projectId,
+	parent,
+}: Props) {
+	const {
+		mutation: { isLoading, isSuccess, data },
+		createFile,
+	} = useCreateFile(projectId);
 	const files = useFilesystem();
 	const setFiles = useSetFilesystem();
 
@@ -37,11 +45,14 @@ export function CreateFileForm({fileType, onCancel, projectId, parent}: Props) {
 		},
 		validate: {
 			name: (value: string) => {
-				const errors =  combine([
-					required('File name is required'),
-					min(1, 'File name cannot have less than 1 character'),
-					max(100, 'File name cannot have more than 100 characters'),
-				], value);
+				const errors = combine(
+					[
+						required('File name is required'),
+						min(1, 'File name cannot have less than 1 character'),
+						max(100, 'File name cannot have more than 100 characters'),
+					],
+					value,
+				);
 
 				if (errors) return errors[0];
 
@@ -56,42 +67,61 @@ export function CreateFileForm({fileType, onCancel, projectId, parent}: Props) {
 				}
 
 				for (const file of files) {
-					if (file.parent === parent && file.name === fileMetadata.original() && !file.is_directory) {
+					if (
+						file.parent === parent &&
+            file.name === fileMetadata.original() &&
+            !file.is_directory
+					) {
 						return `File with name ${fileMetadata.original()} already exists`;
 					}
 				}
 
 				return null;
 			},
-		}
+		},
 	});
 
-	return <form onSubmit={form.onSubmit((values) => {
-		const fileMetadata = FileMetadata.create(values.name);
+	return (
+		<form
+			onSubmit={form.onSubmit((values) => {
+				const fileMetadata = FileMetadata.create(values.name);
 
-		createFile({
-			name: fileMetadata.original(),
-			projectId: projectId,
-			parent: parent,
-			fileType: fileMetadata.fileType(),
-			extension: fileMetadata.extension(),
-			isDirectory: false,
-		});
-	})}>
-		<>
-			<div css={formStyles.spacing}>
-				<TextInput icon={<LanguageIcon fileType={fileType} />} data-autofocus withAsterisk name="name" placeholder="Name" {...form.getInputProps('name')} />
-			</div>
+				createFile({
+					name: fileMetadata.original(),
+					projectId: projectId,
+					parent: parent,
+					fileType: fileMetadata.fileType(),
+					extension: fileMetadata.extension(),
+					isDirectory: false,
+				});
+			})}>
+			<>
+				<div css={formStyles.spacing}>
+					<TextInput
+						icon={<LanguageIcon fileType={fileType} />}
+						data-autofocus
+						withAsterisk
+						name="name"
+						placeholder="Name"
+						{...form.getInputProps('name')}
+					/>
+				</div>
 
-			<Group position="right" mt="lg">
-				<Button onClick={onCancel} type="button" size="md" variant="light" color="gray">
-          Cancel
-				</Button>
+				<Group position="right" mt="lg">
+					<Button
+						onClick={onCancel}
+						type="button"
+						size="md"
+						variant="light"
+						color="gray">
+            Cancel
+					</Button>
 
-				<Button disabled={isLoading} type="submit" size="md" color="blue">
-          Create
-				</Button>
-			</Group>
-		</>
-	</form>;
+					<Button disabled={isLoading} type="submit" size="md" color="blue">
+            Create
+					</Button>
+				</Group>
+			</>
+		</form>
+	);
 }

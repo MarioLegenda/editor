@@ -10,14 +10,17 @@ import { useForm } from '@mantine/form';
 import { combine, max, min, required } from '@/lib/validation/validations';
 
 interface Props {
-	onCancel: () => void;
-	item: EditProject;
-	id: string;
-	onDone: (item: EditProject) => void;
+  onCancel: () => void;
+  item: EditProject;
+  id: string;
+  onDone: (item: EditProject) => void;
 }
 
-export function EditProjectForm({onCancel, onDone, item, id}: Props) {
-	const {mutation: {isLoading, isSuccess, isError, data, error}, editProject} = useEditProject(id);
+export function EditProjectForm({ onCancel, onDone, item, id }: Props) {
+	const {
+		mutation: { isLoading, isSuccess, isError, data, error },
+		editProject,
+	} = useEditProject(id);
 
 	const form = useForm({
 		validateInputOnChange: true,
@@ -27,30 +30,37 @@ export function EditProjectForm({onCancel, onDone, item, id}: Props) {
 		},
 		validate: {
 			name: (value: string) => {
-				const errors =  combine([
-					required('Name is required'),
-					min(1, 'Name cannot have less than 1 character'),
-					max(100, 'Name cannot have more than 100 characters'),
-				], value);
+				const errors = combine(
+					[
+						required('Name is required'),
+						min(1, 'Name cannot have less than 1 character'),
+						max(100, 'Name cannot have more than 100 characters'),
+					],
+					value,
+				);
 
 				if (errors) return errors[0];
 
 				return null;
 			},
 			description: (value: string) => {
-				const errors =  combine([
-					max(200, 'Description cannot have more than 200 characters'),
-				], value);
+				const errors = combine(
+					[max(200, 'Description cannot have more than 200 characters')],
+					value,
+				);
 
 				if (errors) return errors[0];
 
 				return null;
 			},
-		}
+		},
 	});
 
 	useEffect(() => {
-		if (error && (error as DataSourceError<AppError>).data.code === ErrorCodes.ENTRY_EXISTS) {
+		if (
+			error &&
+      (error as DataSourceError<AppError>).data.code === ErrorCodes.ENTRY_EXISTS
+		) {
 			form.setFieldError('name', 'Project with this name already exists.');
 		}
 	}, [error]);
@@ -60,30 +70,58 @@ export function EditProjectForm({onCancel, onDone, item, id}: Props) {
 			onDone(data);
 		}
 	}, [isLoading, isSuccess, data]);
-  
-	return <form onSubmit={form.onSubmit(editProject)}>
-		<>
-			<h2 css={[styles.heading, formStyles.spacing]}>Edit project <strong>{item.name}</strong></h2>
 
-			{isError && error && (error as DataSourceError<AppError>).data.code !== ErrorCodes.ENTRY_EXISTS && <div css={formStyles.spacing}><Error disallowClose /></div>}
+	return (
+		<form onSubmit={form.onSubmit(editProject)}>
+			<>
+				<h2 css={[styles.heading, formStyles.spacing]}>
+          Edit project <strong>{item.name}</strong>
+				</h2>
 
-			<div css={formStyles.spacing}>
-				<TextInput data-autofocus withAsterisk name="name" placeholder="Name" {...form.getInputProps('name')} />
-			</div>
+				{isError &&
+          error &&
+          (error as DataSourceError<AppError>).data.code !==
+            ErrorCodes.ENTRY_EXISTS && (
+					<div css={formStyles.spacing}>
+						<Error disallowClose />
+					</div>
+				)}
 
-			<div css={formStyles.spacing}>
-				<Textarea name="description" autosize minRows={3} placeholder="Description (max 200 chars)" {...form.getInputProps('description')} />
-			</div>
+				<div css={formStyles.spacing}>
+					<TextInput
+						data-autofocus
+						withAsterisk
+						name="name"
+						placeholder="Name"
+						{...form.getInputProps('name')}
+					/>
+				</div>
 
-			<Group position="right" mt="lg">
-				<Button onClick={onCancel} type="button" size="md" variant="light" color="gray">
-          Cancel
-				</Button>
+				<div css={formStyles.spacing}>
+					<Textarea
+						name="description"
+						autosize
+						minRows={3}
+						placeholder="Description (max 200 chars)"
+						{...form.getInputProps('description')}
+					/>
+				</div>
 
-				<Button type="submit" size="md" color="blue">
-          Edit
-				</Button>
-			</Group>
-		</>
-	</form>;
+				<Group position="right" mt="lg">
+					<Button
+						onClick={onCancel}
+						type="button"
+						size="md"
+						variant="light"
+						color="gray">
+            Cancel
+					</Button>
+
+					<Button type="submit" size="md" color="blue">
+            Edit
+					</Button>
+				</Group>
+			</>
+		</form>
+	);
 }

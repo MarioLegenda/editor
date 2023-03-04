@@ -1,7 +1,11 @@
 import getClient from '@/lib/supabase/client';
 import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
 
-export async function deleteFile(fileId: string, projectId: string, userId: string) {
+export async function deleteFile(
+	fileId: string,
+	projectId: string,
+	userId: string,
+) {
 	const { error } = await getClient()
 		.from('files')
 		.update({

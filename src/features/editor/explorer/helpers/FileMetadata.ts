@@ -9,7 +9,7 @@ export class FileMetadata {
 	static create(file: string) {
 		return new FileMetadata(file);
 	}
-  
+
 	private constructor(original: string) {
 		const parsed = this.parseFile(original);
 		const invalid = this.validate(original);
@@ -41,7 +41,9 @@ export class FileMetadata {
 	}
 
 	upperCaseFileType(): string {
-		return `${this.fileType().substring(0, 1).toUpperCase()}${this.fileType().substring(1)}`;
+		return `${this.fileType()
+			.substring(0, 1)
+			.toUpperCase()}${this.fileType().substring(1)}`;
 	}
 
 	name(): string {
@@ -62,7 +64,11 @@ export class FileMetadata {
 	}
 
 	private validate(name: string): string {
-		if (!new RegExp('^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$').test(name)) {
+		if (
+			!new RegExp(
+				'^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$',
+			).test(name)
+		) {
 			return 'Invalid file name given. File names can only contain alphanumeric characters and no more than one dot (.) for extension. Please, consult this regex expression: ^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$';
 		}
 
@@ -73,7 +79,8 @@ export class FileMetadata {
 		const s = file.split('.');
 
 		if (s.length !== 2) {
-			this.constructionError = 'Invalid file name given. File names can only contain alphanumeric characters and no more than one dot (.) for extension. Please, consult this regex expression: ^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$';
+			this.constructionError =
+        'Invalid file name given. File names can only contain alphanumeric characters and no more than one dot (.) for extension. Please, consult this regex expression: ^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$';
 
 			return false;
 		}

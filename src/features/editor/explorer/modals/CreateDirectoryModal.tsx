@@ -8,10 +8,23 @@ interface Props {
   onCancel: () => void;
 }
 
-export function CreateDirectoryModal({projectId, show, onCancel, parent}: Props) {
-	return <>
-		{show && <BaseModal show={show} onCancel={onCancel}>
-			<CreateDirectoryForm parent={parent} projectId={projectId} onCancel={onCancel} />
-		</BaseModal>}
-	</>;
+export function CreateDirectoryModal({
+	projectId,
+	show,
+	onCancel,
+	parent,
+}: Props) {
+	return (
+		<>
+			{show && (
+				<BaseModal show={show} onCancel={onCancel}>
+					<CreateDirectoryForm
+						parent={parent}
+						projectId={projectId}
+						onCancel={onCancel}
+					/>
+				</BaseModal>
+			)}
+		</>
+	);
 }

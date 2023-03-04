@@ -1,4 +1,8 @@
-import { useResetAccount, useSetAccount, useSetAuthState } from '@/lib/stateManagement/auth/setters';
+import {
+	useResetAccount,
+	useSetAccount,
+	useSetAuthState,
+} from '@/lib/stateManagement/auth/setters';
 import { useGetUser } from '@/lib/dataSource/features/auth/useGetUser';
 import { useEffect } from 'react';
 import { AuthState } from '@/lib/stateManagement/types/authState';
@@ -8,7 +12,7 @@ export function useLoadUser() {
 	const setAuthState = useSetAuthState();
 	const resetAccount = useResetAccount();
 
-	const {isLoading, isSuccess, data, isError} = useGetUser();
+	const { isLoading, isSuccess, data, isError } = useGetUser();
 
 	useEffect(() => {
 		if (isLoading && isSuccess) {

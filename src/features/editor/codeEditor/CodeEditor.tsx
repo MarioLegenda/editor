@@ -25,7 +25,7 @@ export function CodeEditor({
 				saveViewState={saveViewState}
 				defaultLanguage={language || 'javascript'}
 				value={code}
-				theme='vs-dark'
+				theme="vs-dark"
 				onChange={(code) => {
 					if (typeof code === 'string') {
 						onChange(code);

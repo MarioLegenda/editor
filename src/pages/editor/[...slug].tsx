@@ -9,17 +9,31 @@ export default function Editor() {
 	useRedirectIfSignedOut();
 	const isReady = useRunInBrowser();
 
-	return <>
-		{isReady && <BrowserRouter>
-			<Routes>
-				<Route path="/editor/projects" element={<InitialLayout>
-					<ProjectsMain />
-				</InitialLayout>} />
+	return (
+		<>
+			{isReady && (
+				<BrowserRouter>
+					<Routes>
+						<Route
+							path="/editor/projects"
+							element={
+								<InitialLayout>
+									<ProjectsMain />
+								</InitialLayout>
+							}
+						/>
 
-				<Route path="/editor/project/:id" element={<InitialLayout>
-					<EditorMain />
-				</InitialLayout>} />
-			</Routes>
-		</BrowserRouter>}
-	</>;
+						<Route
+							path="/editor/project/:id"
+							element={
+								<InitialLayout>
+									<EditorMain />
+								</InitialLayout>
+							}
+						/>
+					</Routes>
+				</BrowserRouter>
+			)}
+		</>
+	);
 }

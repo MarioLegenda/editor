@@ -7,13 +7,15 @@ interface Props {
   leftIcon?: React.ReactNode;
 }
 
-export function Item({name, rightIcon, leftIcon}: Props) {
-	return <div css={styles.root}>
-		<div css={styles.leftSection}>
-			{leftIcon && leftIcon}
-			<p>{name}</p>
+export function Item({ name, rightIcon, leftIcon }: Props) {
+	return (
+		<div css={styles.root}>
+			<div css={styles.leftSection}>
+				{leftIcon && leftIcon}
+				<p>{name}</p>
+			</div>
+
+			{rightIcon && rightIcon}
 		</div>
-    
-		{rightIcon && rightIcon}
-	</div>;
+	);
 }

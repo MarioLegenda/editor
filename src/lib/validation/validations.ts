@@ -1,4 +1,4 @@
-type Fn = (value: string) => {success: boolean, message: string};
+type Fn = (value: string) => { success: boolean; message: string };
 
 export function combine(fns: Fn[], value: string) {
 	const messages = [];

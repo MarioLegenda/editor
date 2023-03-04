@@ -6,7 +6,7 @@ import { User } from '@supabase/gotrue-js';
 
 export function useAccount() {
 	const account = useRecoilValue(accountAtom);
-  
+
 	return useCallback(() => account as User, [account]);
 }
 

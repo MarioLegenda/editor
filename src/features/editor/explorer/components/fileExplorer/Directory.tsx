@@ -12,10 +12,10 @@ import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/Se
 interface Props {
   item: AppFile;
   isRoot: boolean;
-	childSpace: number;
+  childSpace: number;
 }
 
-export function Directory({item, isRoot, childSpace}: Props) {
+export function Directory({ item, isRoot, childSpace }: Props) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedFile, setSelectedFile] = useState<string>();
 	const files = useParentFiles(item.id);
@@ -28,9 +28,10 @@ export function Directory({item, isRoot, childSpace}: Props) {
 			SelectedFileSubscriber.create().publish(item.id, item.id);
 		});
 
-		const selectedUnsubscribe = SelectedFileSubscriber.create().subscribe<string>(item.id, (selected) => {
-			setSelectedFile(selected);
-		});
+		const selectedUnsubscribe =
+      SelectedFileSubscriber.create().subscribe<string>(item.id, (selected) => {
+      	setSelectedFile(selected);
+      });
 
 		return () => {
 			if (addedUnsubscribe && selectedUnsubscribe) {
@@ -46,28 +47,35 @@ export function Directory({item, isRoot, childSpace}: Props) {
 		SelectedFileSubscriber.create().publish(item.id, item.id);
 	}, [isOpen]);
 
-	return <div css={[styles.root]}>
-		{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-		{/*
+	return (
+		<div css={[styles.root]}>
+			{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+			{/*
           // @ts-ignore */}
-		<ContextMenuTrigger id={item.id}>
-			<div
-				onClick={onOpen}
-				css={
-					[styles.content,
+			<ContextMenuTrigger id={item.id}>
+				<div
+					onClick={onOpen}
+					css={[
+						styles.content,
 						styles.move(isRoot ? 5 : nextChildSpace),
 						isOpen && selectedFile !== item.id ? styles.softOpen : undefined,
-						selectedFile === item.id ? styles.open : undefined
+						selectedFile === item.id ? styles.open : undefined,
 					]}>
+					{isOpen ? <DirOpen width={20} /> : <DirClosed width={20} />}
 
-				{isOpen ? <DirOpen width={20} /> : <DirClosed width={20} />}
+					<p>{item.name}</p>
+				</div>
+			</ContextMenuTrigger>
 
-				<p>{item.name}</p>
-			</div>
-		</ContextMenuTrigger>
+			<AbstractContextMenu
+				projectId={item.project_id}
+				isDirectory={item.is_directory}
+				id={item.id}
+			/>
 
-		<AbstractContextMenu projectId={item.project_id} isDirectory={item.is_directory} id={item.id} />
-
-		{isOpen && <FileListing childSpace={nextChildSpace} isRoot={false} files={files} />}
-	</div>;
+			{isOpen && (
+				<FileListing childSpace={nextChildSpace} isRoot={false} files={files} />
+			)}
+		</div>
+	);
 }

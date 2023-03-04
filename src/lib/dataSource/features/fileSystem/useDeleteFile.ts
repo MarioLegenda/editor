@@ -19,6 +19,9 @@ export function useDeleteFile(fileId: string, isDirectory: boolean) {
 
 	return {
 		mutation,
-		deleteFile: useCallback((values: FileToDelete) => mutation.mutate(values), []),
+		deleteFile: useCallback(
+			(values: FileToDelete) => mutation.mutate(values),
+			[],
+		),
 	};
 }

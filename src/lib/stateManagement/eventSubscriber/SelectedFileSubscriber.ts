@@ -2,7 +2,7 @@ import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
 
 let subscriber: EventSubscriber | null = null;
 
-export class SelectedFileSubscriber implements EventSubscriber{
+export class SelectedFileSubscriber implements EventSubscriber {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	private subscriptionBuffer: SubscriptionBuffer<any> = {};
 	private selectedFile: Record<string, string | AppFile> = {};
@@ -21,13 +21,13 @@ export class SelectedFileSubscriber implements EventSubscriber{
 		this.sendPreviousSelected();
 		if (fns) {
 			for (const fn of fns) {
-				(async function(_this) {
+				(async function (_this) {
 					fn(value);
 
 					if (typeof value === 'string' || isFile(value)) {
 						_this.selectedFile[name] = value;
 					}
-				}(this));
+				})(this);
 			}
 		}
 	}

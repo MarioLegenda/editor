@@ -17,8 +17,8 @@ export const loader = css`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  
-  margin-top: ${spacing}
+
+  margin-top: ${spacing};
 `;
 
 export const listing = css`
@@ -50,7 +50,7 @@ export const noProjects = css`
   align-self: center;
   width: 100%;
   text-align: center;
-  
+
   margin: 64px 0 64px 0;
 `;
 

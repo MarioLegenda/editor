@@ -6,15 +6,21 @@ import { editProject } from '@/lib/dataSource/features/projects/implementation/e
 export function useEditProject(id: string) {
 	const account = useAccount();
 
-	const mutation = useMutation(async (values: EditProject & {userId: string}) => {
-		return await editProject(id, values);
-	});
+	const mutation = useMutation(
+		async (values: EditProject & { userId: string }) => {
+			return await editProject(id, values);
+		},
+	);
 
 	return {
 		mutation,
-		editProject: useCallback((values: EditProject) => mutation.mutate({
-			...values,
-			userId: account().id,
-		}), []),
+		editProject: useCallback(
+			(values: EditProject) =>
+				mutation.mutate({
+					...values,
+					userId: account().id,
+				}),
+			[],
+		),
 	};
 }

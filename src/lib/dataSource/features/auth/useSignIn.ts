@@ -5,13 +5,13 @@ import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
 
 export function useSignIn() {
 	const mutation = useMutation(async (values: LoginUser) => {
-		const {data, error} = await getClient().auth.signInWithPassword({
+		const { data, error } = await getClient().auth.signInWithPassword({
 			email: values.email,
 			password: values.password,
 		});
 
 		if (error) {
-			throw new DataSourceError('Cannot sign in user',  {
+			throw new DataSourceError('Cannot sign in user', {
 				code: error.name,
 				status: error.status,
 			});

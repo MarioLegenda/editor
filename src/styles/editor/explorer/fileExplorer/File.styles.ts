@@ -11,7 +11,7 @@ export const content = css`
   gap: 8px;
 
   padding: 2px 0 2px 0;
-  
+
   &:hover {
     background-color: var(--color-lighterBackground);
   }

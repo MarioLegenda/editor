@@ -4,7 +4,7 @@ import { isBrowser } from '@/lib/helpers/isBrowser';
 import { Auth } from '@/lib/stateManagement/types/auth';
 
 export function localStorageEffect<T>(name: string): AtomEffect<T> {
-	return ({onSet, trigger, setSelf}) => {
+	return ({ onSet, trigger, setSelf }) => {
 		if (!isDevEnvironment() || !isBrowser()) {
 			return;
 		}
@@ -22,7 +22,7 @@ export function localStorageEffect<T>(name: string): AtomEffect<T> {
 
 			if (rawAccount) {
 				const account = JSON.parse(rawAccount);
-        
+
 				setSelf(account);
 			}
 		}

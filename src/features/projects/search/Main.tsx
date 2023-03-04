@@ -10,7 +10,10 @@ export function Main() {
 	const [debouncedText, _] = useDebounce(text, 500);
 	const [listData, setListData] = useState<ProjectAutocompleteList[]>([]);
 
-	const {query: {isLoading, isError, isSuccess, data}, updateTerm} = useSearchProjects(debouncedText);
+	const {
+		query: { isLoading, isError, isSuccess, data },
+		updateTerm,
+	} = useSearchProjects(debouncedText);
 
 	useEffect(() => {
 		updateTerm(debouncedText);
@@ -39,15 +42,17 @@ export function Main() {
 	const onChange = useCallback((value: string) => {
 		setText(value);
 	}, []);
-	
-	return <Autocomplete
-		transition="pop-top-left"
-		transitionDuration={80}
-		itemComponent={AutoCompleteItem}
-		transitionTimingFunction="ease"
-		data={listData} placeholder="Search projects..."
-		onChange={onChange} rightSection={<>
-			{isLoading &&<Loader size="sm" />}
-		</>}
-	/>;
+
+	return (
+		<Autocomplete
+			transition="pop-top-left"
+			transitionDuration={80}
+			itemComponent={AutoCompleteItem}
+			transitionTimingFunction="ease"
+			data={listData}
+			placeholder="Search projects..."
+			onChange={onChange}
+			rightSection={<>{isLoading && <Loader size="sm" />}</>}
+		/>
+	);
 }

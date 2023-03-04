@@ -8,13 +8,21 @@ import * as styles from '@/styles/editor/modals/DeleteFileForm.styles';
 
 interface Props {
   onCancel: () => void;
-	isDirectory: boolean;
+  isDirectory: boolean;
   projectId: string;
-	fileId: string;
+  fileId: string;
 }
 
-export function DeleteFileForm({onCancel, projectId, fileId, isDirectory}: Props) {
-	const {mutation: {isLoading, isSuccess}, deleteFile} = useDeleteFile(fileId, isDirectory);
+export function DeleteFileForm({
+	onCancel,
+	projectId,
+	fileId,
+	isDirectory,
+}: Props) {
+	const {
+		mutation: { isLoading, isSuccess },
+		deleteFile,
+	} = useDeleteFile(fileId, isDirectory);
 	const setFiles = useSetFilesystem();
 
 	useRunOnDone(isLoading, isSuccess, () => {
@@ -22,22 +30,39 @@ export function DeleteFileForm({onCancel, projectId, fileId, isDirectory}: Props
 		onCancel();
 	});
 
-	return <>
-		<h3 css={styles.heading}>Are you sure?</h3>
+	return (
+		<>
+			<h3 css={styles.heading}>Are you sure?</h3>
 
-		<p css={styles.description}>You can undo any deletion in the upper left corner by pressing <IconArrowBackUp size={20} /> icon</p>
+			<p css={styles.description}>
+        You can undo any deletion in the upper left corner by pressing{' '}
+				<IconArrowBackUp size={20} /> icon
+			</p>
 
-		<Group position="right" mt="lg">
-			<Button onClick={onCancel} type="button" size="md" variant="light" color="gray">
-        Cancel
-			</Button>
+			<Group position="right" mt="lg">
+				<Button
+					onClick={onCancel}
+					type="button"
+					size="md"
+					variant="light"
+					color="gray">
+          Cancel
+				</Button>
 
-			<Button onClick={() => deleteFile({
-				projectId: projectId,
-				fileId: fileId,
-			})} disabled={isLoading} type="submit" size="md" color="red">
-        Delete
-			</Button>
-		</Group>
-	</>;
+				<Button
+					onClick={() =>
+						deleteFile({
+							projectId: projectId,
+							fileId: fileId,
+						})
+					}
+					disabled={isLoading}
+					type="submit"
+					size="md"
+					color="red">
+          Delete
+				</Button>
+			</Group>
+		</>
+	);
 }

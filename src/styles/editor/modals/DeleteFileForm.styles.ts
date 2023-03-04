@@ -8,7 +8,7 @@ export const heading = css`
 
 export const description = css`
   margin-bottom: 24px;
-  
+
   svg {
     margin-bottom: -4px;
   }

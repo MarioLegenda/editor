@@ -9,8 +9,12 @@ export function useCreateProject() {
 
 	return {
 		mutation,
-		createProject: useCallback((values: NewProject) => mutation.mutate({
-			...values,
-		}), []),
+		createProject: useCallback(
+			(values: NewProject) =>
+				mutation.mutate({
+					...values,
+				}),
+			[],
+		),
 	};
 }

@@ -16,8 +16,17 @@ interface Props {
   onDeleted: () => void;
 }
 
-export function DeleteProjectForm({projectName, id, userId, onDeleted, onCancel}: Props) {
-	const {mutation: {isLoading, isSuccess, isError}, deleteProject} = useDeleteProject(id, userId);
+export function DeleteProjectForm({
+	projectName,
+	id,
+	userId,
+	onDeleted,
+	onCancel,
+}: Props) {
+	const {
+		mutation: { isLoading, isSuccess, isError },
+		deleteProject,
+	} = useDeleteProject(id, userId);
 	useRunOnDone(isLoading, isSuccess, onDeleted);
 
 	const form = useForm({
@@ -26,11 +35,14 @@ export function DeleteProjectForm({projectName, id, userId, onDeleted, onCancel}
 		},
 		validate: {
 			name: (value: string) => {
-				const errors =  combine([
-					required('Name is required'),
-					min(1, 'Name cannot have less than 1 character'),
-					max(100, 'Name cannot have more than 100 characters'),
-				], value || '');
+				const errors = combine(
+					[
+						required('Name is required'),
+						min(1, 'Name cannot have less than 1 character'),
+						max(100, 'Name cannot have more than 100 characters'),
+					],
+					value || '',
+				);
 
 				if (errors) return errors[0];
 
@@ -40,7 +52,7 @@ export function DeleteProjectForm({projectName, id, userId, onDeleted, onCancel}
 
 				return null;
 			},
-		}
+		},
 	});
 
 	const onDeleteProject = useCallback(() => {
@@ -50,29 +62,53 @@ export function DeleteProjectForm({projectName, id, userId, onDeleted, onCancel}
 		});
 	}, []);
 
-	return <>
-		<h2 css={[styles.heading, formStyles.spacing]}>Are you sure you which to delete this project?</h2>
+	return (
+		<>
+			<h2 css={[styles.heading, formStyles.spacing]}>
+        Are you sure you which to delete this project?
+			</h2>
 
-		<p css={formStyles.spacing}>This action is permanent. Please, type in your <strong css={styles.projectName}>{projectName}</strong> below just to be sure.</p>
+			<p css={formStyles.spacing}>
+        This action is permanent. Please, type in your{' '}
+				<strong css={styles.projectName}>{projectName}</strong> below just to be
+        sure.
+			</p>
 
-		<form onSubmit={form.onSubmit(onDeleteProject)}>
-			{isError && <div css={formStyles.spacing}>
-				<Error />
-			</div>}
+			<form onSubmit={form.onSubmit(onDeleteProject)}>
+				{isError && (
+					<div css={formStyles.spacing}>
+						<Error />
+					</div>
+				)}
 
-			<div css={formStyles.spacing}>
-				<TextInput data-autofocus name="name" placeholder="Name" {...form.getInputProps('name')} />
-			</div>
+				<div css={formStyles.spacing}>
+					<TextInput
+						data-autofocus
+						name="name"
+						placeholder="Name"
+						{...form.getInputProps('name')}
+					/>
+				</div>
 
-			<Group position="right" mt="lg">
-				<Button onClick={onCancel} type="button" size="md" variant="light" color="gray">
-          Cancel
-				</Button>
+				<Group position="right" mt="lg">
+					<Button
+						onClick={onCancel}
+						type="button"
+						size="md"
+						variant="light"
+						color="gray">
+            Cancel
+					</Button>
 
-				<Button disabled={isLoading || !form.isValid('name')} type="submit" size="md" color="red">
-          Delete
-				</Button>
-			</Group>
-		</form>
-	</>;
+					<Button
+						disabled={isLoading || !form.isValid('name')}
+						type="submit"
+						size="md"
+						color="red">
+            Delete
+					</Button>
+				</Group>
+			</form>
+		</>
+	);
 }

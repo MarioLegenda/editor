@@ -4,7 +4,7 @@ import {
 	projectAtom,
 	projectTotalAtom,
 	rootFileAtom,
-	codeEditorSelectedFileSignalAtom
+	codeEditorSelectedFileSignalAtom,
 } from '@/lib/stateManagement/project/project';
 
 export function useSetTotal() {

@@ -9,7 +9,7 @@ import {
 	IconFiles,
 	IconFolderPlus,
 	IconScissors,
-	IconTrash
+	IconTrash,
 } from '@tabler/icons';
 import * as styles from '@/styles/editor/explorer/contextMenu/AbstractContextMenu.styles';
 
@@ -25,54 +25,96 @@ import { DeleteFileModal } from '@/features/editor/explorer/modals/DeleteFileMod
 
 interface Props {
   id: string;
-	projectId: string;
-	isDirectory: boolean;
+  projectId: string;
+  isDirectory: boolean;
 }
 
-export function AbstractContextMenu({id, projectId, isDirectory}: Props) {
+export function AbstractContextMenu({ id, projectId, isDirectory }: Props) {
 	const [isDirectoryModal, setIsDirectoryModal] = useState(false);
-	const [createFileModalData, setCreateFileModalData] = useState<FileType | null>(null);
+	const [createFileModalData, setCreateFileModalData] =
+    useState<FileType | null>(null);
 	const [isDeleteFileModal, setIsDeleteFileModal] = useState(false);
 
-	return <>
-		<ContextMenu id={id} appendTo="body" preventHideOnScroll={true} preventHideOnResize={true}>
-			<Submenu css={styles.divider} title="New">
-				<ContextMenuItem css={styles.divider} onClick={() => setIsDirectoryModal(true)}><Item leftIcon={<IconFolderPlus size={18} color="white" />} name="Directory" /></ContextMenuItem>
-				<ContextMenuItem onClick={() => setCreateFileModalData('default')}><Item leftIcon={<AnyFileIcon width={18} />} name="File" /></ContextMenuItem>
-				<ContextMenuItem onClick={() => setCreateFileModalData('typescript')}><Item leftIcon={<TypescriptIcon width={18} />} name="Typescript" /></ContextMenuItem>
-				<ContextMenuItem onClick={() => setCreateFileModalData('javascript')}><Item leftIcon={<JavascriptIcon width={18} />} name="Javascript" /></ContextMenuItem>
-				<ContextMenuItem onClick={() => setCreateFileModalData('yaml')}><Item leftIcon={<YamlIcon width={28} />} name="Yaml" /></ContextMenuItem>
-				<ContextMenuItem onClick={() => setCreateFileModalData('json')}><Item leftIcon={<JsonIcon width={18} />} name="JSON" /></ContextMenuItem>
-			</Submenu>
+	return (
+		<>
+			<ContextMenu
+				id={id}
+				appendTo="body"
+				preventHideOnScroll={true}
+				preventHideOnResize={true}>
+				<Submenu css={styles.divider} title="New">
+					<ContextMenuItem
+						css={styles.divider}
+						onClick={() => setIsDirectoryModal(true)}>
+						<Item
+							leftIcon={<IconFolderPlus size={18} color="white" />}
+							name="Directory"
+						/>
+					</ContextMenuItem>
+					<ContextMenuItem onClick={() => setCreateFileModalData('default')}>
+						<Item leftIcon={<AnyFileIcon width={18} />} name="File" />
+					</ContextMenuItem>
+					<ContextMenuItem onClick={() => setCreateFileModalData('typescript')}>
+						<Item leftIcon={<TypescriptIcon width={18} />} name="Typescript" />
+					</ContextMenuItem>
+					<ContextMenuItem onClick={() => setCreateFileModalData('javascript')}>
+						<Item leftIcon={<JavascriptIcon width={18} />} name="Javascript" />
+					</ContextMenuItem>
+					<ContextMenuItem onClick={() => setCreateFileModalData('yaml')}>
+						<Item leftIcon={<YamlIcon width={28} />} name="Yaml" />
+					</ContextMenuItem>
+					<ContextMenuItem onClick={() => setCreateFileModalData('json')}>
+						<Item leftIcon={<JsonIcon width={18} />} name="JSON" />
+					</ContextMenuItem>
+				</Submenu>
 
-			<ContextMenuItem><Item leftIcon={<IconScissors size={18} />} name="Cut" /></ContextMenuItem>
-			<ContextMenuItem><Item leftIcon={<IconFiles size={18} />} name="Copy" /></ContextMenuItem>
-			<ContextMenuItem css={styles.divider}><Item leftIcon={<IconCalendarPlus size={18} />} name="Paste" /></ContextMenuItem>
-			<ContextMenuItem><Item leftIcon={<IconEdit size={18} />} name="Rename" /></ContextMenuItem>
-			<ContextMenuItem onClick={() => setIsDeleteFileModal(true)} css={styles.danger}><Item leftIcon={<IconTrash size={18} />} name="Delete" danger /></ContextMenuItem>
-		</ContextMenu>
+				<ContextMenuItem>
+					<Item leftIcon={<IconScissors size={18} />} name="Cut" />
+				</ContextMenuItem>
+				<ContextMenuItem>
+					<Item leftIcon={<IconFiles size={18} />} name="Copy" />
+				</ContextMenuItem>
+				<ContextMenuItem css={styles.divider}>
+					<Item leftIcon={<IconCalendarPlus size={18} />} name="Paste" />
+				</ContextMenuItem>
+				<ContextMenuItem>
+					<Item leftIcon={<IconEdit size={18} />} name="Rename" />
+				</ContextMenuItem>
+				<ContextMenuItem
+					onClick={() => setIsDeleteFileModal(true)}
+					css={styles.danger}>
+					<Item leftIcon={<IconTrash size={18} />} name="Delete" danger />
+				</ContextMenuItem>
+			</ContextMenu>
 
-		{isDirectoryModal && <CreateDirectoryModal
-			projectId={projectId}
-			parent={id}
-			show={isDirectoryModal}
-			onCancel={() => setIsDirectoryModal(false)}
-		/>}
+			{isDirectoryModal && (
+				<CreateDirectoryModal
+					projectId={projectId}
+					parent={id}
+					show={isDirectoryModal}
+					onCancel={() => setIsDirectoryModal(false)}
+				/>
+			)}
 
-		{isDeleteFileModal && <DeleteFileModal
-			projectId={projectId}
-			isDirectory={isDirectory}
-			fileId={id}
-			show={isDeleteFileModal}
-			onCancel={() => setIsDeleteFileModal(false)}
-		/>}
+			{isDeleteFileModal && (
+				<DeleteFileModal
+					projectId={projectId}
+					isDirectory={isDirectory}
+					fileId={id}
+					show={isDeleteFileModal}
+					onCancel={() => setIsDeleteFileModal(false)}
+				/>
+			)}
 
-		{createFileModalData && <CreateFileModal
-			projectId={projectId}
-			parent={id}
-			fileType={createFileModalData}
-			show={Boolean(createFileModalData)}
-			onCancel={() => setCreateFileModalData(null)}
-		/>}
-	</>;
+			{createFileModalData && (
+				<CreateFileModal
+					projectId={projectId}
+					parent={id}
+					fileType={createFileModalData}
+					show={Boolean(createFileModalData)}
+					onCancel={() => setCreateFileModalData(null)}
+				/>
+			)}
+		</>
+	);
 }

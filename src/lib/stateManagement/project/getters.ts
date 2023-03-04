@@ -1,9 +1,12 @@
 import { useRecoilValue } from 'recoil';
 import { useCallback } from 'react';
 import {
-	fileSystemAtom, parentFileStructureSelectorFamily,
+	fileSystemAtom,
+	parentFileStructureSelectorFamily,
 	projectAtom,
-	projectTotalAtom, rootFileAtom, codeEditorSelectedFileSignalAtom
+	projectTotalAtom,
+	rootFileAtom,
+	codeEditorSelectedFileSignalAtom,
 } from '@/lib/stateManagement/project/project';
 
 export function useTotal() {
@@ -31,4 +34,3 @@ export function useRootFile() {
 export function useParentFiles(parentId: string) {
 	return useRecoilValue(parentFileStructureSelectorFamily(parentId));
 }
-

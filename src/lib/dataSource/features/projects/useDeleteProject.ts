@@ -9,9 +9,13 @@ export function useDeleteProject(id: string, userId: string) {
 
 	return {
 		mutation,
-		deleteProject: useCallback((values: DeleteProject) => mutation.mutate({
-			id: values.id,
-			userId: userId,
-		}), []),
+		deleteProject: useCallback(
+			(values: DeleteProject) =>
+				mutation.mutate({
+					id: values.id,
+					userId: userId,
+				}),
+			[],
+		),
 	};
 }

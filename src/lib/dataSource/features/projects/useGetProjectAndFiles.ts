@@ -25,26 +25,32 @@ export function useGetProjectAndFiles(projectId: string | null) {
 
 	useEffect(() => {
 		const one = new Promise((resolve, reject) => {
-			getProjectFn().then((project) => {
-				if (project) resolve(project);
-			}).catch((e) => reject(e));
+			getProjectFn()
+				.then((project) => {
+					if (project) resolve(project);
+				})
+				.catch((e) => reject(e));
 		});
 
 		const two = new Promise((resolve, reject) => {
-			getFilesFn().then((project) => {
-				if (project) resolve(project);
-			}).catch((e) => reject(e));
+			getFilesFn()
+				.then((project) => {
+					if (project) resolve(project);
+				})
+				.catch((e) => reject(e));
 		});
 
-		Promise.all([one, two]).then((values) => {
-			setIsLoading(false);
-			if (Array.isArray(values)) {
-				setData(values);
-			}
-		}).catch(() => {
-			setIsError(true);
-			setIsLoading(false);
-		});
+		Promise.all([one, two])
+			.then((values) => {
+				setIsLoading(false);
+				if (Array.isArray(values)) {
+					setData(values);
+				}
+			})
+			.catch(() => {
+				setIsError(true);
+				setIsLoading(false);
+			});
 	}, []);
 
 	return {

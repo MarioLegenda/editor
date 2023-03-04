@@ -1,7 +1,11 @@
 import getClient from '@/lib/supabase/client';
 import { useIsBrowser } from '@/lib/helpers/useIsBrowser';
 import { isDevEnvironment } from '@/lib/helpers/isDevEnvironment';
-import { useResetAccount, useSetAccount, useSetAuthState } from '@/lib/stateManagement/auth/setters';
+import {
+	useResetAccount,
+	useSetAccount,
+	useSetAuthState,
+} from '@/lib/stateManagement/auth/setters';
 import { useCallback } from 'react';
 import { AuthState } from '@/lib/stateManagement/types/authState';
 
@@ -29,14 +33,21 @@ export function useOnAuthStateChange() {
 
 					setAuthState(AuthState.SIGNED_OUT);
 					resetAccount();
-				} else if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
-					document.cookie = `app-access-token=${session.access_token}; path=/; max-age=${3600}; SameSite=Lax; secure`;
-					document.cookie = `app-refresh-token=${session.refresh_token}; path=/; max-age=${3600}; SameSite=Lax; secure`;
+				} else if (
+					session &&
+          (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')
+				) {
+					document.cookie = `app-access-token=${
+						session.access_token
+					}; path=/; max-age=${3600}; SameSite=Lax; secure`;
+					document.cookie = `app-refresh-token=${
+						session.refresh_token
+					}; path=/; max-age=${3600}; SameSite=Lax; secure`;
 
 					setAuthState(AuthState.SIGNED_IN);
 				}
 
-				if (session && (event === 'SIGNED_IN')) {
+				if (session && event === 'SIGNED_IN') {
 					setAccount(session.user);
 					setAuthState(AuthState.SIGNED_IN);
 				}

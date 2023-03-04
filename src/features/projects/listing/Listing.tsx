@@ -28,7 +28,11 @@ const INITIAL_LIMIT = 8;
 const INITIAL_PAGE = 0;
 
 export function Listing() {
-	const {query: {isLoading, isError, isSuccess, data}, setPage, currentPage} = useGetProjects(INITIAL_PAGE, INITIAL_LIMIT);
+	const {
+		query: { isLoading, isError, isSuccess, data },
+		setPage,
+		currentPage,
+	} = useGetProjects(INITIAL_PAGE, INITIAL_LIMIT);
 	const [listing, setListing] = useState<Project[]>([]);
 	useLoadProjectTotalCount();
 	const total = useTotal()();
@@ -43,29 +47,52 @@ export function Listing() {
 		}
 	}, [data, isSuccess, isError]);
 
-	return <div css={styles.root}>
-		{isError && <Box>
-			<Error />
-		</Box>}
+	return (
+		<div css={styles.root}>
+			{isError && (
+				<Box>
+					<Error />
+				</Box>
+			)}
 
-		{isLoading && <Box>
-			<div css={styles.loader}>
-				<Loader size="md" />
+			{isLoading && (
+				<Box>
+					<div css={styles.loader}>
+						<Loader size="md" />
+					</div>
+				</Box>
+			)}
+
+			<div css={styles.listingGrid}>
+				{!isLoading && isSuccess && listing.length !== 0 && (
+					<div css={styles.listing}>
+						{listing.map((item) => (
+							<Item
+								key={item.id}
+								item={item}
+								onDelete={() => setListing(removeItem(item.id, listing))}
+							/>
+						))}
+					</div>
+				)}
+
+				{!isLoading && isSuccess && listing.length === 0 && (
+					<p css={[styles.noProjects]}>No projects to show</p>
+				)}
+
+				{!isLoading &&
+          isSuccess &&
+          typeof total === 'number' &&
+          total > INITIAL_LIMIT && (
+					<div css={styles.pagination}>
+						<Pagination
+							page={currentPage}
+							onChange={(page) => setPage(page - 1)}
+							total={total / INITIAL_LIMIT + 1}
+						/>
+					</div>
+				)}
 			</div>
-		</Box>}
-
-		<div css={styles.listingGrid}>
-			{!isLoading && isSuccess && listing.length !== 0 && <div css={styles.listing}>
-				{listing.map((item) => <Item key={item.id} item={item} onDelete={() => setListing(removeItem(item.id, listing))} />)}
-			</div>}
-
-			{!isLoading && isSuccess && listing.length === 0 && <p css={[styles.noProjects]}>
-				No projects to show
-			</p>}
-
-			{!isLoading && isSuccess && typeof total === 'number' && total > INITIAL_LIMIT && <div css={styles.pagination}>
-				<Pagination page={currentPage} onChange={(page) => setPage(page - 1)} total={total / INITIAL_LIMIT + 1} />
-			</div>}
 		</div>
-	</div>;
+	);
 }

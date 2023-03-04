@@ -9,10 +9,25 @@ interface Props {
   onCancel: () => void;
 }
 
-export function DeleteFileModal({projectId, show, onCancel, fileId, isDirectory}: Props) {
-	return <>
-		{show && <BaseModal show={show} onCancel={onCancel}>
-			<DeleteFileForm isDirectory={isDirectory} projectId={projectId} fileId={fileId} onCancel={onCancel} />
-		</BaseModal>}
-	</>;
+export function DeleteFileModal({
+	projectId,
+	show,
+	onCancel,
+	fileId,
+	isDirectory,
+}: Props) {
+	return (
+		<>
+			{show && (
+				<BaseModal show={show} onCancel={onCancel}>
+					<DeleteFileForm
+						isDirectory={isDirectory}
+						projectId={projectId}
+						fileId={fileId}
+						onCancel={onCancel}
+					/>
+				</BaseModal>
+			)}
+		</>
+	);
 }

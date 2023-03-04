@@ -12,7 +12,7 @@ export const projectNotFound = css`
   justify-content: space-between;
   align-items: center;
   gap: 32px;
-  
+
   color: var(--color-lightText);
   font-size: 32px;
 `;

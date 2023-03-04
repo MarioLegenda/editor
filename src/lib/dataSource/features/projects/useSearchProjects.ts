@@ -6,20 +6,24 @@ import { searchProjects } from '@/lib/dataSource/features/projects/implementatio
 export function useSearchProjects(term: string) {
 	const [internalTerm, setTerm] = useState<string>(term);
 
-	const query = useQuery<Project[]>([Query.SEARCH_PROJECTS, internalTerm], async (values): Promise<Project[]> => {
-		const term = values.queryKey[1];
-		if (!term) {
-			return [];
-		}
+	const query = useQuery<Project[]>(
+		[Query.SEARCH_PROJECTS, internalTerm],
+		async (values): Promise<Project[]> => {
+			const term = values.queryKey[1];
+			if (!term) {
+				return [];
+			}
 
-		if (typeof term === 'string') {
-			return await searchProjects(term);
-		}
-		
-		throw new Error('\'term\' must be of type string');
-	}, {
-		staleTime: 0,
-	});
+			if (typeof term === 'string') {
+				return await searchProjects(term);
+			}
+
+			throw new Error('\'term\' must be of type string');
+		},
+		{
+			staleTime: 0,
+		},
+	);
 
 	return {
 		query,

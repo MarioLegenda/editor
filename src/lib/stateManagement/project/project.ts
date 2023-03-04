@@ -29,13 +29,15 @@ export const rootFileAtom = atom<string | null>({
 
 export const parentFileStructureSelectorFamily = selectorFamily({
 	key: ProjectEnum.DIRECTORY_FILE_STRUCTURE,
-	get: parentId => ({get}) => {
-		const files = get(fileSystemAtom);
+	get:
+    (parentId) =>
+    	({ get }) => {
+    		const files = get(fileSystemAtom);
 
-		if (typeof parentId === 'string') {
-			return sortFilesAlphabetically(files, parentId);
-		}
+    		if (typeof parentId === 'string') {
+    			return sortFilesAlphabetically(files, parentId);
+    		}
 
-		return [];
-	}
+    		return [];
+    	},
 });

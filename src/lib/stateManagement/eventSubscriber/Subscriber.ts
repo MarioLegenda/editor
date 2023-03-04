@@ -19,7 +19,10 @@ export class Subscriber {
 		}
 	}
 
-	subscribe(name: string, subscriber: Subscription<string>): Unsubscribe | null {
+	subscribe(
+		name: string,
+		subscriber: Subscription<string>,
+	): Unsubscribe | null {
 		if (this.subscriptionBuffer[name]) {
 			return null;
 		}

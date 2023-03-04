@@ -4,6 +4,7 @@ export const root = css`
   grid-column: span 12;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 24px;
 `;
 
 export const explorer = css`
@@ -12,4 +13,15 @@ export const explorer = css`
 
 export const codeEditor = css`
   grid-column: span 10 / span 10;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const actualEditor = css`
+  width: 100%;
+  height: 95vh;
+`;
+
+export const tabs = css`
+  width: 100%;
 `;

@@ -8,7 +8,5 @@ export default function Index() {
 	useRedirectIfSignedIn('/editor/projects');
 	const authState = useAuthState();
 
-	return <Layout>
-		{authState() === AuthState.SIGNED_OUT && <Main />}
-	</Layout>;
+	return <Layout>{authState() === AuthState.SIGNED_OUT && <Main />}</Layout>;
 }

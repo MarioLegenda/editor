@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 
 export function useSignUp() {
 	const mutation = useMutation(async (values: NewUser) => {
-		const {data, error} = await getClient().auth.signUp({
+		const { data, error } = await getClient().auth.signUp({
 			email: values.email,
 			password: values.password,
 			options: {
@@ -12,8 +12,8 @@ export function useSignUp() {
 				data: {
 					name: values.name,
 					lastName: values.lastName,
-				}
-			}
+				},
+			},
 		});
 
 		if (error) {

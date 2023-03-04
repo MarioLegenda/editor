@@ -8,7 +8,7 @@ interface Props {
   fileType: FileType;
 }
 
-export function LanguageIcon({fileType}: Props) {
+export function LanguageIcon({ fileType }: Props) {
 	if (fileType === 'typescript') return <TypescriptIcon width={20} />;
 	if (fileType === 'default') return <AnyFileIcon width={20} />;
 	if (fileType === 'javascript') return <JavascriptIcon width={20} />;

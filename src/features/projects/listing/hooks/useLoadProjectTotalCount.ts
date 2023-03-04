@@ -12,5 +12,5 @@ export function useLoadProjectTotalCount() {
 		}
 	}, [isLoading, isSuccess, isError, data]);
 
-	return {isLoading, isError, isSuccess, data};
+	return { isLoading, isError, isSuccess, data };
 }

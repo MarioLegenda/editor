@@ -1,8 +1,18 @@
 import Head from 'next/head';
 import { useRunInBrowser } from '@/lib/helpers/useRunInBrowser';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Home() {
 	const inBrowser = useRunInBrowser();
+	const { push } = useRouter();
+
+	useEffect(() => {
+		if (inBrowser) {
+			console.log('in browser');
+			push('/sign-in');
+		}
+	}, [inBrowser]);
 
 	return (
 		<>
@@ -13,9 +23,7 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main>
-				{inBrowser && <div />}
-			</main>
+			<main>{inBrowser && <div />}</main>
 		</>
 	);
 }

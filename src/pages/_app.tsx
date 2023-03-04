@@ -10,22 +10,23 @@ import { NotificationsProvider } from '@mantine/notifications';
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
-	return <MantineProvider
-		withGlobalStyles
-		withNormalizeCSS
-		theme={{
-			colorScheme: 'dark',
-			loader: 'oval',
-		}}
-	>
-		<NotificationsProvider>
-			<QueryClientProvider client={queryClient}>
-				<RecoilRoot>
-					<DataSourceEventsProvider>
-						<Component {...pageProps} />
-					</DataSourceEventsProvider>
-				</RecoilRoot>
-			</QueryClientProvider>
-		</NotificationsProvider>
-	</MantineProvider>;
+	return (
+		<MantineProvider
+			withGlobalStyles
+			withNormalizeCSS
+			theme={{
+				colorScheme: 'dark',
+				loader: 'oval',
+			}}>
+			<NotificationsProvider>
+				<QueryClientProvider client={queryClient}>
+					<RecoilRoot>
+						<DataSourceEventsProvider>
+							<Component {...pageProps} />
+						</DataSourceEventsProvider>
+					</RecoilRoot>
+				</QueryClientProvider>
+			</NotificationsProvider>
+		</MantineProvider>
+	);
 }

@@ -6,8 +6,11 @@ import { useRouter } from 'next/router';
 import { showNotification } from '@mantine/notifications';
 
 export function SignOutButton() {
-	const {mutation: {isLoading, isError, isSuccess}, signOut} = useSignOut();
-	const {push} = useRouter();
+	const {
+		mutation: { isLoading, isError, isSuccess },
+		signOut,
+	} = useSignOut();
+	const { push } = useRouter();
 
 	useEffect(() => {
 		if (!isLoading && isSuccess) {
@@ -20,17 +23,25 @@ export function SignOutButton() {
 			showNotification({
 				color: 'red',
 				title: 'Something went wrong.',
-				message: 'We are sorry but we cannot log you out at this time. Please, try again later.',
+				message:
+          'We are sorry but we cannot log you out at this time. Please, try again later.',
 				autoClose: 10000,
 			});
 		}
 	}, [isError]);
 
-	return <Button onClick={() => signOut()} leftIcon={
-		<>
-			{isLoading && <Loader size={14} />}
-			{!isLoading && <IconLogout size={14} />}
-		</>
-	} variant="outline" color="gray">Logout</Button>;
-
+	return (
+		<Button
+			onClick={() => signOut()}
+			leftIcon={
+				<>
+					{isLoading && <Loader size={14} />}
+					{!isLoading && <IconLogout size={14} />}
+				</>
+			}
+			variant="outline"
+			color="gray">
+      Logout
+		</Button>
+	);
 }

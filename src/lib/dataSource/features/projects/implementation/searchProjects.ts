@@ -6,7 +6,7 @@ export async function searchProjects(term: string) {
 		.from('project')
 		.select('id,name,user_id,description,color')
 		.like('name', `%${term}%`)
-		.order('created_at', {ascending: true})
+		.order('created_at', { ascending: true })
 		.range(0, 10);
 
 	if (error) {

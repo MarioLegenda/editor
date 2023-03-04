@@ -6,7 +6,7 @@ export async function getProjects(page: number, initialLimit: number) {
 		.from('project')
 		.select('name,description,id,color,user_id')
 		.range(page * initialLimit, (page + 1) * initialLimit - 1)
-		.order('created_at', {ascending: false});
+		.order('created_at', { ascending: false });
 
 	if (error) {
 		throw new Error(error.message);

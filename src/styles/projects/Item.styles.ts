@@ -10,7 +10,7 @@ export const root = css`
 
   padding: 12px;
   border-radius: 5px;
-  
+
   &:hover {
     background-color: var(--color-lighterBackground);
   }
@@ -28,11 +28,11 @@ export const content = css`
 export const item = css`
   width: 100%;
   padding-left: 12px;
-  
+
   h3 {
     margin-bottom: 8px;
   }
-  
+
   p {
     width: 50%;
     color: var(--color-lightText);
