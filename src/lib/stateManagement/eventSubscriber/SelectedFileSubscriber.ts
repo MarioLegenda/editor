@@ -1,13 +1,12 @@
-import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
+import PubSub from 'pubsub-js';
+import SubscriptionListener = PubSubJS.SubscriptionListener;
 
-let subscriber: EventSubscriber | null = null;
+let subscriber: SelectedFileSubscriber | null = null;
 
-export class SelectedFileSubscriber implements EventSubscriber {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	private subscriptionBuffer: SubscriptionBuffer<any> = {};
+export class SelectedFileSubscriber {
 	private selectedFile: Record<string, string | AppFile> = {};
 
-	static create(): EventSubscriber {
+	static create(): SelectedFileSubscriber {
 		if (!subscriber) {
 			subscriber = new SelectedFileSubscriber();
 		}
@@ -15,47 +14,17 @@ export class SelectedFileSubscriber implements EventSubscriber {
 		return subscriber;
 	}
 
-	publish<T>(name: string, value: T) {
-		const fns = this.subscriptionBuffer[name];
-
+	publish(name: string, value: string | AppFile) {
 		this.sendPreviousSelected();
-		if (fns) {
-			for (const fn of fns) {
-				(async function (_this) {
-					fn(value);
-
-					if (typeof value === 'string' || isFile(value)) {
-						_this.selectedFile[name] = value;
-					}
-				})(this);
-			}
-		}
+		PubSub.publish(name, value);
+		this.selectedFile[name] = value;
 	}
 
-	subscribe<T>(name: string, subscriber: Subscription<T>): Unsubscribe | null {
-		if (!this.subscriptionBuffer[name]) {
-			this.subscriptionBuffer[name] = [];
-		}
-
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		for (const fn of this.subscriptionBuffer[name]) {
-			if (fn.toString() === subscriber.toString()) {
-				return null;
-			}
-		}
-
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		const idx = this.subscriptionBuffer[name].push(subscriber);
-
-		return () => {
-			this.subscriptionBuffer[name]?.splice(idx, 1);
-		};
+	subscribe<T>(name: string, subscriber: SubscriptionListener<T>) {
+		return PubSub.subscribe(name, subscriber);
 	}
 
 	close() {
-		this.subscriptionBuffer = {};
 		this.selectedFile = {};
 	}
 
@@ -64,23 +33,9 @@ export class SelectedFileSubscriber implements EventSubscriber {
 		if (keys.length !== 0) {
 			const key = Object.keys(this.selectedFile)[0];
 
-			if (!this.subscriptionBuffer[key]) {
-				return;
-			}
-
-			const fns = this.subscriptionBuffer[key];
-
-			if (Array.isArray(fns)) {
-				for (const fn of fns) {
-					this.sendValues(fn, undefined);
-				}
-			}
+			PubSub.publish(key, undefined);
 
 			delete this.selectedFile[key];
 		}
-	}
-
-	private async sendValues<T>(fn: Subscription<T>, value: T) {
-		fn(value);
 	}
 }

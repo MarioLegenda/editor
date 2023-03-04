@@ -9,7 +9,7 @@ import { LanguageIcon } from '@/lib/components/LanguageIcon';
 import { useEffect } from 'react';
 import { useSetFilesystem } from '@/lib/stateManagement/project/setters';
 import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
-import { Subscriber } from '@/lib/stateManagement/eventSubscriber/Subscriber';
+import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
 
 interface Props {
   fileType: FileType;
@@ -34,7 +34,7 @@ export function CreateFileForm({
 	useEffect(() => {
 		if (isSuccess && data && isFile(data)) {
 			setFiles((files) => [...files, data]);
-			Subscriber.create().publish(parent, data.id);
+			SelectedFileSubscriber.create().publish(`${parent}_addedFile`, data.id);
 			onCancel();
 		}
 	}, [isSuccess, data]);

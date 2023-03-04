@@ -12,10 +12,7 @@ export function CodeEditorWrapper({ projectId }: Props) {
 	const selectedFile = useCodeEditorSelectedFile();
 
 	const [content, setContent] = useState(selectedFile?.content || '');
-	const {
-		mutation: { isLoading, isSuccess, isError },
-		updateContent,
-	} = useUpdateContent();
+	const { updateContent } = useUpdateContent();
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [debouncedText, _] = useDebounce(content, 500);

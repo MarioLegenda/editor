@@ -9,7 +9,7 @@ import { IconFolder } from '@tabler/icons';
 import { useEffect } from 'react';
 import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
 import { useSetFilesystem } from '@/lib/stateManagement/project/setters';
-import { Subscriber } from '@/lib/stateManagement/eventSubscriber/Subscriber';
+import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
 
 interface Props {
   parent: string;
@@ -29,7 +29,7 @@ export function CreateDirectoryForm({ onCancel, projectId, parent }: Props) {
 	useEffect(() => {
 		if (isSuccess && data && isFile(data)) {
 			setFiles((files) => [...files, data]);
-			Subscriber.create().publish(parent, data.id);
+			SelectedFileSubscriber.create().publish(`${parent}_addedFile`, data.id);
 			onCancel();
 		}
 	}, [isSuccess, data]);

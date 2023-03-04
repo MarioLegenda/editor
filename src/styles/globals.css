@@ -1,43 +1,43 @@
 :root {
-    --color-lightText: #626161;
-    --color-primaryBackground: #1a1b1e;
-    --color-lighterBackground: #222327;
-    --color-primary: #1971c2;
-    --color-primaryDark: #004994;
+  --color-lightText: #626161;
+  --color-primaryBackground: #1a1b1e;
+  --color-lighterBackground: #222327;
+  --color-primary: #1971c2;
+  --color-primaryDark: #004994;
 
-    --color-error: #e03131;
-    --color-lightError: #df5656;
+  --color-error: #e03131;
+  --color-lightError: #df5656;
 
-    --font-primary: 'Assisant', sans-serif;
+  --font-primary: 'Assisant', sans-serif;
 }
 
 body {
-    font-family: 'Assistant', sans-serif;
+  font-family: 'Assistant', sans-serif;
 }
 
 .contextmenu {
-    background-color: var(--color-lighterBackground) !important;
-    padding: 0 !important;
-    border: none !important;
+  background-color: var(--color-lighterBackground) !important;
+  padding: 0 !important;
+  border: none !important;
 }
 
 .contextmenu__item {
-    background-color: var(--color-primaryBackground) !important;
-    border: none !important;
-    margin-bottom: 0 !important;
+  background-color: var(--color-primaryBackground) !important;
+  border: none !important;
+  margin-bottom: 0 !important;
 }
 
 .contextmenu__item:hover {
-    background-color: var(--color-primaryDark) !important;
+  background-color: var(--color-primaryDark) !important;
 }
 
 .submenu__item {
-    background-color: var(--color-primaryBackground) !important;
-    border: none !important;
-    padding: 0 !important;
+  background-color: var(--color-primaryBackground) !important;
+  border: none !important;
+  padding: 0 !important;
 }
 
 .contextmenu .submenu > .contextmenu__item:after {
-    border-color: transparent transparent transparent white !important;
-    right: 15px !important;
+  border-color: transparent transparent transparent white !important;
+  right: 15px !important;
 }

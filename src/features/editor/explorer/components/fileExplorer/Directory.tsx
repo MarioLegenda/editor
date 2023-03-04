@@ -6,8 +6,8 @@ import { useParentFiles } from '@/lib/stateManagement/project/getters';
 import { FileListing } from '@/features/editor/explorer/components/fileExplorer/FileListing';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { AbstractContextMenu } from '@/features/editor/explorer/components/fileExplorer/contextMenu/AbstractContextMenu';
-import { Subscriber } from '@/lib/stateManagement/eventSubscriber/Subscriber';
 import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
+import PubSub from 'pubsub-js';
 
 interface Props {
   item: AppFile;
@@ -22,22 +22,25 @@ export function Directory({ item, isRoot, childSpace }: Props) {
 	const nextChildSpace = childSpace + 3;
 
 	useEffect(() => {
-		const addedUnsubscribe = Subscriber.create().subscribe(item.id, () => {
-			setIsOpen(true);
-			setSelectedFile(item.id);
-			SelectedFileSubscriber.create().publish(item.id, item.id);
-		});
+		const addedUnsubscribe = SelectedFileSubscriber.create().subscribe(
+			`${item.id}_addedFile`,
+			() => {
+				setIsOpen(true);
+				SelectedFileSubscriber.create().publish(item.id, item.id);
+			},
+		);
 
 		const selectedUnsubscribe =
-      SelectedFileSubscriber.create().subscribe<string>(item.id, (selected) => {
-      	setSelectedFile(selected);
-      });
+      SelectedFileSubscriber.create().subscribe<string>(
+      	item.id,
+      	(selected, data) => {
+      		setSelectedFile(data);
+      	},
+      );
 
 		return () => {
-			if (addedUnsubscribe && selectedUnsubscribe) {
-				addedUnsubscribe();
-				selectedUnsubscribe();
-			}
+			PubSub.unsubscribe(addedUnsubscribe);
+			PubSub.unsubscribe(selectedUnsubscribe);
 		};
 	}, []);
 

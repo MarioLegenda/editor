@@ -8,7 +8,6 @@ import {
 	useProject,
 } from '@/lib/stateManagement/project/getters';
 import { useEffect } from 'react';
-import { Subscriber } from '@/lib/stateManagement/eventSubscriber/Subscriber';
 import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
 import { CodeEditorWrapper } from '@/features/editor/codeEditor/CodeEditorWrapper';
 import { Tabs } from '@/features/editor/tabs/Tabs';
@@ -22,7 +21,6 @@ export function Main() {
 
 	useEffect(() => {
 		return () => {
-			Subscriber.create().close();
 			SelectedFileSubscriber.create().close();
 		};
 	}, []);

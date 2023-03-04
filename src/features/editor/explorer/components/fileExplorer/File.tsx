@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
 import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
 import { useSetCodeEditorSelectedFile } from '@/lib/stateManagement/project/setters';
+import PubSub from 'pubsub-js';
 
 interface Props {
   item: AppFile;
@@ -19,22 +20,22 @@ export function File({ item, isRoot = false, childSpace }: Props) {
 	const setCodeEditorSelectedFile = useSetCodeEditorSelectedFile();
 
 	useEffect(() => {
-		const unsubscribe = SelectedFileSubscriber.create().subscribe<
-      AppFile | undefined
-    >(item.id, (selected) => {
-    	if (isFile(selected)) {
-    		setSelectedFile(selected.id);
+		const unsubscribe = SelectedFileSubscriber.create().subscribe(
+			item.id,
+			(selected, data) => {
+				console.log(data);
+				if (isFile(data)) {
+					setSelectedFile(data.id);
 
-    		return;
-    	}
+					return;
+				}
 
-    	setSelectedFile(selected);
-    });
+				setSelectedFile(undefined);
+			},
+		);
 
 		return () => {
-			if (unsubscribe) {
-				unsubscribe();
-			}
+			PubSub.unsubscribe(unsubscribe);
 		};
 	}, []);
 
