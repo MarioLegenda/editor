@@ -3,6 +3,7 @@ import { IconFile, IconSquareX } from '@tabler/icons';
 import { useEffect, useState } from 'react';
 import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedTabSubscriber';
 import { isTab } from '@/lib/dataSource/features/fileSystem/check/isTab';
+import { useRemoveTab } from '@/lib/stateManagement/tabs/setters';
 
 interface Props {
   item: Tab;
@@ -10,6 +11,7 @@ interface Props {
 
 export function Tab({ item }: Props) {
 	const [selected, setSelected] = useState<Tab>();
+	const removeTab = useRemoveTab();
 
 	useEffect(() => {
 		const unsubscribe = SelectedTabSubscriber.create().subscribe(
@@ -39,7 +41,7 @@ export function Tab({ item }: Props) {
 				<p>{item.name}</p>
 			</div>
 
-			<IconSquareX className="close-icon" />
+			<IconSquareX onClick={() => removeTab(item)} className="close-icon" />
 		</div>
 	);
 }
