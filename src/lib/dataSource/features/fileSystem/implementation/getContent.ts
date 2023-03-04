@@ -1,6 +1,5 @@
 import getClient from '@/lib/supabase/client';
 import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
-import { isFileListing } from '@/lib/dataSource/features/fileSystem/check/isFileListing';
 
 export async function getContent(
 	fileId: string,
@@ -20,7 +19,7 @@ export async function getContent(
 		});
 	}
 
-	if (isFileListing(data)) {
+	if (Array.isArray(data)) {
 		return data[0].content;
 	}
 

@@ -1,6 +1,7 @@
 export class ContentCache {
-	private cache: Record<string, string> = {};
-	add(id: string, content: string) {
+	private cache: Record<string, CachedContentEvent> = {};
+
+	add(id: string, content: CachedContentEvent) {
 		this.cache[id] = content;
 	}
 
@@ -8,8 +9,12 @@ export class ContentCache {
 		return Object.hasOwn(this.cache, id);
 	}
 
-	update(id: string, value: string) {
+	update(id: string, value: CachedContentEvent) {
 		this.cache[id] = value;
+	}
+
+	get(id: string) {
+		return this.cache[id];
 	}
 
 	remove(id: string): boolean {

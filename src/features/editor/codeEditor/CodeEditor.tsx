@@ -32,12 +32,16 @@ export function CodeEditor({
 						setCode(code);
 					}
 				}}
-				onMount={(editor) => {
+				onMount={(editor, monaco) => {
 					editor.focus();
+					monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+						noSemanticValidation: true,
+						noSyntaxValidation: true,
+					});
 				}}
 				options={{
 					selectOnLineNumbers: true,
-					codeLens: false,
+					codeLens: true,
 					formatOnPaste: true,
 					links: false,
 					acceptSuggestionOnEnter: 'off',
@@ -48,7 +52,7 @@ export function CodeEditor({
 						alwaysConsumeMouseWheel: false,
 					},
 					minimap: {
-						enabled: false,
+						enabled: true,
 					},
 				}}
 			/>

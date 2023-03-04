@@ -42,7 +42,9 @@ export function Tab({ item }: Props) {
 	return (
 		<div
 			css={[styles.root, selected ? styles.selected : undefined]}
-			onClick={() => SelectedTabSubscriber.create().publish(item.id, item)}>
+			onClick={() => {
+				SelectedTabSubscriber.create().publish(item.id, item);
+			}}>
 			<div css={styles.content}>
 				<IconFile />
 				<p>{item.name}</p>

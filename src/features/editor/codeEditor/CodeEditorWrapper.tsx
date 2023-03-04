@@ -1,21 +1,25 @@
 import { useCallback, useEffect, useState } from 'react';
 import { CodeEditor } from '@/features/editor/codeEditor/CodeEditor';
-import { useDebounce } from 'use-debounce';
 import { useUpdateContent } from '@/lib/dataSource/features/fileSystem/useUpdateContent';
 import { CachedContentSubscriber } from '@/lib/stateManagement/eventSubscriber/CachedContentSubscriber';
 import { isCachedContentEvent } from '@/lib/stateManagement/eventSubscriber/check/isCachedContentEvent';
+import { debounce } from 'throttle-debounce';
 
 export function CodeEditorWrapper() {
 	const { updateContent } = useUpdateContent();
 	const [selectedFile, setSelectedFile] = useState<CachedContentPayload>();
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [debouncedText, setContent] = useDebounce('', 500);
+	const [content, setContent] = useState('');
 
 	useEffect(() => {
 		CachedContentSubscriber.create().subscribe('tab_change', (name, value) => {
+			console.log(isCachedContentEvent(value), value);
 			if (isCachedContentEvent(value)) {
-				setContent(value.content);
-				setSelectedFile(value);
+				setSelectedFile(undefined);
+
+				setTimeout(() => {
+					setSelectedFile(value);
+					setContent(value.content);
+				}, 100);
 			}
 		});
 	}, []);
@@ -25,28 +29,28 @@ export function CodeEditorWrapper() {
 			updateContent({
 				fileId: selectedFile.id,
 				projectId: selectedFile.projectId,
-				content: debouncedText,
+				content: content,
 			});
 
-			CachedContentSubscriber.create().updateCache(
-				selectedFile.id,
-				debouncedText,
-			);
+			CachedContentSubscriber.create().updateCache(selectedFile.id, {
+				id: selectedFile.id,
+				projectId: selectedFile.projectId,
+				content: content,
+				userId: selectedFile.userId,
+			});
 		}
-	}, [debouncedText, selectedFile]);
+	}, [content, selectedFile]);
 
 	const onChange = useCallback(
-		(text: string) => {
+		debounce(500, (text: string) => {
 			if (selectedFile) {
 				setContent(text);
 			}
-		},
+		}),
 		[selectedFile],
 	);
 
 	return (
-		<>
-			{selectedFile && <CodeEditor value={debouncedText} onChange={onChange} />}
-		</>
+		<>{selectedFile && <CodeEditor value={content} onChange={onChange} />}</>
 	);
 }
