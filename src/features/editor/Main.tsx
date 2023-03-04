@@ -32,7 +32,7 @@ export function Main() {
 			{project && fileSystem && (
 				<Layout
 					tabs={<Tabs />}
-					editor={<CodeEditorWrapper projectId={project.id} />}
+					editor={<CodeEditorWrapper />}
 					explorer={<ExplorerMain />}
 				/>
 			)}

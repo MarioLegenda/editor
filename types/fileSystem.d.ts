@@ -34,3 +34,16 @@ interface AppFile {
   created_at: string;
   updated_at: string;
 }
+
+interface CachedContentPayload {
+  id: string;
+  projectId: string;
+  userId: string;
+}
+
+interface CachedContentEvent {
+  id: string;
+  projectId: string;
+  userId: string;
+  content: string;
+}

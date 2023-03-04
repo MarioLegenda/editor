@@ -1,21 +1,39 @@
 import { useCallback, useEffect, useState } from 'react';
 import { CodeEditor } from '@/features/editor/codeEditor/CodeEditor';
-import { useCodeEditorSelectedFile } from '@/lib/stateManagement/project/getters';
 import { useDebounce } from 'use-debounce';
 import { useUpdateContent } from '@/lib/dataSource/features/fileSystem/useUpdateContent';
+import { CachedContentSubscriber } from '@/lib/stateManagement/eventSubscriber/CachedContentSubscriber';
+import { isCachedContentEvent } from '@/lib/stateManagement/eventSubscriber/check/isCachedContentEvent';
 
-interface Props {
-  projectId: string;
-}
-
-export function CodeEditorWrapper({ projectId }: Props) {
-	const selectedFile = useCodeEditorSelectedFile();
-
-	const [content, setContent] = useState('');
+export function CodeEditorWrapper() {
 	const { updateContent } = useUpdateContent();
-
+	const [selectedFile, setSelectedFile] = useState<CachedContentPayload>();
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [debouncedText, _] = useDebounce(content, 500);
+	const [debouncedText, setContent] = useDebounce('', 500);
+
+	useEffect(() => {
+		CachedContentSubscriber.create().subscribe('tab_change', (name, value) => {
+			if (isCachedContentEvent(value)) {
+				setContent(value.content);
+				setSelectedFile(value);
+			}
+		});
+	}, []);
+
+	useEffect(() => {
+		if (selectedFile) {
+			updateContent({
+				fileId: selectedFile.id,
+				projectId: selectedFile.projectId,
+				content: debouncedText,
+			});
+
+			CachedContentSubscriber.create().updateCache(
+				selectedFile.id,
+				debouncedText,
+			);
+		}
+	}, [debouncedText, selectedFile]);
 
 	const onChange = useCallback(
 		(text: string) => {
@@ -25,16 +43,6 @@ export function CodeEditorWrapper({ projectId }: Props) {
 		},
 		[selectedFile],
 	);
-
-	useEffect(() => {
-		if (selectedFile) {
-			updateContent({
-				fileId: selectedFile.id,
-				projectId: projectId,
-				content: debouncedText,
-			});
-		}
-	}, [debouncedText, selectedFile]);
 
 	return (
 		<>

@@ -5,7 +5,6 @@ import { AbstractContextMenu } from '@/features/editor/explorer/components/fileE
 import { useCallback, useEffect, useState } from 'react';
 import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
 import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
-import { useSetCodeEditorSelectedFile } from '@/lib/stateManagement/project/setters';
 import PubSub from 'pubsub-js';
 import { useAddTab } from '@/lib/stateManagement/tabs/setters';
 import { createTabFromFile } from '@/lib/helpers/createTabFromFile';
@@ -20,7 +19,6 @@ interface Props {
 export function File({ item, isRoot = false, childSpace }: Props) {
 	const [selectedFile, setSelectedFile] = useState<string>();
 	const nextChildSpace = childSpace + 3;
-	const setCodeEditorSelectedFile = useSetCodeEditorSelectedFile();
 	const addTab = useAddTab();
 
 	useEffect(() => {
@@ -56,7 +54,6 @@ export function File({ item, isRoot = false, childSpace }: Props) {
 			onClick={(e) => {
 				if (!e.detail || e.detail == 1) {
 					SelectedFileSubscriber.create().publish(item.id, item);
-					setCodeEditorSelectedFile(item);
 				}
 			}}>
 			{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}

@@ -6,7 +6,6 @@ import {
 	projectAtom,
 	projectTotalAtom,
 	rootFileAtom,
-	codeEditorSelectedFileSignalAtom,
 } from '@/lib/stateManagement/project/atoms';
 
 export function useTotal() {
@@ -21,10 +20,6 @@ export function useProject() {
 
 export function useFilesystem() {
 	return useRecoilValue(fileSystemAtom);
-}
-
-export function useCodeEditorSelectedFile() {
-	return useRecoilValue(codeEditorSelectedFileSignalAtom);
 }
 
 export function useRootFile() {
