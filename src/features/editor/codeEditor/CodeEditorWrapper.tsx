@@ -11,7 +11,7 @@ interface Props {
 export function CodeEditorWrapper({ projectId }: Props) {
 	const selectedFile = useCodeEditorSelectedFile();
 
-	const [content, setContent] = useState(selectedFile?.content || '');
+	const [content, setContent] = useState('');
 	const { updateContent } = useUpdateContent();
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

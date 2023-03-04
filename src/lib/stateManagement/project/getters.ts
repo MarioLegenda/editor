@@ -7,7 +7,7 @@ import {
 	projectTotalAtom,
 	rootFileAtom,
 	codeEditorSelectedFileSignalAtom,
-} from '@/lib/stateManagement/project/project';
+} from '@/lib/stateManagement/project/atoms';
 
 export function useTotal() {
 	const total = useRecoilValue(projectTotalAtom);

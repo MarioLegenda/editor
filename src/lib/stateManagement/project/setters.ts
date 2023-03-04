@@ -5,7 +5,7 @@ import {
 	projectTotalAtom,
 	rootFileAtom,
 	codeEditorSelectedFileSignalAtom,
-} from '@/lib/stateManagement/project/project';
+} from '@/lib/stateManagement/project/atoms';
 
 export function useSetTotal() {
 	return useSetRecoilState(projectTotalAtom);
