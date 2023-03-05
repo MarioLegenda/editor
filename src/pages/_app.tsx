@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
 				colorScheme: 'dark',
 				loader: 'oval',
 			}}>
-			<NotificationsProvider>
+			<NotificationsProvider position="top-right">
 				<QueryClientProvider client={queryClient}>
 					<RecoilRoot>
 						<DataSourceEventsProvider>

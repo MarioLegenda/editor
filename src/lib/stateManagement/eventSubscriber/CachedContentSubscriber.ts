@@ -2,6 +2,7 @@ import PubSub from 'pubsub-js';
 import SubscriptionListener = PubSubJS.SubscriptionListener;
 import { getContent } from '@/lib/dataSource/features/fileSystem/implementation/getContent';
 import { ContentCache } from '@/lib/stateManagement/eventSubscriber/cache/ContentCache';
+import { showNotification } from '@mantine/notifications';
 
 let subscriber: CachedContentSubscriber | null = null;
 
@@ -29,23 +30,35 @@ export class CachedContentSubscriber {
 			return;
 		}
 
-		getContent(value.id, value.projectId, value.userId).then((content) => {
-			if (typeof content === 'string') {
-				this.cache.add(value.id, {
-					id: value.id,
-					userId: value.userId,
-					projectId: value.projectId,
-					content: content,
-				});
+		getContent('nothing', value.projectId, value.userId)
+			.then((content) => {
+				if (typeof content === 'string') {
+					this.cache.add(value.id, {
+						id: value.id,
+						userId: value.userId,
+						projectId: value.projectId,
+						content: content,
+					});
 
-				PubSub.publish(name, {
-					id: value.id,
-					userId: value.userId,
-					projectId: value.projectId,
-					content: content,
+					PubSub.publish(name, {
+						id: value.id,
+						userId: value.userId,
+						projectId: value.projectId,
+						content: content,
+					});
+				}
+			})
+			.catch(() => {
+				showNotification({
+					id: 'hello-there',
+					title: 'Something went wrong.',
+					autoClose: 10000,
+					message:
+            'We cannot get the content of this file at this moment. Please, try again later.',
+					color: 'red',
+					loading: false,
 				});
-			}
-		});
+			});
 	}
 
 	subscribe<T>(name: string, subscriber: SubscriptionListener<T>) {
