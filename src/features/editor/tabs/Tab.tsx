@@ -8,6 +8,7 @@ import {
 	useRemoveTab,
 } from '@/lib/stateManagement/tabs/setters';
 import { CachedContentSubscriber } from '@/lib/stateManagement/eventSubscriber/CachedContentSubscriber';
+import { Keys } from '@/lib/stateManagement/eventSubscriber/keys/Keys';
 
 interface Props {
   item: Tab;
@@ -26,7 +27,7 @@ export function Tab({ item }: Props) {
 					setSelected(data);
 					addHistory(data);
 
-					CachedContentSubscriber.create().publish('tab_change', {
+					CachedContentSubscriber.create().publish(Keys.TabChange, {
 						id: item.id,
 						projectId: item.projectId,
 						userId: item.userId,

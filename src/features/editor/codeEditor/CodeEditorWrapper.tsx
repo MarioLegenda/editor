@@ -4,6 +4,7 @@ import { useUpdateContent } from '@/lib/dataSource/features/fileSystem/useUpdate
 import { CachedContentSubscriber } from '@/lib/stateManagement/eventSubscriber/CachedContentSubscriber';
 import { isCachedContentEvent } from '@/lib/stateManagement/eventSubscriber/check/isCachedContentEvent';
 import { debounce } from 'throttle-debounce';
+import { Keys } from '@/lib/stateManagement/eventSubscriber/keys/Keys';
 
 export function CodeEditorWrapper() {
 	const { updateContent } = useUpdateContent();
@@ -12,8 +13,8 @@ export function CodeEditorWrapper() {
 	const isFirstFileRenderRef = useRef(true);
 
 	useEffect(() => {
-		const unsubscribe = CachedContentSubscriber.create().subscribe(
-			'tab_change',
+		const cachedContentSubscriber = CachedContentSubscriber.create().subscribe(
+			Keys.TabChange,
 			(name, value) => {
 				if (isCachedContentEvent(value)) {
 					setSelectedFile(undefined);
@@ -23,12 +24,14 @@ export function CodeEditorWrapper() {
 						setSelectedFile(value);
 						setContent(value.content);
 					}, 1);
+
+					return;
 				}
 			},
 		);
 
 		return () => {
-			PubSub.unsubscribe(unsubscribe);
+			PubSub.unsubscribe(cachedContentSubscriber);
 		};
 	}, []);
 
