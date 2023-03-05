@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { CodeEditor } from '@/features/editor/codeEditor/CodeEditor';
 import { useUpdateContent } from '@/lib/dataSource/features/fileSystem/useUpdateContent';
 import { CachedContentSubscriber } from '@/lib/stateManagement/eventSubscriber/CachedContentSubscriber';
@@ -9,6 +9,7 @@ export function CodeEditorWrapper() {
 	const { updateContent } = useUpdateContent();
 	const [selectedFile, setSelectedFile] = useState<CachedContentPayload>();
 	const [content, setContent] = useState('');
+	const isFirstFileRenderRef = useRef(true);
 
 	useEffect(() => {
 		CachedContentSubscriber.create().subscribe('tab_change', (name, value) => {
@@ -16,30 +17,38 @@ export function CodeEditorWrapper() {
 				setSelectedFile(undefined);
 
 				setTimeout(() => {
+					isFirstFileRenderRef.current = true;
 					setSelectedFile(value);
 					setContent(value.content);
-				}, 100);
+				}, 1);
 			}
 		});
 	}, []);
 
+	useEffect(() => {
+		if (selectedFile && !isFirstFileRenderRef.current) {
+			isFirstFileRenderRef.current = false;
+
+			updateContent({
+				fileId: selectedFile.id,
+				projectId: selectedFile.projectId,
+				content: content,
+			});
+
+			CachedContentSubscriber.create().updateCache(selectedFile.id, {
+				id: selectedFile.id,
+				projectId: selectedFile.projectId,
+				content: content,
+				userId: selectedFile.userId,
+			});
+		}
+	}, [content, selectedFile]);
+
 	const onChange = useCallback(
 		debounce(500, (text: string) => {
 			if (selectedFile) {
+				isFirstFileRenderRef.current = false;
 				setContent(text);
-
-				updateContent({
-					fileId: selectedFile.id,
-					projectId: selectedFile.projectId,
-					content: content,
-				});
-
-				CachedContentSubscriber.create().updateCache(selectedFile.id, {
-					id: selectedFile.id,
-					projectId: selectedFile.projectId,
-					content: content,
-					userId: selectedFile.userId,
-				});
 			}
 		}),
 		[selectedFile],
