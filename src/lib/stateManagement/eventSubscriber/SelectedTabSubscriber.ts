@@ -5,6 +5,7 @@ let subscriber: SelectedTabSubscriber | null = null;
 
 export class SelectedTabSubscriber {
 	private selectedTab: Record<string, Tab | undefined> = {};
+	private buffer: Record<string, Tab | undefined> = {};
 
 	static create(): SelectedTabSubscriber {
 		if (!subscriber) {
@@ -16,11 +17,18 @@ export class SelectedTabSubscriber {
 
 	publish(name: string, value: Tab | undefined) {
 		this.sendPreviousSelected();
-		PubSub.publish(name, value);
+		const isPublished = PubSub.publish(name, value);
+
+		if (!isPublished) {
+			this.buffer[name] = value;
+		}
+
 		this.selectedTab[name] = value;
 	}
 
 	subscribe<T>(name: string, subscriber: SubscriptionListener<T>) {
+		this.sendBuffered();
+
 		return PubSub.subscribe(name, subscriber);
 	}
 
@@ -36,6 +44,17 @@ export class SelectedTabSubscriber {
 			PubSub.publish(key, undefined);
 
 			delete this.selectedTab[key];
+		}
+	}
+
+	private sendBuffered() {
+		const buffered = Object.keys(this.buffer);
+
+		if (buffered.length !== 0) {
+			for (const key of buffered) {
+				this.publish(key, this.buffer[key]);
+				delete this.buffer[key];
+			}
 		}
 	}
 }

@@ -10,6 +10,9 @@ import { useEffect } from 'react';
 import { useSetFilesystem } from '@/lib/stateManagement/project/setters';
 import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
 import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
+import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedTabSubscriber';
+import { createTabFromFile } from '@/lib/helpers/createTabFromFile';
+import { useAddTab } from '@/lib/stateManagement/tabs/setters';
 
 interface Props {
   fileType: FileType;
@@ -30,11 +33,16 @@ export function CreateFileForm({
 	} = useCreateFile(projectId);
 	const files = useFilesystem();
 	const setFiles = useSetFilesystem();
+	const addTab = useAddTab();
 
 	useEffect(() => {
 		if (isSuccess && data && isFile(data)) {
 			setFiles((files) => [...files, data]);
 			SelectedFileSubscriber.create().publish(`${parent}_addedFile`, data.id);
+			const tab = createTabFromFile(data);
+
+			addTab(tab);
+			SelectedTabSubscriber.create().publish(data.id, tab);
 			onCancel();
 		}
 	}, [isSuccess, data]);
