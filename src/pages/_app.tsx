@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { DataSourceEventsProvider } from '@/lib/dataSource/components/DataSourceEventsProvider';
 import { RecoilRoot } from 'recoil';
 import { NotificationsProvider } from '@mantine/notifications';
+import { RouterTransition } from '@/lib/components/RouteTransition';
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
 				colorScheme: 'dark',
 				loader: 'oval',
 			}}>
+			<RouterTransition />
 			<NotificationsProvider position="top-right">
 				<QueryClientProvider client={queryClient}>
 					<RecoilRoot>

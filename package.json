@@ -17,6 +17,7 @@
     "@mantine/hooks": "^5.10.4",
     "@mantine/next": "^5.10.4",
     "@mantine/notifications": "^5.10.5",
+    "@mantine/nprogress": "^6.0.0",
     "@monaco-editor/react": "^4.4.6",
     "@supabase/supabase-js": "^2.8.0",
     "monaco-editor": "^0.36.1",
