@@ -72,7 +72,7 @@ export function File({ item, isRoot = false, childSpace }: Props) {
 					]}>
 					<LanguageIcon fileType={item.file_type as FileType} />
 
-					<p>{item.name}</p>
+					<p css={styles.title}>{item.name}</p>
 				</div>
 			</ContextMenuTrigger>
 

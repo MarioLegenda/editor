@@ -30,7 +30,7 @@ export class CachedContentSubscriber {
 			return;
 		}
 
-		getContent('nothing', value.projectId, value.userId)
+		getContent(value.id, value.projectId, value.userId)
 			.then((content) => {
 				if (typeof content === 'string') {
 					this.cache.add(value.id, {
@@ -50,7 +50,7 @@ export class CachedContentSubscriber {
 			})
 			.catch(() => {
 				showNotification({
-					id: 'hello-there',
+					id: 'cachedContentError',
 					title: 'Something went wrong.',
 					autoClose: 10000,
 					message:

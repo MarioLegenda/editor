@@ -34,3 +34,12 @@ export const open = css`
     background-color: var(--color-primaryDark);
   }
 `;
+
+export const title = css`
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+`;
