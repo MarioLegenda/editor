@@ -13,6 +13,7 @@ import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/Se
 import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedTabSubscriber';
 import { createTabFromFile } from '@/lib/helpers/createTabFromFile';
 import { useAddTab } from '@/lib/stateManagement/tabs/setters';
+import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedTabTopic';
 
 interface Props {
   fileType: FileType;
@@ -42,7 +43,10 @@ export function CreateFileForm({
 			const tab = createTabFromFile(data);
 
 			addTab(tab);
-			SelectedTabSubscriber.create().publish(data.id, tab);
+			SelectedTabSubscriber.create().publish(
+				createSelectedTabTopic(data.id),
+				tab,
+			);
 			onCancel();
 		}
 	}, [isSuccess, data]);

@@ -4,6 +4,7 @@ import {
 	tabsListingAtom,
 } from '@/lib/stateManagement/tabs/atoms';
 import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedTabSubscriber';
+import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedTabTopic';
 
 export function useAddTab() {
 	return useRecoilCallback(
@@ -70,12 +71,16 @@ export function useRemoveTab() {
 					const idx = tabsHistory.length - 2;
 					const previousTab = tabsHistory[idx];
 					if (previousTab) {
-						SelectedTabSubscriber.create().publish(previousTab.id, previousTab);
+						SelectedTabSubscriber.create().publish(
+							createSelectedTabTopic(previousTab.id),
+							previousTab,
+						);
 					} else {
 						// only one history tab exists that is about to be removed
 						// so we can just reset the history atom
 
 						reset(tabsHistoryAtom);
+						SelectedTabSubscriber.create().publish('selected', undefined);
 
 						return;
 					}

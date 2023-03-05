@@ -5,6 +5,7 @@ import { CachedContentSubscriber } from '@/lib/stateManagement/eventSubscriber/C
 import { isCachedContentEvent } from '@/lib/stateManagement/eventSubscriber/check/isCachedContentEvent';
 import { debounce } from 'throttle-debounce';
 import { Keys } from '@/lib/stateManagement/eventSubscriber/keys/Keys';
+import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedTabSubscriber';
 
 export function CodeEditorWrapper() {
 	const { updateContent } = useUpdateContent();
@@ -29,6 +30,13 @@ export function CodeEditorWrapper() {
 				}
 			},
 		);
+
+		SelectedTabSubscriber.create().subscribe('selected', (msg, data) => {
+			if (!data) {
+				setSelectedFile(undefined);
+				isFirstFileRenderRef.current = true;
+			}
+		});
 
 		return () => {
 			PubSub.unsubscribe(cachedContentSubscriber);

@@ -9,6 +9,7 @@ import {
 } from '@/lib/stateManagement/tabs/setters';
 import { CachedContentSubscriber } from '@/lib/stateManagement/eventSubscriber/CachedContentSubscriber';
 import { Keys } from '@/lib/stateManagement/eventSubscriber/keys/Keys';
+import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedTabTopic';
 
 interface Props {
   item: Tab;
@@ -20,8 +21,8 @@ export function Tab({ item }: Props) {
 	const addHistory = useAddTabToHistory();
 
 	useEffect(() => {
-		const unsubscribe = SelectedTabSubscriber.create().subscribe(
-			item.id,
+		const selectedTabUnsubscribe = SelectedTabSubscriber.create().subscribe(
+			createSelectedTabTopic(item.id),
 			(msg, data) => {
 				if (isTab(data) && data.id === item.id) {
 					setSelected(data);
@@ -41,7 +42,7 @@ export function Tab({ item }: Props) {
 		);
 
 		return () => {
-			PubSub.unsubscribe(unsubscribe);
+			PubSub.unsubscribe(selectedTabUnsubscribe);
 		};
 	}, []);
 

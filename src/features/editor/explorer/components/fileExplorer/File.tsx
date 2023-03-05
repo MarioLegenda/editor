@@ -9,6 +9,7 @@ import PubSub from 'pubsub-js';
 import { useAddTab } from '@/lib/stateManagement/tabs/setters';
 import { createTabFromFile } from '@/lib/helpers/createTabFromFile';
 import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedTabSubscriber';
+import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedTabTopic';
 
 interface Props {
   item: AppFile;
@@ -44,7 +45,10 @@ export function File({ item, isRoot = false, childSpace }: Props) {
 		const tab = createTabFromFile(item);
 
 		addTab(tab);
-		SelectedTabSubscriber.create().publish(item.id, tab);
+		SelectedTabSubscriber.create().publish(
+			createSelectedTabTopic(item.id),
+			tab,
+		);
 	}, []);
 
 	return (
