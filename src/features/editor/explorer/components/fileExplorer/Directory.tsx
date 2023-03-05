@@ -66,7 +66,7 @@ export function Directory({ item, isRoot, childSpace }: Props) {
 					]}>
 					{isOpen ? <DirOpen width={20} /> : <DirClosed width={20} />}
 
-					<p>{item.name}</p>
+					<p css={styles.title}>{item.name}</p>
 				</div>
 			</ContextMenuTrigger>
 
