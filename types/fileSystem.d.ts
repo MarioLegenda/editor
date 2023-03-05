@@ -10,6 +10,12 @@ interface NewFile {
   extension: ExtensionType[] | null;
 }
 
+interface RenameFile {
+  name: string;
+  projectId: string;
+  id: string;
+}
+
 interface UpdatedContent {
   fileId: string;
   projectId: string;

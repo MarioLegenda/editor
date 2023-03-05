@@ -22,6 +22,24 @@ export function useAddTab() {
 	);
 }
 
+export function useUpdateTabs() {
+	return useRecoilCallback(
+		({ snapshot, set }) =>
+			async (tab: Tab) => {
+				const tabs = await snapshot.getPromise(tabsListingAtom);
+
+				const idx = tabs.findIndex((item) => item.id === tab.id);
+
+				if (idx !== -1) {
+					const temp = [...tabs];
+					temp[idx] = tab;
+					set(tabsListingAtom, temp);
+				}
+			},
+		[],
+	);
+}
+
 export function useAddTabToHistory() {
 	return useRecoilCallback(
 		({ snapshot, set }) =>
@@ -45,6 +63,23 @@ export function useAddTabToHistory() {
 
 				const temp = [...tabsHistory];
 				set(tabsHistoryAtom, [...temp, tab]);
+			},
+		[],
+	);
+}
+
+export function useUpdateHistory() {
+	return useRecoilCallback(
+		({ snapshot, set }) =>
+			async (tab: Tab) => {
+				const tabsHistory = await snapshot.getPromise(tabsHistoryAtom);
+
+				const idx = tabsHistory.findIndex((item) => item.id === tab.id);
+				if (idx !== -1) {
+					const temp = [...tabsHistory];
+					temp[idx] = tab;
+					set(tabsHistoryAtom, temp);
+				}
 			},
 		[],
 	);

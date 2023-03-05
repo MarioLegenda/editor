@@ -10,6 +10,7 @@ import { useAddTab } from '@/lib/stateManagement/tabs/setters';
 import { createTabFromFile } from '@/lib/helpers/createTabFromFile';
 import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedTabSubscriber';
 import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedTabTopic';
+import { RenamedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/RenamedFileSubscriber';
 
 interface Props {
   item: AppFile;
@@ -21,9 +22,10 @@ export function File({ item, isRoot = false, childSpace }: Props) {
 	const [selectedFile, setSelectedFile] = useState<string>();
 	const nextChildSpace = childSpace + 3;
 	const addTab = useAddTab();
+	const [name, setName] = useState(item.name);
 
 	useEffect(() => {
-		const unsubscribe = SelectedFileSubscriber.create().subscribe(
+		const selectedFileUnsubscribe = SelectedFileSubscriber.create().subscribe(
 			item.id,
 			(selected, data) => {
 				if (isFile(data)) {
@@ -36,8 +38,18 @@ export function File({ item, isRoot = false, childSpace }: Props) {
 			},
 		);
 
+		const renameFileUnsubscribe = RenamedFileSubscriber.create().subscribe(
+			item.id,
+			(msg, data) => {
+				if (typeof data === 'string') {
+					setName(data);
+				}
+			},
+		);
+
 		return () => {
-			PubSub.unsubscribe(unsubscribe);
+			PubSub.unsubscribe(renameFileUnsubscribe);
+			PubSub.unsubscribe(selectedFileUnsubscribe);
 		};
 	}, []);
 
@@ -72,11 +84,13 @@ export function File({ item, isRoot = false, childSpace }: Props) {
 					]}>
 					<LanguageIcon fileType={item.file_type as FileType} />
 
-					<p css={styles.title}>{item.name}</p>
+					<p css={styles.title}>{name}</p>
 				</div>
 			</ContextMenuTrigger>
 
 			<AbstractContextMenu
+				value={name}
+				fileType={item.file_type}
 				isDirectory={item.is_directory}
 				projectId={item.project_id}
 				id={item.id}

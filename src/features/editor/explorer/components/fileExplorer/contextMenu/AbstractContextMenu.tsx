@@ -22,18 +22,28 @@ import { CreateDirectoryModal } from '@/features/editor/explorer/modals/CreateDi
 import { CreateFileModal } from '@/features/editor/explorer/modals/CreateFileModal';
 import { useState } from 'react';
 import { DeleteFileModal } from '@/features/editor/explorer/modals/DeleteFileModal';
+import { RenameFileModal } from '@/features/editor/explorer/modals/RenameFileModal';
 
 interface Props {
   id: string;
+  value: string;
   projectId: string;
+  fileType: FileType | null;
   isDirectory: boolean;
 }
 
-export function AbstractContextMenu({ id, projectId, isDirectory }: Props) {
+export function AbstractContextMenu({
+	id,
+	projectId,
+	isDirectory,
+	fileType,
+	value,
+}: Props) {
 	const [isDirectoryModal, setIsDirectoryModal] = useState(false);
 	const [createFileModalData, setCreateFileModalData] =
     useState<FileType | null>(null);
 	const [isDeleteFileModal, setIsDeleteFileModal] = useState(false);
+	const [isRenameModal, setIsRenameModal] = useState(false);
 
 	return (
 		<>
@@ -43,14 +53,16 @@ export function AbstractContextMenu({ id, projectId, isDirectory }: Props) {
 				preventHideOnScroll={true}
 				preventHideOnResize={true}>
 				<Submenu css={styles.divider} title="New">
-					{isDirectory && <ContextMenuItem
-						css={styles.divider}
-						onClick={() => setIsDirectoryModal(true)}>
-						<Item
-							leftIcon={<IconFolderPlus size={18} color="white" />}
-							name="Directory"
-						/>
-					</ContextMenuItem>}
+					{isDirectory && (
+						<ContextMenuItem
+							css={styles.divider}
+							onClick={() => setIsDirectoryModal(true)}>
+							<Item
+								leftIcon={<IconFolderPlus size={18} color="white" />}
+								name="Directory"
+							/>
+						</ContextMenuItem>
+					)}
 					<ContextMenuItem onClick={() => setCreateFileModalData('default')}>
 						<Item leftIcon={<AnyFileIcon width={18} />} name="File" />
 					</ContextMenuItem>
@@ -77,7 +89,7 @@ export function AbstractContextMenu({ id, projectId, isDirectory }: Props) {
 				<ContextMenuItem css={styles.divider}>
 					<Item leftIcon={<IconCalendarPlus size={18} />} name="Paste" />
 				</ContextMenuItem>
-				<ContextMenuItem>
+				<ContextMenuItem onClick={() => setIsRenameModal(true)}>
 					<Item leftIcon={<IconEdit size={18} />} name="Rename" />
 				</ContextMenuItem>
 				<ContextMenuItem
@@ -113,6 +125,18 @@ export function AbstractContextMenu({ id, projectId, isDirectory }: Props) {
 					fileType={createFileModalData}
 					show={Boolean(createFileModalData)}
 					onCancel={() => setCreateFileModalData(null)}
+				/>
+			)}
+
+			{isRenameModal && (
+				<RenameFileModal
+					projectId={projectId}
+					value={value}
+					parent={id}
+					fileId={id}
+					fileType={fileType}
+					show={isRenameModal}
+					onCancel={() => setIsRenameModal(null)}
 				/>
 			)}
 		</>

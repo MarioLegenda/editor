@@ -17,6 +17,7 @@ interface Props {
 
 export function Tab({ item }: Props) {
 	const [selected, setSelected] = useState<Tab>();
+	const [name, setName] = useState(item.name);
 	const removeTab = useRemoveTab();
 	const addHistory = useAddTabToHistory();
 
@@ -26,6 +27,7 @@ export function Tab({ item }: Props) {
 			(msg, data) => {
 				if (isTab(data) && data.id === item.id) {
 					setSelected(data);
+					setName(data.name);
 					addHistory(data);
 
 					CachedContentSubscriber.create().publish(Keys.TabChange, {
@@ -50,11 +52,14 @@ export function Tab({ item }: Props) {
 		<div
 			css={[styles.root, selected ? styles.selected : undefined]}
 			onClick={() => {
-				SelectedTabSubscriber.create().publish(item.id, item);
+				SelectedTabSubscriber.create().publish(
+					createSelectedTabTopic(item.id),
+					item,
+				);
 			}}>
 			<div css={styles.content}>
 				<IconFile />
-				<p>{item.name}</p>
+				<p>{name}</p>
 			</div>
 
 			<IconSquareX
