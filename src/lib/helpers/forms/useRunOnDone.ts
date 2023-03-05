@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 
 export function useRunOnDone(
-  isLoading: boolean,
-  isSuccess: boolean,
-  onDone: () => void,
+	isLoading: boolean,
+	isSuccess: boolean,
+	onDone: () => void,
 ) {
-  useEffect(() => {
-    if (!isLoading && isSuccess) {
-      onDone();
-    }
-  }, [isLoading, isSuccess]);
+	useEffect(() => {
+		if (!isLoading && isSuccess) {
+			onDone();
+		}
+	}, [isLoading, isSuccess]);
 }

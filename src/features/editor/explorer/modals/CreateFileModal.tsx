@@ -10,24 +10,24 @@ interface Props {
 }
 
 export function CreateFileModal({
-  projectId,
-  show,
-  onCancel,
-  fileType,
-  parent,
+	projectId,
+	show,
+	onCancel,
+	fileType,
+	parent,
 }: Props) {
-  return (
-    <>
-      {show && (
-        <BaseModal show={show} onCancel={onCancel}>
-          <CreateFileForm
-            parent={parent}
-            projectId={projectId}
-            fileType={fileType}
-            onCancel={onCancel}
-          />
-        </BaseModal>
-      )}
-    </>
-  );
+	return (
+		<>
+			{show && (
+				<BaseModal show={show} onCancel={onCancel}>
+					<CreateFileForm
+						parent={parent}
+						projectId={projectId}
+						fileType={fileType}
+						onCancel={onCancel}
+					/>
+				</BaseModal>
+			)}
+		</>
+	);
 }

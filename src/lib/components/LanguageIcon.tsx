@@ -9,11 +9,11 @@ interface Props {
 }
 
 export function LanguageIcon({ fileType }: Props) {
-  if (fileType === 'typescript') return <TypescriptIcon width={20} />;
-  if (fileType === 'default') return <AnyFileIcon width={20} />;
-  if (fileType === 'javascript') return <JavascriptIcon width={20} />;
-  if (fileType === 'yaml') return <YamlIcon width={20} />;
-  if (fileType === 'json') return <JsonIcon width={20} />;
+	if (fileType === 'typescript') return <TypescriptIcon width={20} />;
+	if (fileType === 'default') return <AnyFileIcon width={20} />;
+	if (fileType === 'javascript') return <JavascriptIcon width={20} />;
+	if (fileType === 'yaml') return <YamlIcon width={20} />;
+	if (fileType === 'json') return <JsonIcon width={20} />;
 
-  return <AnyFileIcon width={20} />;
+	return <AnyFileIcon width={20} />;
 }

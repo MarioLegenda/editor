@@ -14,55 +14,55 @@ interface Props {
 }
 
 export function DeleteFileForm({
-  onCancel,
-  projectId,
-  fileId,
-  isDirectory,
+	onCancel,
+	projectId,
+	fileId,
+	isDirectory,
 }: Props) {
-  const {
-    mutation: { isLoading, isSuccess },
-    deleteFile,
-  } = useDeleteFile(fileId, isDirectory);
-  const setFiles = useSetFilesystem();
+	const {
+		mutation: { isLoading, isSuccess },
+		deleteFile,
+	} = useDeleteFile(fileId, isDirectory);
+	const setFiles = useSetFilesystem();
 
-  useRunOnDone(isLoading, isSuccess, () => {
-    setFiles((files) => files.filter((file) => file.id !== fileId));
-    onCancel();
-  });
+	useRunOnDone(isLoading, isSuccess, () => {
+		setFiles((files) => files.filter((file) => file.id !== fileId));
+		onCancel();
+	});
 
-  return (
-    <>
-      <h3 css={styles.heading}>Are you sure?</h3>
+	return (
+		<>
+			<h3 css={styles.heading}>Are you sure?</h3>
 
-      <p css={styles.description}>
+			<p css={styles.description}>
         You can undo any deletion in the upper left corner by pressing{' '}
-        <IconArrowBackUp size={20} /> icon
-      </p>
+				<IconArrowBackUp size={20} /> icon
+			</p>
 
-      <Group position="right" mt="lg">
-        <Button
-          onClick={onCancel}
-          type="button"
-          size="md"
-          variant="light"
-          color="gray">
+			<Group position="right" mt="lg">
+				<Button
+					onClick={onCancel}
+					type="button"
+					size="md"
+					variant="light"
+					color="gray">
           Cancel
-        </Button>
+				</Button>
 
-        <Button
-          onClick={() =>
-            deleteFile({
-              projectId: projectId,
-              fileId: fileId,
-            })
-          }
-          disabled={isLoading}
-          type="submit"
-          size="md"
-          color="red">
+				<Button
+					onClick={() =>
+						deleteFile({
+							projectId: projectId,
+							fileId: fileId,
+						})
+					}
+					disabled={isLoading}
+					type="submit"
+					size="md"
+					color="red">
           Delete
-        </Button>
-      </Group>
-    </>
-  );
+				</Button>
+			</Group>
+		</>
+	);
 }

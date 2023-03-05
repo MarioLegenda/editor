@@ -8,14 +8,14 @@ interface Props {
 }
 
 export function Item({ name, rightIcon, leftIcon }: Props) {
-  return (
-    <div css={styles.root}>
-      <div css={styles.leftSection}>
-        {leftIcon && leftIcon}
-        <p>{name}</p>
-      </div>
+	return (
+		<div css={styles.root}>
+			<div css={styles.leftSection}>
+				{leftIcon && leftIcon}
+				<p>{name}</p>
+			</div>
 
-      {rightIcon && rightIcon}
-    </div>
-  );
+			{rightIcon && rightIcon}
+		</div>
+	);
 }

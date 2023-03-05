@@ -9,22 +9,22 @@ interface Props {
 }
 
 export function CreateDirectoryModal({
-  projectId,
-  show,
-  onCancel,
-  parent,
+	projectId,
+	show,
+	onCancel,
+	parent,
 }: Props) {
-  return (
-    <>
-      {show && (
-        <BaseModal show={show} onCancel={onCancel}>
-          <CreateDirectoryForm
-            parent={parent}
-            projectId={projectId}
-            onCancel={onCancel}
-          />
-        </BaseModal>
-      )}
-    </>
-  );
+	return (
+		<>
+			{show && (
+				<BaseModal show={show} onCancel={onCancel}>
+					<CreateDirectoryForm
+						parent={parent}
+						projectId={projectId}
+						onCancel={onCancel}
+					/>
+				</BaseModal>
+			)}
+		</>
+	);
 }

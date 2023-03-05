@@ -45,7 +45,7 @@ export const menu = css`
 `;
 
 export const avatarBackground = (color: string) => {
-  return css`
+	return css`
     background-color: ${color};
   `;
 };

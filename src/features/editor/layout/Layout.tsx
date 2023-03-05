@@ -8,14 +8,14 @@ interface Props {
 }
 
 export function Layout({ editor, explorer, tabs }: Props) {
-  return (
-    <div css={styles.root}>
-      <div css={styles.explorer}>{explorer}</div>
+	return (
+		<div css={styles.root}>
+			<div css={styles.explorer}>{explorer}</div>
 
-      <div css={styles.codeEditor}>
-        <div css={styles.tabs}>{tabs}</div>
-        <div css={styles.actualEditor}>{editor}</div>
-      </div>
-    </div>
-  );
+			<div css={styles.codeEditor}>
+				<div css={styles.tabs}>{tabs}</div>
+				<div css={styles.actualEditor}>{editor}</div>
+			</div>
+		</div>
+	);
 }

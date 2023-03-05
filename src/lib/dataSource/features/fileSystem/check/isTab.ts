@@ -1,8 +1,8 @@
 export function isTab(item: unknown): item is Tab {
-  const a = item as Tab;
+	const a = item as Tab;
 
-  return (
-    a &&
+	return (
+		a &&
     Object.hasOwn(a, 'id') &&
     Object.hasOwn(a, 'name') &&
     Object.hasOwn(a, 'projectId') &&
@@ -11,5 +11,5 @@ export function isTab(item: unknown): item is Tab {
     Object.hasOwn(a, 'fileType') &&
     Object.hasOwn(a, 'fileExtension') &&
     Boolean(a.id)
-  );
+	);
 }

@@ -9,18 +9,18 @@ interface Props {
 }
 
 export function Actions({ onNewProject }: Props) {
-  return (
-    <div css={styles.root}>
-      <div css={styles.leftWrapper}>
-        <Search />
-        <Button onClick={onNewProject} color="gray">
+	return (
+		<div css={styles.root}>
+			<div css={styles.leftWrapper}>
+				<Search />
+				<Button onClick={onNewProject} color="gray">
           New Project
-        </Button>
-      </div>
+				</Button>
+			</div>
 
-      <div css={styles.logoutButton}>
-        <SignOutButton />
-      </div>
-    </div>
-  );
+			<div css={styles.logoutButton}>
+				<SignOutButton />
+			</div>
+		</div>
+	);
 }

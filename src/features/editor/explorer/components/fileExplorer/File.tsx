@@ -17,66 +17,66 @@ interface Props {
 }
 
 export function File({ item, isRoot = false, childSpace }: Props) {
-  const [selectedFile, setSelectedFile] = useState<string>();
-  const nextChildSpace = childSpace + 3;
-  const addTab = useAddTab();
+	const [selectedFile, setSelectedFile] = useState<string>();
+	const nextChildSpace = childSpace + 3;
+	const addTab = useAddTab();
 
-  useEffect(() => {
-    const unsubscribe = SelectedFileSubscriber.create().subscribe(
-      item.id,
-      (selected, data) => {
-        if (isFile(data)) {
-          setSelectedFile(data.id);
+	useEffect(() => {
+		const unsubscribe = SelectedFileSubscriber.create().subscribe(
+			item.id,
+			(selected, data) => {
+				if (isFile(data)) {
+					setSelectedFile(data.id);
 
-          return;
-        }
+					return;
+				}
 
-        setSelectedFile(undefined);
-      },
-    );
+				setSelectedFile(undefined);
+			},
+		);
 
-    return () => {
-      PubSub.unsubscribe(unsubscribe);
-    };
-  }, []);
+		return () => {
+			PubSub.unsubscribe(unsubscribe);
+		};
+	}, []);
 
-  const onAddTab = useCallback(() => {
-    const tab = createTabFromFile(item);
+	const onAddTab = useCallback(() => {
+		const tab = createTabFromFile(item);
 
-    addTab(tab);
-    SelectedTabSubscriber.create().publish(item.id, tab);
-  }, []);
+		addTab(tab);
+		SelectedTabSubscriber.create().publish(item.id, tab);
+	}, []);
 
-  return (
-    <div
-      css={[styles.root]}
-      onDoubleClick={onAddTab}
-      onClick={(e) => {
-        if (!e.detail || e.detail == 1) {
-          SelectedFileSubscriber.create().publish(item.id, item);
-        }
-      }}>
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/*
+	return (
+		<div
+			css={[styles.root]}
+			onDoubleClick={onAddTab}
+			onClick={(e) => {
+				if (!e.detail || e.detail == 1) {
+					SelectedFileSubscriber.create().publish(item.id, item);
+				}
+			}}>
+			{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+			{/*
           // @ts-ignore */}
-      <ContextMenuTrigger id={item.id}>
-        <div
-          css={[
-            styles.content,
-            styles.move(isRoot ? 5 : nextChildSpace),
-            selectedFile === item.id ? styles.open : undefined,
-          ]}>
-          <LanguageIcon fileType={item.file_type as FileType} />
+			<ContextMenuTrigger id={item.id}>
+				<div
+					css={[
+						styles.content,
+						styles.move(isRoot ? 5 : nextChildSpace),
+						selectedFile === item.id ? styles.open : undefined,
+					]}>
+					<LanguageIcon fileType={item.file_type as FileType} />
 
-          <p>{item.name}</p>
-        </div>
-      </ContextMenuTrigger>
+					<p>{item.name}</p>
+				</div>
+			</ContextMenuTrigger>
 
-      <AbstractContextMenu
-        isDirectory={item.is_directory}
-        projectId={item.project_id}
-        id={item.id}
-      />
-    </div>
-  );
+			<AbstractContextMenu
+				isDirectory={item.is_directory}
+				projectId={item.project_id}
+				id={item.id}
+			/>
+		</div>
+	);
 }

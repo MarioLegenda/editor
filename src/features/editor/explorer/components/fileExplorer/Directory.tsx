@@ -16,69 +16,69 @@ interface Props {
 }
 
 export function Directory({ item, isRoot, childSpace }: Props) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<string>();
-  const files = useParentFiles(item.id);
-  const nextChildSpace = childSpace + 3;
+	const [isOpen, setIsOpen] = useState(false);
+	const [selectedFile, setSelectedFile] = useState<string>();
+	const files = useParentFiles(item.id);
+	const nextChildSpace = childSpace + 3;
 
-  useEffect(() => {
-    const addedUnsubscribe = SelectedFileSubscriber.create().subscribe(
-      `${item.id}_addedFile`,
-      () => {
-        setIsOpen(true);
-        SelectedFileSubscriber.create().publish(item.id, item.id);
-      },
-    );
+	useEffect(() => {
+		const addedUnsubscribe = SelectedFileSubscriber.create().subscribe(
+			`${item.id}_addedFile`,
+			() => {
+				setIsOpen(true);
+				SelectedFileSubscriber.create().publish(item.id, item.id);
+			},
+		);
 
-    const selectedUnsubscribe =
+		const selectedUnsubscribe =
       SelectedFileSubscriber.create().subscribe<string>(
-        item.id,
-        (selected, data) => {
-          setSelectedFile(data);
-        },
+      	item.id,
+      	(selected, data) => {
+      		setSelectedFile(data);
+      	},
       );
 
-    return () => {
-      PubSub.unsubscribe(addedUnsubscribe);
-      PubSub.unsubscribe(selectedUnsubscribe);
-    };
-  }, []);
+		return () => {
+			PubSub.unsubscribe(addedUnsubscribe);
+			PubSub.unsubscribe(selectedUnsubscribe);
+		};
+	}, []);
 
-  const onOpen = useCallback(() => {
-    setIsOpen((open) => !open);
+	const onOpen = useCallback(() => {
+		setIsOpen((open) => !open);
 
-    SelectedFileSubscriber.create().publish(item.id, item.id);
-  }, [isOpen]);
+		SelectedFileSubscriber.create().publish(item.id, item.id);
+	}, [isOpen]);
 
-  return (
-    <div css={[styles.root]}>
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/*
+	return (
+		<div css={[styles.root]}>
+			{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+			{/*
           // @ts-ignore */}
-      <ContextMenuTrigger id={item.id}>
-        <div
-          onClick={onOpen}
-          css={[
-            styles.content,
-            styles.move(isRoot ? 5 : nextChildSpace),
-            isOpen && selectedFile !== item.id ? styles.softOpen : undefined,
-            selectedFile === item.id ? styles.open : undefined,
-          ]}>
-          {isOpen ? <DirOpen width={20} /> : <DirClosed width={20} />}
+			<ContextMenuTrigger id={item.id}>
+				<div
+					onClick={onOpen}
+					css={[
+						styles.content,
+						styles.move(isRoot ? 5 : nextChildSpace),
+						isOpen && selectedFile !== item.id ? styles.softOpen : undefined,
+						selectedFile === item.id ? styles.open : undefined,
+					]}>
+					{isOpen ? <DirOpen width={20} /> : <DirClosed width={20} />}
 
-          <p>{item.name}</p>
-        </div>
-      </ContextMenuTrigger>
+					<p>{item.name}</p>
+				</div>
+			</ContextMenuTrigger>
 
-      <AbstractContextMenu
-        projectId={item.project_id}
-        isDirectory={item.is_directory}
-        id={item.id}
-      />
+			<AbstractContextMenu
+				projectId={item.project_id}
+				isDirectory={item.is_directory}
+				id={item.id}
+			/>
 
-      {isOpen && (
-        <FileListing childSpace={nextChildSpace} isRoot={false} files={files} />
-      )}
-    </div>
-  );
+			{isOpen && (
+				<FileListing childSpace={nextChildSpace} isRoot={false} files={files} />
+			)}
+		</div>
+	);
 }

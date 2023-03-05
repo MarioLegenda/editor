@@ -1,10 +1,10 @@
 export function isCachedContentEvent(
-  item: unknown,
+	item: unknown,
 ): item is CachedContentEvent {
-  const a = item as CachedContentEvent;
+	const a = item as CachedContentEvent;
 
-  return (
-    a &&
+	return (
+		a &&
     Object.hasOwn(a, 'id') &&
     Object.hasOwn(a, 'projectId') &&
     Object.hasOwn(a, 'userId') &&
@@ -12,5 +12,5 @@ export function isCachedContentEvent(
     Boolean(a.userId) &&
     Boolean(a.projectId) &&
     Boolean(a.id)
-  );
+	);
 }

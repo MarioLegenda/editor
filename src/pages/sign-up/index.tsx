@@ -5,8 +5,8 @@ import { useAuthState } from '@/lib/stateManagement/auth/getters';
 import { AuthState } from '@/lib/stateManagement/types/authState';
 
 export default function Index() {
-  useRedirectIfSignedIn('/editor');
-  const authState = useAuthState();
+	useRedirectIfSignedIn('/editor');
+	const authState = useAuthState();
 
-  return <Layout>{authState() === AuthState.SIGNED_OUT && <Main />}</Layout>;
+	return <Layout>{authState() === AuthState.SIGNED_OUT && <Main />}</Layout>;
 }

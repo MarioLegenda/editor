@@ -7,13 +7,13 @@ interface Props extends NotificationProps {
 }
 
 export function Success({ title, message, ...rest }: Props) {
-  return (
-    <Notification
-      icon={<IconCheck size={18} />}
-      color="teal"
-      title={title}
-      {...rest}>
-      {message}
-    </Notification>
-  );
+	return (
+		<Notification
+			icon={<IconCheck size={18} />}
+			color="teal"
+			title={title}
+			{...rest}>
+			{message}
+		</Notification>
+	);
 }
