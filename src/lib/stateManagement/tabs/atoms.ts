@@ -7,6 +7,11 @@ export const tabsListingAtom = atom<Tab[]>({
 	default: [],
 });
 
+export const tabsHistoryAtom = atom<Tab[]>({
+	key: Tabs.TABS_HISTORY,
+	default: [],
+});
+
 export const tabsSelector = selector({
 	key: Tabs.LISTING_SORTED,
 	get: ({ get }) => {

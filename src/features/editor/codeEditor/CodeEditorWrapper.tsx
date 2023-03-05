@@ -12,17 +12,24 @@ export function CodeEditorWrapper() {
 	const isFirstFileRenderRef = useRef(true);
 
 	useEffect(() => {
-		CachedContentSubscriber.create().subscribe('tab_change', (name, value) => {
-			if (isCachedContentEvent(value)) {
-				setSelectedFile(undefined);
+		const unsubscribe = CachedContentSubscriber.create().subscribe(
+			'tab_change',
+			(name, value) => {
+				if (isCachedContentEvent(value)) {
+					setSelectedFile(undefined);
 
-				setTimeout(() => {
-					isFirstFileRenderRef.current = true;
-					setSelectedFile(value);
-					setContent(value.content);
-				}, 1);
-			}
-		});
+					setTimeout(() => {
+						isFirstFileRenderRef.current = true;
+						setSelectedFile(value);
+						setContent(value.content);
+					}, 1);
+				}
+			},
+		);
+
+		return () => {
+			PubSub.unsubscribe(unsubscribe);
+		};
 	}, []);
 
 	useEffect(() => {

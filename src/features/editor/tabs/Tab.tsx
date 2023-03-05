@@ -3,7 +3,10 @@ import { IconFile, IconSquareX } from '@tabler/icons';
 import { useEffect, useState } from 'react';
 import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedTabSubscriber';
 import { isTab } from '@/lib/dataSource/features/fileSystem/check/isTab';
-import { useRemoveTab } from '@/lib/stateManagement/tabs/setters';
+import {
+	useAddTabToHistory,
+	useRemoveTab,
+} from '@/lib/stateManagement/tabs/setters';
 import { CachedContentSubscriber } from '@/lib/stateManagement/eventSubscriber/CachedContentSubscriber';
 
 interface Props {
@@ -13,6 +16,7 @@ interface Props {
 export function Tab({ item }: Props) {
 	const [selected, setSelected] = useState<Tab>();
 	const removeTab = useRemoveTab();
+	const addHistory = useAddTabToHistory();
 
 	useEffect(() => {
 		const unsubscribe = SelectedTabSubscriber.create().subscribe(
@@ -20,6 +24,7 @@ export function Tab({ item }: Props) {
 			(msg, data) => {
 				if (isTab(data) && data.id === item.id) {
 					setSelected(data);
+					addHistory(data);
 
 					CachedContentSubscriber.create().publish('tab_change', {
 						id: item.id,
@@ -50,7 +55,15 @@ export function Tab({ item }: Props) {
 				<p>{item.name}</p>
 			</div>
 
-			<IconSquareX onClick={() => removeTab(item)} className="close-icon" />
+			<IconSquareX
+				onClick={(e) => {
+					e.preventDefault();
+					e.stopPropagation();
+
+					removeTab(item);
+				}}
+				className="close-icon"
+			/>
 		</div>
 	);
 }

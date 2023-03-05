@@ -1,6 +1,4 @@
-export function sortTabsAlphabetically(
-	tabs: Tab[],
-): Tab[] {
+export function sortTabsAlphabetically(tabs: Tab[]): Tab[] {
 	const temp = [...tabs];
 	temp.sort((a, b) => {
 		if (a.name < b.name) {
