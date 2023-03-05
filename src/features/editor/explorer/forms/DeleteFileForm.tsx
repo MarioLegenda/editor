@@ -56,9 +56,9 @@ export function DeleteFileForm({
 							fileId: fileId,
 						})
 					}
-					disabled={isLoading}
 					type="submit"
 					size="md"
+					loading={isLoading}
 					color="red">
           Delete
 				</Button>

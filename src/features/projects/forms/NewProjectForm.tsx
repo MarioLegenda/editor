@@ -118,7 +118,7 @@ export function NewProjectForm({ onCancel }: Props) {
             Cancel
 					</Button>
 
-					<Button type="submit" size="md" color="blue">
+					<Button loading={isLoading} type="submit" size="md" color="blue">
             Create
 					</Button>
 				</Group>

@@ -108,7 +108,7 @@ export function CreateDirectoryForm({ onCancel, projectId, parent }: Props) {
             Cancel
 					</Button>
 
-					<Button disabled={isLoading} type="submit" size="md" color="blue">
+					<Button loading={isLoading} type="submit" size="md" color="blue">
             Create
 					</Button>
 				</Group>

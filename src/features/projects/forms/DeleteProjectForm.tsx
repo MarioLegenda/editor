@@ -101,7 +101,8 @@ export function DeleteProjectForm({
 					</Button>
 
 					<Button
-						disabled={isLoading || !form.isValid('name')}
+						disabled={!form.isValid('name')}
+						loading={isLoading}
 						type="submit"
 						size="md"
 						color="red">

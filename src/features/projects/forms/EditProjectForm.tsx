@@ -117,7 +117,7 @@ export function EditProjectForm({ onCancel, onDone, item, id }: Props) {
             Cancel
 					</Button>
 
-					<Button type="submit" size="md" color="blue">
+					<Button loading={isLoading} type="submit" size="md" color="blue">
             Edit
 					</Button>
 				</Group>
