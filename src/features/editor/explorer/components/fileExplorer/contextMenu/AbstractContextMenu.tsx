@@ -43,14 +43,14 @@ export function AbstractContextMenu({ id, projectId, isDirectory }: Props) {
 				preventHideOnScroll={true}
 				preventHideOnResize={true}>
 				<Submenu css={styles.divider} title="New">
-					<ContextMenuItem
+					{isDirectory && <ContextMenuItem
 						css={styles.divider}
 						onClick={() => setIsDirectoryModal(true)}>
 						<Item
 							leftIcon={<IconFolderPlus size={18} color="white" />}
 							name="Directory"
 						/>
-					</ContextMenuItem>
+					</ContextMenuItem>}
 					<ContextMenuItem onClick={() => setCreateFileModalData('default')}>
 						<Item leftIcon={<AnyFileIcon width={18} />} name="File" />
 					</ContextMenuItem>

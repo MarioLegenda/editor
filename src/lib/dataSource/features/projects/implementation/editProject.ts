@@ -7,7 +7,7 @@ export async function editProject(
 ) {
 	const { error } = await getClient()
 		.from('project')
-		.update({ name: values.name, description: values.description })
+		.update({ name: values.name, description: values.description, updated_at: new Date().toISOString() })
 		.eq('id', projectId)
 		.eq('user_id', values.userId);
 
