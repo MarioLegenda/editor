@@ -29,3 +29,5 @@ interface ProjectAutocompleteList {
   description: string;
   color: string;
 }
+
+type GlobalStateIndicator = 'idle' | 'saving' | 'saved';
