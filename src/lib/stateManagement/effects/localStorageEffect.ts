@@ -4,49 +4,49 @@ import { isBrowser } from '@/lib/helpers/isBrowser';
 import { Auth } from '@/lib/stateManagement/types/auth';
 
 export function localStorageEffect<T>(name: string): AtomEffect<T> {
-	return ({ onSet, trigger, setSelf }) => {
-		if (!isDevEnvironment() || !isBrowser()) {
-			return;
-		}
+  return ({ onSet, trigger, setSelf }) => {
+    if (!isDevEnvironment() || !isBrowser()) {
+      return;
+    }
 
-		if (trigger === 'get') {
-			if (!isDevEnvironment()) {
-				return;
-			}
+    if (trigger === 'get') {
+      if (!isDevEnvironment()) {
+        return;
+      }
 
-			if (!isBrowser()) {
-				return;
-			}
+      if (!isBrowser()) {
+        return;
+      }
 
-			const rawAccount = localStorage.getItem(name);
+      const rawAccount = localStorage.getItem(name);
 
-			if (rawAccount) {
-				const account = JSON.parse(rawAccount);
+      if (rawAccount) {
+        const account = JSON.parse(rawAccount);
 
-				setSelf(account);
-			}
-		}
+        setSelf(account);
+      }
+    }
 
-		onSet((user: T) => {
-			if (!isDevEnvironment() || !isBrowser()) {
-				return;
-			}
+    onSet((user: T) => {
+      if (!isDevEnvironment() || !isBrowser()) {
+        return;
+      }
 
-			if (!user) {
-				localStorage.removeItem(name);
+      if (!user) {
+        localStorage.removeItem(name);
 
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				setSelf(null);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        setSelf(null);
 
-				return;
-			}
+        return;
+      }
 
-			const rawAccount = localStorage.getItem(name);
+      const rawAccount = localStorage.getItem(name);
 
-			if (!rawAccount) {
-				localStorage.setItem(Auth.AUTH_ACCOUNT, JSON.stringify(user));
-			}
-		});
-	};
+      if (!rawAccount) {
+        localStorage.setItem(Auth.AUTH_ACCOUNT, JSON.stringify(user));
+      }
+    });
+  };
 }

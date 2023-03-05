@@ -3,11 +3,11 @@ import { useOnAuthStateChange } from '@/lib/dataSource/subscriptions/useOnAuthSt
 import { useOnce } from '@/lib/helpers/useOnce';
 
 export function DataSourceEventsProvider({ children }: PropsWithChildren) {
-	const onAuthStateChange = useOnAuthStateChange();
+  const onAuthStateChange = useOnAuthStateChange();
 
-	useOnce(() => {
-		onAuthStateChange();
-	});
+  useOnce(() => {
+    onAuthStateChange();
+  });
 
-	return <>{children}</>;
+  return <>{children}</>;
 }

@@ -11,46 +11,46 @@ interface Props {
 }
 
 export function Tab({ item }: Props) {
-	const [selected, setSelected] = useState<Tab>();
-	const removeTab = useRemoveTab();
+  const [selected, setSelected] = useState<Tab>();
+  const removeTab = useRemoveTab();
 
-	useEffect(() => {
-		const unsubscribe = SelectedTabSubscriber.create().subscribe(
-			item.id,
-			(msg, data) => {
-				if (isTab(data) && data.id === item.id) {
-					setSelected(data);
+  useEffect(() => {
+    const unsubscribe = SelectedTabSubscriber.create().subscribe(
+      item.id,
+      (msg, data) => {
+        if (isTab(data) && data.id === item.id) {
+          setSelected(data);
 
-					CachedContentSubscriber.create().publish('tab_change', {
-						id: item.id,
-						projectId: item.projectId,
-						userId: item.userId,
-					});
+          CachedContentSubscriber.create().publish('tab_change', {
+            id: item.id,
+            projectId: item.projectId,
+            userId: item.userId,
+          });
 
-					return;
-				}
+          return;
+        }
 
-				setSelected(undefined);
-			},
-		);
+        setSelected(undefined);
+      },
+    );
 
-		return () => {
-			PubSub.unsubscribe(unsubscribe);
-		};
-	}, []);
+    return () => {
+      PubSub.unsubscribe(unsubscribe);
+    };
+  }, []);
 
-	return (
-		<div
-			css={[styles.root, selected ? styles.selected : undefined]}
-			onClick={() => {
-				SelectedTabSubscriber.create().publish(item.id, item);
-			}}>
-			<div css={styles.content}>
-				<IconFile />
-				<p>{item.name}</p>
-			</div>
+  return (
+    <div
+      css={[styles.root, selected ? styles.selected : undefined]}
+      onClick={() => {
+        SelectedTabSubscriber.create().publish(item.id, item);
+      }}>
+      <div css={styles.content}>
+        <IconFile />
+        <p>{item.name}</p>
+      </div>
 
-			<IconSquareX onClick={() => removeTab(item)} className="close-icon" />
-		</div>
-	);
+      <IconSquareX onClick={() => removeTab(item)} className="close-icon" />
+    </div>
+  );
 }

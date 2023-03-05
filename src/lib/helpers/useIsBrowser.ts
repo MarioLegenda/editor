@@ -1,5 +1,5 @@
 import { isBrowser } from '@/lib/helpers/isBrowser';
 
 export function useIsBrowser() {
-	return isBrowser();
+  return isBrowser();
 }

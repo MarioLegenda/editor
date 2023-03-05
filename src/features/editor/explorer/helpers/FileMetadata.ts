@@ -1,90 +1,92 @@
 export class FileMetadata {
-	private readonly type: FileType = 'default';
-	private readonly ext: ExtensionType[] | null = null;
-	private readonly originalFile: string = '';
-	private readonly fileName: string = '';
+  private readonly forcedFileType: FileType = 'default';
+  private readonly parsedFileType: FileType = '' as FileType;
+  private readonly ext: ExtensionType[] = [];
+  private originalFile = '';
+  private readonly fileName: string = '';
 
-	private constructionError: string | null = null;
+  static create(file: string, fileType: FileType) {
+    return new FileMetadata(file, fileType);
+  }
 
-	static create(file: string) {
-		return new FileMetadata(file);
-	}
+  private constructor(original: string, fileType: FileType) {
+    const parsed = this.parseFile(original);
 
-	private constructor(original: string) {
-		const parsed = this.parseFile(original);
-		const invalid = this.validate(original);
+    if (!Array.isArray(parsed)) return;
 
-		if (invalid) {
-			this.constructionError = invalid;
+    this.originalFile = original;
+    this.forcedFileType = fileType;
+    this.fileName = parsed[0];
+    if (parsed[1]) {
+      this.ext = [parsed[1] as ExtensionType];
+    }
 
-			return;
-		}
+    this.parsedFileType = this.extToType(this.ext);
+  }
 
-		if (!Array.isArray(parsed)) return;
+  extension(): ExtensionType[] {
+    return this.ext;
+  }
 
-		this.originalFile = original;
-		this.fileName = parsed[0];
-		this.ext = [parsed[1] as ExtensionType];
-		this.type = this.extToType(this.ext[0]);
-	}
+  fileType(): FileType {
+    return this.forcedFileType;
+  }
 
-	extension(): ExtensionType[] | null {
-		return this.ext;
-	}
+  derivedOriginal(): string {
+    if (this.extension().length === 0 && this.forcedFileType !== 'default') {
+      return `${this.originalFile}.${this.typeToExt(this.forcedFileType)}`;
+    }
 
-	fileType(): FileType {
-		return this.type;
-	}
+    return this.originalFile;
+  }
 
-	original(): string {
-		return this.originalFile;
-	}
+  upperCaseFileType(): string {
+    return `${this.fileType()
+      .substring(0, 1)
+      .toUpperCase()}${this.fileType().substring(1)}`;
+  }
 
-	upperCaseFileType(): string {
-		return `${this.fileType()
-			.substring(0, 1)
-			.toUpperCase()}${this.fileType().substring(1)}`;
-	}
+  name(): string {
+    return this.fileName;
+  }
 
-	name(): string {
-		return this.fileName;
-	}
+  validate(): string {
+    if (!new RegExp('^[\\w\\-. ]+$').test(this.originalFile)) {
+      return 'Invalid file name given. File names can only contain alphanumeric characters and no more than one dot (.) for extension. Please, consult this regex expression: ^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$';
+    }
 
-	error() {
-		return this.constructionError;
-	}
+    const ext = this.typeToExt(this.parsedFileType);
 
-	private extToType(ext: ExtensionType): FileType {
-		if (ext === 'js') return 'javascript';
-		if (ext === 'ts') return 'typescript';
-		if (ext === 'yaml' || ext === 'yml') return 'yaml';
-		if (ext === 'json') return 'json';
+    if (this.forcedFileType !== 'default') {
+      if (ext && this.parsedFileType !== this.forcedFileType) {
+        return `Invalid extension. Expected .${this.typeToExt(
+          this.forcedFileType,
+        )} for ${this.upperCaseFileType()}.`;
+      }
+    }
 
-		return 'default';
-	}
+    return '';
+  }
 
-	private validate(name: string): string {
-		if (
-			!new RegExp(
-				'^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$',
-			).test(name)
-		) {
-			return 'Invalid file name given. File names can only contain alphanumeric characters and no more than one dot (.) for extension. Please, consult this regex expression: ^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$';
-		}
+  private extToType(ext: ExtensionType[]): FileType {
+    if (ext.includes('js')) return 'javascript';
+    if (ext.includes('ts')) return 'typescript';
+    if (ext.includes('yaml') || ext.includes('yml')) return 'yaml';
+    if (ext.includes('json')) return 'json';
 
-		return '';
-	}
+    return 'default';
+  }
 
-	private parseFile(file: string): boolean | string[] {
-		const s = file.split('.');
+  private typeToExt(type: FileType): ExtensionType[] | null {
+    if (type === 'javascript') return ['js'];
+    if (type === 'typescript') return ['ts'];
+    if (type === 'yaml') return ['yaml', 'yml'];
+    if (type === 'json') return ['json'];
 
-		if (s.length !== 2) {
-			this.constructionError =
-        'Invalid file name given. File names can only contain alphanumeric characters and no more than one dot (.) for extension. Please, consult this regex expression: ^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$';
+    return null;
+  }
 
-			return false;
-		}
-
-		return s;
-	}
+  private parseFile(file: string): boolean | string[] {
+    return file.split('.');
+  }
 }

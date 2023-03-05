@@ -1,31 +1,31 @@
 import { useRecoilValue } from 'recoil';
 import { useCallback } from 'react';
 import {
-	fileSystemAtom,
-	parentFileStructureSelectorFamily,
-	projectAtom,
-	projectTotalAtom,
-	rootFileAtom,
+  fileSystemAtom,
+  parentFileStructureSelectorFamily,
+  projectAtom,
+  projectTotalAtom,
+  rootFileAtom,
 } from '@/lib/stateManagement/project/atoms';
 
 export function useTotal() {
-	const total = useRecoilValue(projectTotalAtom);
+  const total = useRecoilValue(projectTotalAtom);
 
-	return useCallback(() => total, [total]);
+  return useCallback(() => total, [total]);
 }
 
 export function useProject() {
-	return useRecoilValue(projectAtom) as Project;
+  return useRecoilValue(projectAtom) as Project;
 }
 
 export function useFilesystem() {
-	return useRecoilValue(fileSystemAtom);
+  return useRecoilValue(fileSystemAtom);
 }
 
 export function useRootFile() {
-	return useRecoilValue(rootFileAtom) as string;
+  return useRecoilValue(rootFileAtom) as string;
 }
 
 export function useParentFiles(parentId: string) {
-	return useRecoilValue(parentFileStructureSelectorFamily(parentId));
+  return useRecoilValue(parentFileStructureSelectorFamily(parentId));
 }

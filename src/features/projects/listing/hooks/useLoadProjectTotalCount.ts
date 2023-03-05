@@ -3,14 +3,14 @@ import { useEffect } from 'react';
 import { useSetTotal } from '@/lib/stateManagement/project/setters';
 
 export function useLoadProjectTotalCount() {
-	const { isLoading, isError, isSuccess, data } = useGetTotal();
-	const setTotal = useSetTotal();
+  const { isLoading, isError, isSuccess, data } = useGetTotal();
+  const setTotal = useSetTotal();
 
-	useEffect(() => {
-		if (!isLoading && isSuccess && typeof data === 'number') {
-			setTotal(data);
-		}
-	}, [isLoading, isSuccess, isError, data]);
+  useEffect(() => {
+    if (!isLoading && isSuccess && typeof data === 'number') {
+      setTotal(data);
+    }
+  }, [isLoading, isSuccess, isError, data]);
 
-	return { isLoading, isError, isSuccess, data };
+  return { isLoading, isError, isSuccess, data };
 }

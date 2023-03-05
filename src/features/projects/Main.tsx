@@ -6,26 +6,26 @@ import { Box } from '@/features/projects/Box';
 import { Listing } from '@/features/projects/listing/Listing';
 
 export function Main() {
-	const { current, set } = useSimpleUiState<'newProject' | 'listing'>({
-		newProject: false,
-		listing: true,
-	});
+  const { current, set } = useSimpleUiState<'newProject' | 'listing'>({
+    newProject: false,
+    listing: true,
+  });
 
-	return (
-		<div css={styles.root}>
-			<Actions onNewProject={() => set('newProject')} />
+  return (
+    <div css={styles.root}>
+      <Actions onNewProject={() => set('newProject')} />
 
-			{current === 'newProject' && (
-				<Box>
-					<NewProjectForm onCancel={() => set('listing')} />
-				</Box>
-			)}
+      {current === 'newProject' && (
+        <Box>
+          <NewProjectForm onCancel={() => set('listing')} />
+        </Box>
+      )}
 
-			{current === 'listing' && (
-				<Box>
-					<Listing />
-				</Box>
-			)}
-		</div>
-	);
+      {current === 'listing' && (
+        <Box>
+          <Listing />
+        </Box>
+      )}
+    </div>
+  );
 }
