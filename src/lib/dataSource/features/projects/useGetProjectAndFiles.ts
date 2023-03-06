@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { getProject } from '@/lib/dataSource/features/projects/implementation/getProject';
 import { getFiles } from '@/lib/dataSource/features/projects/implementation/getFiles';
+import { getHistory } from '@/lib/dataSource/features/tabs/implementation/getHistory';
 
 export function useGetProjectAndFiles(projectId: string | null) {
 	const [isLoading, setIsLoading] = useState(true);
@@ -10,6 +11,14 @@ export function useGetProjectAndFiles(projectId: string | null) {
 	const getProjectFn = useCallback(async (): Promise<Project | null> => {
 		if (projectId) {
 			return await getProject(projectId);
+		}
+
+		return null;
+	}, []);
+
+	const getHistoryFn = useCallback(async (): Promise<TabsHistory | null> => {
+		if (projectId) {
+			return (await getHistory(projectId)) as TabsHistory;
 		}
 
 		return null;
@@ -26,21 +35,23 @@ export function useGetProjectAndFiles(projectId: string | null) {
 	useEffect(() => {
 		const one = new Promise((resolve, reject) => {
 			getProjectFn()
-				.then((project) => {
-					if (project) resolve(project);
-				})
+				.then((item) => resolve(item))
 				.catch((e) => reject(e));
 		});
 
 		const two = new Promise((resolve, reject) => {
 			getFilesFn()
-				.then((project) => {
-					if (project) resolve(project);
-				})
+				.then((item) => resolve(item))
 				.catch((e) => reject(e));
 		});
 
-		Promise.all([one, two])
+		const three = new Promise((resolve, reject) => {
+			getHistoryFn()
+				.then((item) => resolve(item))
+				.catch((e) => reject(e));
+		});
+
+		Promise.all([one, two, three])
 			.then((values) => {
 				setIsLoading(false);
 				if (Array.isArray(values)) {

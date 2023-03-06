@@ -13,7 +13,7 @@ import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/Sel
 import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedTabTopic';
 import {
 	useUpdateHistory,
-	useUpdateTabs,
+	useUpdateTab,
 } from '@/lib/stateManagement/tabs/setters';
 import { createRenamedFileTopic } from '@/lib/stateManagement/eventSubscriber/keys/createRenamedFileTopic';
 
@@ -40,7 +40,7 @@ export function RenameFileForm({
 	} = useRenameFile(projectId);
 	const files = useFilesystem();
 	const updateHistory = useUpdateHistory();
-	const updateTabs = useUpdateTabs();
+	const updateTabs = useUpdateTab();
 
 	useEffect(() => {
 		if (isSuccess && data && isFile(data)) {

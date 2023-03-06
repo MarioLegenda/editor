@@ -1,0 +1,3 @@
+interface CreateHistory {
+  projectId: string;
+}

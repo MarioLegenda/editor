@@ -9,11 +9,14 @@ import {
 import { isProject } from '@/lib/dataSource/features/projects/check/isProject';
 import { isFileListing } from '@/lib/dataSource/features/fileSystem/check/isFileListing';
 import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
+import { useAddHistory } from '@/lib/stateManagement/tabs/setters';
+import { isTabHistory } from '@/lib/dataSource/features/tabs/check/isTabHistory';
 
 export function useProjectDataResolver() {
 	const projectId = useProjectSlug();
 	const { isLoading, data, isError } = useGetProjectAndFiles(projectId);
 	const setProject = useSetProject();
+	const setHistory = useAddHistory();
 	const setFiles = useSetFilesystem();
 	const setRootFile = useSetRootFile();
 
@@ -32,6 +35,10 @@ export function useProjectDataResolver() {
 					}
 
 					setFiles(q);
+				}
+
+				if (isTabHistory(q)) {
+					setHistory(q);
 				}
 			}
 		}

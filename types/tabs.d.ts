@@ -7,3 +7,15 @@ interface Tab {
   fileType: FileType | null;
   fileExtension: ExtensionType | null;
 }
+
+interface RawHistory {
+  id: string;
+  projectId: string;
+  history: string | Tab[];
+}
+
+interface TabsHistory {
+  id: string;
+  projectId: string;
+  history: Tab[];
+}
