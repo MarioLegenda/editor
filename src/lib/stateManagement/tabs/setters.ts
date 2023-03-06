@@ -8,6 +8,7 @@ import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/ke
 import { projectAtom } from '@/lib/stateManagement/project/atoms';
 import { accountAtom } from '@/lib/stateManagement/auth/account';
 import { updateHistory } from '@/lib/dataSource/features/tabs/implementation/updateHistory';
+import { updateSelectedHistoryTab } from '@/lib/dataSource/features/tabs/implementation/updateSelectedHistoryTab';
 
 export function useAddTab() {
 	return useRecoilCallback(
@@ -37,6 +38,12 @@ export function useAddHistory() {
 			async (history: TabsHistory) => {
 				set(tabsListingAtom, history.history);
 				set(tabsHistoryAtom, history.history);
+
+				const selected = history.selected;
+				SelectedTabSubscriber.create().publish(
+					createSelectedTabTopic(selected.id),
+					selected,
+				);
 			},
 		[],
 	);
@@ -151,10 +158,15 @@ export function useRemoveTab() {
 								createSelectedTabTopic(previousTab.id),
 								previousTab,
 							);
+
+							updateSelectedHistoryTab(
+								project.id,
+								account.id,
+								JSON.stringify(previousTab),
+							);
 						} else {
 							// only one history tab exists that is about to be removed
 							// so we can just reset the history atom
-
 							updateHistory(project.id, account.id, JSON.stringify([]));
 
 							reset(tabsHistoryAtom);

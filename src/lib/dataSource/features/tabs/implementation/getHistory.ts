@@ -23,11 +23,13 @@ export async function getHistory(projectId: string) {
 
 	if (
 		isRawHistory(potentialHistory) &&
-    typeof potentialHistory.history === 'string'
+    typeof potentialHistory.history === 'string' &&
+    typeof potentialHistory.selected === 'string'
 	) {
 		return {
 			id: potentialHistory.id,
 			projectId: potentialHistory.project_id,
+			selected: JSON.parse(potentialHistory.selected) as Tab,
 			history: JSON.parse(potentialHistory.history) as Tab[],
 		};
 	}

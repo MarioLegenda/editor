@@ -10,6 +10,7 @@ import {
 import { CachedContentSubscriber } from '@/lib/stateManagement/eventSubscriber/CachedContentSubscriber';
 import { Keys } from '@/lib/stateManagement/eventSubscriber/keys/Keys';
 import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedTabTopic';
+import { updateSelectedHistoryTab } from '@/lib/dataSource/features/tabs/implementation/updateSelectedHistoryTab';
 
 interface Props {
   item: Tab;
@@ -19,7 +20,7 @@ export function Tab({ item }: Props) {
 	const [selected, setSelected] = useState<Tab>();
 	const [name, setName] = useState(item.name);
 	const removeTab = useRemoveTab();
-	const addHistory = useAddTabToHistory();
+	const addTabToHistory = useAddTabToHistory();
 
 	useEffect(() => {
 		const selectedTabUnsubscribe = SelectedTabSubscriber.create().subscribe(
@@ -28,7 +29,12 @@ export function Tab({ item }: Props) {
 				if (isTab(data) && data.id === item.id) {
 					setSelected(data);
 					setName(data.name);
-					addHistory(data);
+					addTabToHistory(data);
+					updateSelectedHistoryTab(
+						item.projectId,
+						item.userId,
+						JSON.stringify(data),
+					);
 
 					CachedContentSubscriber.create().publish(Keys.TabChange, {
 						id: item.id,

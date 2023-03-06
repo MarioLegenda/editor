@@ -11,11 +11,13 @@ interface Tab {
 interface RawHistory {
   id: string;
   projectId: string;
+  selected: string | Tab;
   history: string | Tab[];
 }
 
 interface TabsHistory {
   id: string;
   projectId: string;
+  selected: Tab;
   history: Tab[];
 }
