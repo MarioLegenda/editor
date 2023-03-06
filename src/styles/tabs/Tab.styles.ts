@@ -51,4 +51,6 @@ export const selected = css`
   border-right: 1px solid var(--color-lighterBackground);
   border-left: 1px solid var(--color-lighterBackground);
   border-bottom: 2px solid var(--color-primary);
+  
+  background-color: var(--color-lighterBackground);
 `;
