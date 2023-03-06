@@ -36,7 +36,7 @@ export const closeIconWrapper = css`
   position: absolute;
   top: 8px;
   right: 0;
-  
+
   height: 24px;
   border-radius: 5px;
 `;
@@ -63,6 +63,6 @@ export const selected = css`
   border-right: 1px solid var(--color-lighterBackground);
   border-left: 1px solid var(--color-lighterBackground);
   border-bottom: 2px solid var(--color-primary);
-  
+
   background-color: var(--color-lighterBackground);
 `;

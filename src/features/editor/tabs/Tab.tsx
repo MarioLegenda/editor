@@ -66,7 +66,37 @@ export function Tab({ item }: Props) {
 
 	return (
 		<>
-			{name.length > 14 && <Tooltip label={name}>
+			{name.length > 14 && (
+				<Tooltip label={name}>
+					<div
+						css={[styles.root, selected ? styles.selected : undefined]}
+						onClick={() => {
+							SelectedTabSubscriber.create().publish(
+								createSelectedTabTopic(item.id),
+								item,
+							);
+						}}>
+						<div css={styles.content}>
+							<LanguageIcon fileType={item.fileType} />
+							<p>{resolveLongName(name)}</p>
+						</div>
+
+						<div className="close-icon-wrapper" css={styles.closeIconWrapper}>
+							<IconSquareX
+								onClick={(e) => {
+									e.preventDefault();
+									e.stopPropagation();
+
+									removeTab(item);
+								}}
+								className="close-icon"
+							/>
+						</div>
+					</div>
+				</Tooltip>
+			)}
+
+			{name.length < 14 && (
 				<div
 					css={[styles.root, selected ? styles.selected : undefined]}
 					onClick={() => {
@@ -92,33 +122,7 @@ export function Tab({ item }: Props) {
 						/>
 					</div>
 				</div>
-			</Tooltip>}
-
-			{name.length < 14 && <div
-				css={[styles.root, selected ? styles.selected : undefined]}
-				onClick={() => {
-					SelectedTabSubscriber.create().publish(
-						createSelectedTabTopic(item.id),
-						item,
-					);
-				}}>
-				<div css={styles.content}>
-					<LanguageIcon fileType={item.fileType} />
-					<p>{resolveLongName(name)}</p>
-				</div>
-
-				<div className="close-icon-wrapper" css={styles.closeIconWrapper}>
-					<IconSquareX
-						onClick={(e) => {
-							e.preventDefault();
-							e.stopPropagation();
-
-							removeTab(item);
-						}}
-						className="close-icon"
-					/>
-				</div>
-			</div>}
+			)}
 		</>
 	);
 }
