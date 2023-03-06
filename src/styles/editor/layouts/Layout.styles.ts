@@ -4,7 +4,10 @@ export const root = css`
   grid-column: span 12;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 24px;
+`;
+
+export const mainMenu = css`
+  grid-column: span 12 / span 12;
 `;
 
 export const explorer = css`
