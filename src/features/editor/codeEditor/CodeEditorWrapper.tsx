@@ -31,7 +31,7 @@ export function CodeEditorWrapper() {
 			},
 		);
 
-		SelectedTabSubscriber.create().subscribe('selected', (msg, data) => {
+		SelectedTabSubscriber.create().subscribe('selected_tab', (msg, data) => {
 			if (!data) {
 				setSelectedFile(undefined);
 				isFirstFileRenderRef.current = true;

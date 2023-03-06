@@ -10,6 +10,7 @@ import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/Se
 import PubSub from 'pubsub-js';
 import { RenamedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/RenamedFileSubscriber';
 import { createRenamedFileTopic } from '@/lib/stateManagement/eventSubscriber/keys/createRenamedFileTopic';
+import { createSelectedFileTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedFileTopic';
 
 interface Props {
   item: AppFile;
@@ -29,13 +30,16 @@ export function Directory({ item, isRoot, childSpace }: Props) {
 			`${item.id}_addedFile`,
 			() => {
 				setIsOpen(true);
-				SelectedFileSubscriber.create().publish(item.id, item.id);
+				SelectedFileSubscriber.create().publish(
+					createSelectedFileTopic(item.id),
+					item.id,
+				);
 			},
 		);
 
 		const selectedUnsubscribe =
       SelectedFileSubscriber.create().subscribe<string>(
-      	item.id,
+      	createSelectedFileTopic(item.id),
       	(selected, data) => {
       		setSelectedFile(data);
       	},
@@ -60,7 +64,10 @@ export function Directory({ item, isRoot, childSpace }: Props) {
 	const onOpen = useCallback(() => {
 		setIsOpen((open) => !open);
 
-		SelectedFileSubscriber.create().publish(item.id, item.id);
+		SelectedFileSubscriber.create().publish(
+			createSelectedFileTopic(item.id),
+			item.id,
+		);
 	}, [isOpen]);
 
 	return (

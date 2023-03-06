@@ -5,7 +5,7 @@ import JsonIcon from '/public/editor/Json.svg';
 import AnyFileIcon from '/public/editor/file.svg';
 
 interface Props {
-  fileType: FileType;
+  fileType: FileType | null;
 }
 
 export function LanguageIcon({ fileType }: Props) {

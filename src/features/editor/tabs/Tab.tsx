@@ -1,5 +1,5 @@
 import * as styles from '@/styles/tabs/Tab.styles';
-import { IconFile, IconSquareX } from '@tabler/icons';
+import { IconSquareX } from '@tabler/icons';
 import { useEffect, useState } from 'react';
 import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedTabSubscriber';
 import { isTab } from '@/lib/dataSource/features/fileSystem/check/isTab';
@@ -11,6 +11,7 @@ import { CachedContentSubscriber } from '@/lib/stateManagement/eventSubscriber/C
 import { Keys } from '@/lib/stateManagement/eventSubscriber/keys/Keys';
 import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedTabTopic';
 import { updateSelectedHistoryTab } from '@/lib/dataSource/features/tabs/implementation/updateSelectedHistoryTab';
+import { LanguageIcon } from '@/lib/components/LanguageIcon';
 
 interface Props {
   item: Tab;
@@ -64,7 +65,7 @@ export function Tab({ item }: Props) {
 				);
 			}}>
 			<div css={styles.content}>
-				<IconFile />
+				<LanguageIcon fileType={item.fileType} />
 				<p>{name}</p>
 			</div>
 

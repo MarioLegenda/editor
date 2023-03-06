@@ -170,7 +170,7 @@ export function useRemoveTab() {
 							updateHistory(project.id, account.id, JSON.stringify([]));
 
 							reset(tabsHistoryAtom);
-							SelectedTabSubscriber.create().publish('selected', undefined);
+							SelectedTabSubscriber.create().publish('selected_tab', undefined);
 
 							return;
 						}

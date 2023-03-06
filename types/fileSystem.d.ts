@@ -32,7 +32,7 @@ interface AppFile {
   name: string;
   project_id: string;
   user_id: string;
-  parent: string | null;
+  parent: string;
   is_directory: boolean;
   file_type: FileType | null;
   file_extension: ExtensionType | null;

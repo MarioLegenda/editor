@@ -6,7 +6,7 @@ export const root = css`
   grid-template-columns: repeat(12, minmax(0, 1fr));
 `;
 
-export const mainMenu = css`
+export const fullWidth = css`
   grid-column: span 12 / span 12;
 `;
 

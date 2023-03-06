@@ -1,3 +1,3 @@
 export function createSelectedTabTopic(id: string): string {
-	return `selected.${id}`;
+	return `selected_tab.${id}`;
 }

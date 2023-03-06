@@ -12,6 +12,7 @@ import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/Sel
 import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedTabTopic';
 import { RenamedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/RenamedFileSubscriber';
 import { createRenamedFileTopic } from '@/lib/stateManagement/eventSubscriber/keys/createRenamedFileTopic';
+import { createSelectedFileTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedFileTopic';
 
 interface Props {
   item: AppFile;
@@ -27,7 +28,7 @@ export function File({ item, isRoot = false, childSpace }: Props) {
 
 	useEffect(() => {
 		const selectedFileUnsubscribe = SelectedFileSubscriber.create().subscribe(
-			item.id,
+			createSelectedFileTopic(item.id),
 			(selected, data) => {
 				if (isFile(data)) {
 					setSelectedFile(data.id);
@@ -72,7 +73,10 @@ export function File({ item, isRoot = false, childSpace }: Props) {
 			onDoubleClick={onAddTab}
 			onClick={(e) => {
 				if (!e.detail || e.detail == 1) {
-					SelectedFileSubscriber.create().publish(item.id, item);
+					SelectedFileSubscriber.create().publish(
+						createSelectedFileTopic(item.id),
+						item,
+					);
 				}
 			}}>
 			{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
