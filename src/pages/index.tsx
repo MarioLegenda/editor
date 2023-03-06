@@ -9,7 +9,6 @@ export default function Home() {
 
 	useEffect(() => {
 		if (inBrowser) {
-			console.log('in browser');
 			push('/sign-in');
 		}
 	}, [inBrowser]);

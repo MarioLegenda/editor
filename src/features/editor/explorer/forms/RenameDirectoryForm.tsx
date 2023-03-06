@@ -2,68 +2,46 @@ import { useForm } from '@mantine/form';
 import { combine, max, min, required } from '@/lib/validation/validations';
 import * as formStyles from '@/styles/shared/Form.styles';
 import { Button, Group, TextInput } from '@mantine/core';
-import { FileMetadata } from '@/features/editor/explorer/helpers/FileMetadata';
+import { useRunOnDone } from '@/lib/helpers/forms/useRunOnDone';
 import { useFilesystem } from '@/lib/stateManagement/project/getters';
-import { LanguageIcon } from '@/lib/components/LanguageIcon';
+import { IconFolder } from '@tabler/icons';
 import { useEffect } from 'react';
 import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
+import { useUpdateFileName } from '@/lib/stateManagement/project/setters';
 import { useRenameFile } from '@/lib/dataSource/features/fileSystem/useRenameFile';
 import { RenamedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/RenamedFileSubscriber';
-import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedTabSubscriber';
-import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedTabTopic';
-import {
-	useUpdateHistory,
-	useUpdateTabs,
-} from '@/lib/stateManagement/tabs/setters';
 import { createRenamedFileTopic } from '@/lib/stateManagement/eventSubscriber/keys/createRenamedFileTopic';
 
 interface Props {
-  fileType: FileType;
+  value: string;
   fileId: string;
   parent: string;
-  value: string;
   onCancel: () => void;
   projectId: string;
 }
 
-export function RenameFileForm({
-	fileType,
-	value,
-	fileId,
+export function RenameDirectoryForm({
 	onCancel,
 	projectId,
 	parent,
+	value,
+	fileId,
 }: Props) {
 	const {
 		mutation: { isLoading, isSuccess, data },
 		renameFile,
 	} = useRenameFile(projectId);
+	useRunOnDone(isLoading, isSuccess, onCancel);
 	const files = useFilesystem();
-	const updateHistory = useUpdateHistory();
-	const updateTabs = useUpdateTabs();
+	const updateFileName = useUpdateFileName();
 
 	useEffect(() => {
 		if (isSuccess && data && isFile(data)) {
 			RenamedFileSubscriber.create().publish(
-				createRenamedFileTopic(fileId, false),
+				createRenamedFileTopic(fileId, true),
 				data.name,
 			);
-			const tab = {
-				id: data.id,
-				name: data.name,
-				projectId: data.project_id,
-				userId: data.user_id,
-				parent: data.parent,
-				fileType: data.file_type,
-				fileExtension: data.file_extension,
-			};
-			SelectedTabSubscriber.create().publish(
-				createSelectedTabTopic(fileId),
-				tab,
-			);
-			updateHistory(tab);
-			updateTabs(tab);
-
+			updateFileName(data.name, fileId);
 			onCancel();
 		}
 	}, [isSuccess, data]);
@@ -76,29 +54,30 @@ export function RenameFileForm({
 			name: (value: string) => {
 				const errors = combine(
 					[
-						required('File name is required'),
-						min(1, 'File name cannot have less than 1 character'),
-						max(100, 'File name cannot have more than 100 characters'),
+						required('Directory name is required'),
+						min(1, 'Directory name cannot have less than 1 character'),
+						max(100, 'Directory name cannot have more than 100 characters'),
 					],
 					value,
 				);
 
 				if (errors) return errors[0];
 
-				const fileMetadata = FileMetadata.create(value, fileType);
-
-				const invalid = fileMetadata.validate();
-				if (invalid) {
-					return invalid;
+				if (
+					new RegExp(
+						'^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$',
+					).test(value)
+				) {
+					return 'Invalid directory name given. File names can only contain alphanumeric characters. Please, consult this regex expression: ^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\\.[a-zA-Z0-9_-]+$';
 				}
 
 				for (const file of files) {
 					if (
 						file.parent === parent &&
-            file.name === fileMetadata.derivedOriginal() &&
-            !file.is_directory
+            file.is_directory &&
+            file.name === value
 					) {
-						return `File with name ${fileMetadata.derivedOriginal()} already exists`;
+						return `Directory with name ${value} already exists`;
 					}
 				}
 
@@ -110,10 +89,8 @@ export function RenameFileForm({
 	return (
 		<form
 			onSubmit={form.onSubmit((values) => {
-				const fileMetadata = FileMetadata.create(values.name, fileType);
-
 				renameFile({
-					name: fileMetadata.derivedOriginal(),
+					name: values.name,
 					projectId: projectId,
 					id: fileId,
 				});
@@ -121,7 +98,7 @@ export function RenameFileForm({
 			<>
 				<div css={formStyles.spacing}>
 					<TextInput
-						icon={<LanguageIcon fileType={fileType} />}
+						icon={<IconFolder size={20} />}
 						data-autofocus
 						withAsterisk
 						name="name"
@@ -141,7 +118,7 @@ export function RenameFileForm({
 					</Button>
 
 					<Button loading={isLoading} type="submit" size="md" color="blue">
-            Rename
+            Create
 					</Button>
 				</Group>
 			</>

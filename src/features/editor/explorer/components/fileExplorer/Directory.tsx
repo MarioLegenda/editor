@@ -8,6 +8,8 @@ import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { AbstractContextMenu } from '@/features/editor/explorer/components/fileExplorer/contextMenu/AbstractContextMenu';
 import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
 import PubSub from 'pubsub-js';
+import { RenamedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/RenamedFileSubscriber';
+import { createRenamedFileTopic } from '@/lib/stateManagement/eventSubscriber/keys/createRenamedFileTopic';
 
 interface Props {
   item: AppFile;
@@ -20,6 +22,7 @@ export function Directory({ item, isRoot, childSpace }: Props) {
 	const [selectedFile, setSelectedFile] = useState<string>();
 	const files = useParentFiles(item.id);
 	const nextChildSpace = childSpace + 3;
+	const [name, setName] = useState(item.name);
 
 	useEffect(() => {
 		const addedUnsubscribe = SelectedFileSubscriber.create().subscribe(
@@ -38,9 +41,19 @@ export function Directory({ item, isRoot, childSpace }: Props) {
       	},
       );
 
+		const renameFileUnsubscribe = RenamedFileSubscriber.create().subscribe(
+			createRenamedFileTopic(item.id, true),
+			(msg, data) => {
+				if (typeof data === 'string') {
+					setName(data);
+				}
+			},
+		);
+
 		return () => {
 			PubSub.unsubscribe(addedUnsubscribe);
 			PubSub.unsubscribe(selectedUnsubscribe);
+			PubSub.unsubscribe(renameFileUnsubscribe);
 		};
 	}, []);
 
@@ -66,7 +79,7 @@ export function Directory({ item, isRoot, childSpace }: Props) {
 					]}>
 					{isOpen ? <DirOpen width={20} /> : <DirClosed width={20} />}
 
-					<p css={styles.title}>{item.name}</p>
+					<p css={styles.title}>{name}</p>
 				</div>
 			</ContextMenuTrigger>
 

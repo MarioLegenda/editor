@@ -23,6 +23,7 @@ import { CreateFileModal } from '@/features/editor/explorer/modals/CreateFileMod
 import { useState } from 'react';
 import { DeleteFileModal } from '@/features/editor/explorer/modals/DeleteFileModal';
 import { RenameFileModal } from '@/features/editor/explorer/modals/RenameFileModal';
+import { RenameDirectoryModal } from '@/features/editor/explorer/modals/RenameDirectoryModal';
 
 interface Props {
   id: string;
@@ -43,7 +44,8 @@ export function AbstractContextMenu({
 	const [createFileModalData, setCreateFileModalData] =
     useState<FileType | null>(null);
 	const [isDeleteFileModal, setIsDeleteFileModal] = useState(false);
-	const [isRenameModal, setIsRenameModal] = useState(false);
+	const [isRenameFileModal, setIsRenameFileModal] = useState(false);
+	const [isRenameDirectoryModal, setIsRenameDirectoryModal] = useState(false);
 
 	return (
 		<>
@@ -89,7 +91,16 @@ export function AbstractContextMenu({
 				<ContextMenuItem css={styles.divider}>
 					<Item leftIcon={<IconCalendarPlus size={18} />} name="Paste" />
 				</ContextMenuItem>
-				<ContextMenuItem onClick={() => setIsRenameModal(true)}>
+				<ContextMenuItem
+					onClick={() => {
+						if (isDirectory) {
+							setIsRenameDirectoryModal(true);
+
+							return;
+						}
+
+						setIsRenameFileModal(true);
+					}}>
 					<Item leftIcon={<IconEdit size={18} />} name="Rename" />
 				</ContextMenuItem>
 				<ContextMenuItem
@@ -128,15 +139,26 @@ export function AbstractContextMenu({
 				/>
 			)}
 
-			{isRenameModal && (
+			{isRenameFileModal && (
 				<RenameFileModal
 					projectId={projectId}
 					value={value}
 					parent={id}
 					fileId={id}
 					fileType={fileType}
-					show={isRenameModal}
-					onCancel={() => setIsRenameModal(null)}
+					show={isRenameFileModal}
+					onCancel={() => setIsRenameFileModal(false)}
+				/>
+			)}
+
+			{isRenameDirectoryModal && (
+				<RenameDirectoryModal
+					projectId={projectId}
+					value={value}
+					parent={id}
+					fileId={id}
+					show={isRenameDirectoryModal}
+					onCancel={() => setIsRenameDirectoryModal(null)}
 				/>
 			)}
 		</>

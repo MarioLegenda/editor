@@ -11,6 +11,7 @@ import { createTabFromFile } from '@/lib/helpers/createTabFromFile';
 import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedTabSubscriber';
 import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedTabTopic';
 import { RenamedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/RenamedFileSubscriber';
+import { createRenamedFileTopic } from '@/lib/stateManagement/eventSubscriber/keys/createRenamedFileTopic';
 
 interface Props {
   item: AppFile;
@@ -39,7 +40,7 @@ export function File({ item, isRoot = false, childSpace }: Props) {
 		);
 
 		const renameFileUnsubscribe = RenamedFileSubscriber.create().subscribe(
-			item.id,
+			createRenamedFileTopic(item.id, false),
 			(msg, data) => {
 				if (typeof data === 'string') {
 					setName(data);
@@ -54,14 +55,16 @@ export function File({ item, isRoot = false, childSpace }: Props) {
 	}, []);
 
 	const onAddTab = useCallback(() => {
-		const tab = createTabFromFile(item);
+		const i = { ...item };
+		i.name = name;
+		const tab = createTabFromFile(i);
 
 		addTab(tab);
 		SelectedTabSubscriber.create().publish(
 			createSelectedTabTopic(item.id),
 			tab,
 		);
-	}, []);
+	}, [name]);
 
 	return (
 		<div

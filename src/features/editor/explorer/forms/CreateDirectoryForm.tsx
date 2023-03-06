@@ -42,9 +42,9 @@ export function CreateDirectoryForm({ onCancel, projectId, parent }: Props) {
 			name: (value: string) => {
 				const errors = combine(
 					[
-						required('File name is required'),
-						min(1, 'File name cannot have less than 1 character'),
-						max(100, 'File name cannot have more than 100 characters'),
+						required('Directory name is required'),
+						min(1, 'Directory name cannot have less than 1 character'),
+						max(100, 'Directory name cannot have more than 100 characters'),
 					],
 					value,
 				);
