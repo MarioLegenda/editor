@@ -12,9 +12,18 @@ import { Keys } from '@/lib/stateManagement/eventSubscriber/keys/Keys';
 import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedTabTopic';
 import { updateSelectedHistoryTab } from '@/lib/dataSource/features/tabs/implementation/updateSelectedHistoryTab';
 import { LanguageIcon } from '@/lib/components/LanguageIcon';
+import { Tooltip } from '@mantine/core';
 
 interface Props {
   item: Tab;
+}
+
+function resolveLongName(name: string) {
+	if (name.length > 14) {
+		return `${name.substring(0, 14)}...`;
+	}
+
+	return name;
 }
 
 export function Tab({ item }: Props) {
@@ -56,28 +65,60 @@ export function Tab({ item }: Props) {
 	}, []);
 
 	return (
-		<div
-			css={[styles.root, selected ? styles.selected : undefined]}
-			onClick={() => {
-				SelectedTabSubscriber.create().publish(
-					createSelectedTabTopic(item.id),
-					item,
-				);
-			}}>
-			<div css={styles.content}>
-				<LanguageIcon fileType={item.fileType} />
-				<p>{name}</p>
-			</div>
+		<>
+			{name.length > 14 && <Tooltip label={name}>
+				<div
+					css={[styles.root, selected ? styles.selected : undefined]}
+					onClick={() => {
+						SelectedTabSubscriber.create().publish(
+							createSelectedTabTopic(item.id),
+							item,
+						);
+					}}>
+					<div css={styles.content}>
+						<LanguageIcon fileType={item.fileType} />
+						<p>{resolveLongName(name)}</p>
+					</div>
 
-			<IconSquareX
-				onClick={(e) => {
-					e.preventDefault();
-					e.stopPropagation();
+					<div className="close-icon-wrapper" css={styles.closeIconWrapper}>
+						<IconSquareX
+							onClick={(e) => {
+								e.preventDefault();
+								e.stopPropagation();
 
-					removeTab(item);
-				}}
-				className="close-icon"
-			/>
-		</div>
+								removeTab(item);
+							}}
+							className="close-icon"
+						/>
+					</div>
+				</div>
+			</Tooltip>}
+
+			{name.length < 14 && <div
+				css={[styles.root, selected ? styles.selected : undefined]}
+				onClick={() => {
+					SelectedTabSubscriber.create().publish(
+						createSelectedTabTopic(item.id),
+						item,
+					);
+				}}>
+				<div css={styles.content}>
+					<LanguageIcon fileType={item.fileType} />
+					<p>{resolveLongName(name)}</p>
+				</div>
+
+				<div className="close-icon-wrapper" css={styles.closeIconWrapper}>
+					<IconSquareX
+						onClick={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
+
+							removeTab(item);
+						}}
+						className="close-icon"
+					/>
+				</div>
+			</div>}
+		</>
 	);
 }

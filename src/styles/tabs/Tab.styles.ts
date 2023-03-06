@@ -8,6 +8,7 @@ export const root = css`
   border: 2px solid var(--color-primaryBackground);
   border-right: 1px solid var(--color-primaryBackground);
   border-left: 1px solid var(--color-primaryBackground);
+  position: relative;
 
   width: 150px;
 
@@ -17,17 +18,27 @@ export const root = css`
     border-bottom: 2px solid var(--color-primary);
   }
 
-  .close-icon {
+  .close-icon-wrapper {
     display: none;
   }
 
-  &:hover .close-icon {
+  &:hover .close-icon-wrapper {
     display: block;
   }
 
-  .close-icon:hover {
+  .close-icon-wrapper:hover {
     color: var(--color-primary);
   }
+`;
+
+export const closeIconWrapper = css`
+  background-color: var(--color-primaryBackground);
+  position: absolute;
+  top: 8px;
+  right: 0;
+  
+  height: 24px;
+  border-radius: 5px;
 `;
 
 export const content = css`
@@ -37,6 +48,7 @@ export const content = css`
   gap: 8px;
 
   margin-left: 2px;
+  overflow: hidden;
 
   -webkit-touch-callout: none;
   -webkit-user-select: none;
