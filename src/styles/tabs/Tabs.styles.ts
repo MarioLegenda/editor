@@ -4,4 +4,7 @@ export const root = css`
   display: flex;
   justify-content: left;
   align-items: center;
+
+  width: 100%;
+  overflow-x: auto;
 `;

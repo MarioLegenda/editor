@@ -10,7 +10,7 @@ export const root = css`
   border-left: 1px solid var(--color-primaryBackground);
   position: relative;
 
-  width: 150px;
+  min-width: 150px;
 
   padding: 8px 8px 8px 0;
 
