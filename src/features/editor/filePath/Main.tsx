@@ -8,6 +8,8 @@ import { Path } from '@/features/editor/filePath/Path';
 import { useEffect, useState } from 'react';
 import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
 import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
+import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedTabSubscriber';
+import { isTab } from '@/lib/dataSource/features/fileSystem/check/isTab';
 
 export function Main() {
 	const project = useProject();
@@ -16,16 +18,37 @@ export function Main() {
 	const getFilePath = useGetFilePath();
 
 	useEffect(() => {
-		SelectedFileSubscriber.create().subscribe('selected_file', (msg, file) => {
-			const id = isFile(file) ? file.id : (file as string);
-			if (id) {
-				getFilePath(id, project.id).then((paths) => {
-					if (paths) {
-						setPaths(paths);
-					}
-				});
-			}
-		});
+		const selectedFileUnsubscribe = SelectedFileSubscriber.create().subscribe(
+			'selected_file',
+			(msg, file) => {
+				const id = isFile(file) ? file.id : (file as string);
+				if (id) {
+					getFilePath(id, project.id).then((paths) => {
+						if (paths) {
+							setPaths(paths);
+						}
+					});
+				}
+			},
+		);
+
+		const selectedTabUnsubscribe = SelectedTabSubscriber.create().subscribe(
+			'selected_tab',
+			(msg, file) => {
+				if (isTab(file)) {
+					getFilePath(file.id, project.id).then((paths) => {
+						if (paths) {
+							setPaths(paths);
+						}
+					});
+				}
+			},
+		);
+
+		return () => {
+			PubSub.unsubscribe(selectedFileUnsubscribe);
+			PubSub.unsubscribe(selectedTabUnsubscribe);
+		};
 	}, []);
 
 	return (
