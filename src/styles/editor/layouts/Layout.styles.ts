@@ -22,7 +22,7 @@ export const codeEditor = css`
 
 export const actualEditor = css`
   width: 100%;
-  height: 95vh;
+  height: 100vh;
 `;
 
 export const tabs = css`

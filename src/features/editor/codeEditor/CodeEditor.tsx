@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import MonacoEditor from '@monaco-editor/react';
+import { editor } from 'monaco-editor';
+import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
+import { useComputeEditorHeight } from '@/lib/helpers/useComputeEditorHeight';
 
 interface Props {
   value: string;
@@ -17,6 +20,8 @@ export function CodeEditor({
 	value,
 }: Props) {
 	const [code, setCode] = useState(value);
+	const [editor, setEditor] = useState<IStandaloneCodeEditor>();
+	useComputeEditorHeight(editor);
 
 	return (
 		<>
@@ -38,6 +43,8 @@ export function CodeEditor({
 						noSemanticValidation: true,
 						noSyntaxValidation: true,
 					});
+
+					setEditor(editor);
 				}}
 				options={{
 					selectOnLineNumbers: true,
@@ -45,7 +52,6 @@ export function CodeEditor({
 					formatOnPaste: true,
 					links: false,
 					acceptSuggestionOnEnter: 'off',
-					automaticLayout: true,
 					snippetSuggestions: 'none',
 					copyWithSyntaxHighlighting: false,
 					scrollbar: {

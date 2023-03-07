@@ -2,7 +2,7 @@ import { useRedirectIfSignedOut } from '@/lib/stateManagement/auth/hooks/useRedi
 import { LoadingLayout } from '@/features/editor/layout/LoadingLayout';
 import { Layout } from '@/features/editor/layout/Layout';
 import { Main as ExplorerMain } from '@/features/editor/explorer/Main';
-import { Main as FilePathMain } from '@/features/filePath/Main';
+import { Main as FilePathMain } from '@/features/editor/filePath/Main';
 import { Main as MenuMain } from '@/features/editor/menu/Main';
 import { useProjectDataResolver } from '@/lib/dataSource/features/projects/useProjectDataResolver';
 import {

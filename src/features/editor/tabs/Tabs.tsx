@@ -8,7 +8,7 @@ export function Tabs() {
 	return (
 		<>
 			{tabs.length !== 0 && (
-				<div css={styles.root}>
+				<div id="tabsId" css={styles.root}>
 					{tabs.map((item) => (
 						<Tab key={item.id} item={item} />
 					))}
