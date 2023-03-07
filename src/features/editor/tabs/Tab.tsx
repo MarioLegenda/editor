@@ -77,7 +77,7 @@ export function Tab({ item }: Props) {
 							);
 						}}>
 						<div css={styles.content}>
-							<LanguageIcon fileType={item.fileType} />
+							<LanguageIcon name={name} fileType={item.fileType} />
 							<p>{resolveLongName(name)}</p>
 						</div>
 
@@ -106,7 +106,7 @@ export function Tab({ item }: Props) {
 						);
 					}}>
 					<div css={styles.content}>
-						<LanguageIcon fileType={item.fileType} />
+						<LanguageIcon name={name} fileType={item.fileType} />
 						<p>{resolveLongName(name)}</p>
 					</div>
 

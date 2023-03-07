@@ -89,7 +89,7 @@ export function File({ item, isRoot = false, childSpace }: Props) {
 						styles.move(isRoot ? 5 : nextChildSpace),
 						selectedFile === item.id ? styles.open : undefined,
 					]}>
-					<LanguageIcon fileType={item.file_type as FileType} />
+					<LanguageIcon name={name} fileType={item.file_type as FileType} />
 
 					<p css={styles.title}>{name}</p>
 				</div>

@@ -16,7 +16,7 @@ export function Path({ name, fileType, isDirectory }: Props) {
 				{isDirectory ? (
 					<DirClosed width={16} />
 				) : (
-					<LanguageIcon fileType={fileType} />
+					<LanguageIcon name={name} fileType={fileType} />
 				)}
 				{name}
 			</span>
