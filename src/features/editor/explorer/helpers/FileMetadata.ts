@@ -29,6 +29,10 @@ export class FileMetadata {
 	}
 
 	fileType(): FileType {
+		if (this.forcedFileType !== this.parsedFileType) {
+			return this.parsedFileType;
+		}
+
 		return this.forcedFileType;
 	}
 
