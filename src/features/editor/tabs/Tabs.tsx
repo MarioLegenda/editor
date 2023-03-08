@@ -1,4 +1,4 @@
-import * as styles from '@/styles/tabs/Tabs.styles';
+import * as styles from '@/styles/editor/tabs/Tabs.styles';
 import { useGetTabs } from '@/lib/stateManagement/tabs/getters';
 import { Tab } from '@/features/editor/tabs/Tab';
 

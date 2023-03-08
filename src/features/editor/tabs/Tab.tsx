@@ -1,4 +1,4 @@
-import * as styles from '@/styles/tabs/Tab.styles';
+import * as styles from '@/styles/editor/tabs/Tab.styles';
 import { IconSquareX } from '@tabler/icons';
 import { useEffect, useState } from 'react';
 import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedTabSubscriber';

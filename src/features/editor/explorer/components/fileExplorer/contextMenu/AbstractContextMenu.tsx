@@ -24,6 +24,8 @@ import { useState } from 'react';
 import { DeleteFileModal } from '@/features/editor/explorer/modals/DeleteFileModal';
 import { RenameFileModal } from '@/features/editor/explorer/modals/RenameFileModal';
 import { RenameDirectoryModal } from '@/features/editor/explorer/modals/RenameDirectoryModal';
+import { usePasteBuffer } from '@/lib/pasteBuffer/usePasteBuffer';
+import { PasteBufferView } from '@/features/editor/clipboard/modals/PasteBufferView';
 
 interface Props {
   id: string;
@@ -46,6 +48,9 @@ export function AbstractContextMenu({
 	const [isDeleteFileModal, setIsDeleteFileModal] = useState(false);
 	const [isRenameFileModal, setIsRenameFileModal] = useState(false);
 	const [isRenameDirectoryModal, setIsRenameDirectoryModal] = useState(false);
+	const [pasteModalId, setPasteModalId] = useState<string>();
+
+	const { cut, copy, isEmpty, getCopyPaths, getCutPaths } = usePasteBuffer();
 
 	return (
 		<>
@@ -82,15 +87,24 @@ export function AbstractContextMenu({
 					</ContextMenuItem>
 				</Submenu>
 
-				<ContextMenuItem>
+				<ContextMenuItem onClick={() => cut(id)}>
 					<Item leftIcon={<IconScissors size={18} />} name="Cut" />
 				</ContextMenuItem>
-				<ContextMenuItem>
+
+				<ContextMenuItem onClick={() => copy(id)}>
 					<Item leftIcon={<IconFiles size={18} />} name="Copy" />
 				</ContextMenuItem>
-				<ContextMenuItem css={styles.divider}>
-					<Item leftIcon={<IconCalendarPlus size={18} />} name="Paste" />
+
+				<ContextMenuItem
+					onClick={() => setPasteModalId(id)}
+					css={styles.divider}>
+					<Item
+						disabled={isEmpty()}
+						leftIcon={<IconCalendarPlus size={18} />}
+						name="Paste"
+					/>
 				</ContextMenuItem>
+
 				<ContextMenuItem
 					onClick={() => {
 						if (isDirectory) {
@@ -129,13 +143,13 @@ export function AbstractContextMenu({
 				/>
 			)}
 
-			{createFileModalData && (
-				<CreateFileModal
-					projectId={projectId}
-					parent={id}
-					fileType={createFileModalData}
-					show={Boolean(createFileModalData)}
-					onCancel={() => setCreateFileModalData(null)}
+			{pasteModalId && (
+				<PasteBufferView
+					cutPaths={getCutPaths()}
+					copyPaths={getCopyPaths()}
+					id={pasteModalId}
+					show={Boolean(pasteModalId)}
+					onCancel={() => setPasteModalId(undefined)}
 				/>
 			)}
 
@@ -148,6 +162,16 @@ export function AbstractContextMenu({
 					fileType={fileType}
 					show={isRenameFileModal}
 					onCancel={() => setIsRenameFileModal(false)}
+				/>
+			)}
+
+			{createFileModalData && (
+				<CreateFileModal
+					projectId={projectId}
+					parent={id}
+					fileType={createFileModalData}
+					show={Boolean(createFileModalData)}
+					onCancel={() => setCreateFileModalData(null)}
 				/>
 			)}
 

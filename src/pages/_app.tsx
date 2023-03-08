@@ -4,9 +4,11 @@ import type { AppProps } from 'next/app';
 import { MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { DataSourceEventsProvider } from '@/lib/dataSource/components/DataSourceEventsProvider';
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot, RecoilEnv } from 'recoil';
 import { NotificationsProvider } from '@mantine/notifications';
 import { RouterTransition } from '@/lib/components/RouteTransition';
+
+RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 const queryClient = new QueryClient();
 

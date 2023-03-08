@@ -4,9 +4,10 @@ import { Modal, useMantineTheme } from '@mantine/core';
 interface Props extends PropsWithChildren {
   show: boolean;
   onCancel: () => void;
+  size?: string | number;
 }
 
-export function BaseModal({ children, show, onCancel }: Props) {
+export function BaseModal({ children, show, onCancel, size = 'sm' }: Props) {
 	const theme = useMantineTheme();
 
 	return (
@@ -18,6 +19,7 @@ export function BaseModal({ children, show, onCancel }: Props) {
 			transitionDuration={600}
 			transitionTimingFunction="ease"
 			onClose={onCancel}
+			size={size}
 			overlayColor={
 				theme.colorScheme === 'dark'
 					? theme.colors.dark[9]

@@ -6,6 +6,11 @@ export const root = css`
   align-items: center;
 `;
 
+export const disabled = css`
+  color: var(--color-lightText);
+  cursor: not-allowed;
+`;
+
 export const leftSection = css`
   display: flex;
   justify-content: left;

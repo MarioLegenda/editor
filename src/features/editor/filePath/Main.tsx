@@ -1,4 +1,4 @@
-import * as styles from '@/styles/filePath/Main.styles';
+import * as styles from '@/styles/editor/filePath/Main.styles';
 import { IconSquare } from '@tabler/icons';
 import {
 	useGetFilePath,

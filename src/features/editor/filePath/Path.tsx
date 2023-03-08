@@ -1,4 +1,4 @@
-import * as styles from '@/styles/filePath/Path.styles';
+import * as styles from '@/styles/editor/filePath/Path.styles';
 import { LanguageIcon } from '@/lib/components/LanguageIcon';
 import DirClosed from '/public/editor/folderClosed.svg';
 
