@@ -3,8 +3,8 @@ import { Main } from '@/features/editor/clipboard/components/Main';
 
 interface Props {
   show: boolean;
-  cutPaths: string[];
-  copyPaths: string[];
+  cutPaths: ClipboardBufferItem[];
+  copyPaths: ClipboardBufferItem[];
   onCancel: () => void;
   paths: string[];
 }

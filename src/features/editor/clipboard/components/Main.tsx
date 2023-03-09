@@ -4,8 +4,8 @@ import { IconFiles, IconScissors } from '@tabler/icons';
 import { CardItem } from '@/features/editor/clipboard/components/CardItem';
 
 interface Props {
-  cutPaths: string[];
-  copyPaths: string[];
+  cutPaths: ClipboardBufferItem[];
+  copyPaths: ClipboardBufferItem[];
 }
 
 export function Main({ cutPaths, copyPaths }: Props) {

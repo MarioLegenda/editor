@@ -11,6 +11,7 @@ import PubSub from 'pubsub-js';
 import { RenamedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/RenamedFileSubscriber';
 import { createRenamedFileTopic } from '@/lib/stateManagement/eventSubscriber/keys/createRenamedFileTopic';
 import { createSelectedFileTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedFileTopic';
+import { RootContextMenu } from '@/features/editor/explorer/components/fileExplorer/contextMenu/RootContextMenu';
 
 interface Props {
   item: AppFile;
@@ -90,13 +91,23 @@ export function Directory({ item, isRoot, childSpace }: Props) {
 				</div>
 			</ContextMenuTrigger>
 
-			<AbstractContextMenu
-				value={item.name}
-				fileType={item.file_type}
-				projectId={item.project_id}
-				isDirectory={item.is_directory}
-				id={item.id}
-			/>
+			{!isRoot && (
+				<AbstractContextMenu
+					value={item.name}
+					fileType={item.file_type}
+					projectId={item.project_id}
+					isDirectory={item.is_directory}
+					id={item.id}
+				/>
+			)}
+
+			{isRoot && (
+				<RootContextMenu
+					id={item.id}
+					projectId={item.project_id}
+					isDirectory={true}
+				/>
+			)}
 
 			{isOpen && (
 				<FileListing childSpace={nextChildSpace} isRoot={false} files={files} />

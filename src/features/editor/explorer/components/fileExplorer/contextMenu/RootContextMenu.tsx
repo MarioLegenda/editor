@@ -3,14 +3,7 @@
 
 import { ContextMenu, ContextMenuItem, Submenu } from 'rctx-contextmenu';
 import { Item } from '@/features/editor/explorer/components/fileExplorer/contextMenu/Item';
-import {
-	IconCalendarPlus,
-	IconEdit,
-	IconFiles,
-	IconFolderPlus,
-	IconScissors,
-	IconTrash,
-} from '@tabler/icons';
+import { IconCalendarPlus, IconFolderPlus } from '@tabler/icons';
 import * as styles from '@/styles/editor/explorer/contextMenu/AbstractContextMenu.styles';
 
 import TypescriptIcon from '/public/editor/Typescript.svg';
@@ -22,45 +15,27 @@ import { CreateDirectoryModal } from '@/features/editor/explorer/modals/CreateDi
 import { CreateFileModal } from '@/features/editor/explorer/modals/CreateFileModal';
 import { useState } from 'react';
 import { DeleteFileModal } from '@/features/editor/explorer/modals/DeleteFileModal';
-import { RenameFileModal } from '@/features/editor/explorer/modals/RenameFileModal';
-import { RenameDirectoryModal } from '@/features/editor/explorer/modals/RenameDirectoryModal';
 import { PasteBufferView } from '@/features/editor/clipboard/modals/PasteBufferView';
 import {
 	useGetCopyBuffer,
 	useGetCutBuffer,
 	useIsBufferEmpty,
 } from '@/lib/stateManagement/clipboard/getters';
-import {
-	useAddCopyItem,
-	useAddCutItem,
-} from '@/lib/stateManagement/clipboard/setters';
 
 interface Props {
   id: string;
-  value: string;
   projectId: string;
-  fileType: FileType | null;
   isDirectory: boolean;
 }
 
-export function AbstractContextMenu({
-	id,
-	projectId,
-	isDirectory,
-	fileType,
-	value,
-}: Props) {
+export function RootContextMenu({ id, projectId, isDirectory }: Props) {
 	const [isDirectoryModal, setIsDirectoryModal] = useState(false);
 	const [createFileModalData, setCreateFileModalData] =
     useState<FileType | null>(null);
 	const [isDeleteFileModal, setIsDeleteFileModal] = useState(false);
-	const [isRenameFileModal, setIsRenameFileModal] = useState(false);
-	const [isRenameDirectoryModal, setIsRenameDirectoryModal] = useState(false);
 	const [pasteModalId, setPasteModalId] = useState<string>();
 
 	const isBufferEmpty = useIsBufferEmpty();
-	const addCopyItem = useAddCopyItem();
-	const addCutItem = useAddCutItem();
 	const copyBuffer = useGetCopyBuffer();
 	const cutBuffer = useGetCutBuffer();
 
@@ -99,14 +74,6 @@ export function AbstractContextMenu({
 					</ContextMenuItem>
 				</Submenu>
 
-				<ContextMenuItem onClick={() => addCutItem(id)}>
-					<Item leftIcon={<IconScissors size={18} />} name="Cut" />
-				</ContextMenuItem>
-
-				<ContextMenuItem onClick={() => addCopyItem(id)}>
-					<Item leftIcon={<IconFiles size={18} />} name="Copy" />
-				</ContextMenuItem>
-
 				<ContextMenuItem
 					onClick={() => setPasteModalId(id)}
 					css={styles.divider}>
@@ -115,24 +82,6 @@ export function AbstractContextMenu({
 						leftIcon={<IconCalendarPlus size={18} />}
 						name="Paste"
 					/>
-				</ContextMenuItem>
-
-				<ContextMenuItem
-					onClick={() => {
-						if (isDirectory) {
-							setIsRenameDirectoryModal(true);
-
-							return;
-						}
-
-						setIsRenameFileModal(true);
-					}}>
-					<Item leftIcon={<IconEdit size={18} />} name="Rename" />
-				</ContextMenuItem>
-				<ContextMenuItem
-					onClick={() => setIsDeleteFileModal(true)}
-					css={styles.danger}>
-					<Item leftIcon={<IconTrash size={18} />} name="Delete" danger />
 				</ContextMenuItem>
 			</ContextMenu>
 
@@ -165,18 +114,6 @@ export function AbstractContextMenu({
 				/>
 			)}
 
-			{isRenameFileModal && (
-				<RenameFileModal
-					projectId={projectId}
-					value={value}
-					parent={id}
-					fileId={id}
-					fileType={fileType}
-					show={isRenameFileModal}
-					onCancel={() => setIsRenameFileModal(false)}
-				/>
-			)}
-
 			{createFileModalData && (
 				<CreateFileModal
 					projectId={projectId}
@@ -184,17 +121,6 @@ export function AbstractContextMenu({
 					fileType={createFileModalData}
 					show={Boolean(createFileModalData)}
 					onCancel={() => setCreateFileModalData(null)}
-				/>
-			)}
-
-			{isRenameDirectoryModal && (
-				<RenameDirectoryModal
-					projectId={projectId}
-					value={value}
-					parent={id}
-					fileId={id}
-					show={isRenameDirectoryModal}
-					onCancel={() => setIsRenameDirectoryModal(null)}
 				/>
 			)}
 		</>
