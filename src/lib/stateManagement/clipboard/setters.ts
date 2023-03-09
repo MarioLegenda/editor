@@ -1,4 +1,4 @@
-import { useSetRecoilState } from 'recoil';
+import { useRecoilCallback, useSetRecoilState } from 'recoil';
 import {
 	copyBufferAtom,
 	cutBufferAtom,
@@ -45,6 +45,32 @@ export function useAddCopyItem() {
 			{ date: new Date(), item: path, id: item },
 		]);
 	};
+}
+
+export function useRemoveBufferItem() {
+	return useRecoilCallback(
+		({ snapshot, set }) =>
+			async (type: 'cut' | 'copy', item: string) => {
+				let items: ClipboardBufferItem[] = [];
+				if (type === 'cut') {
+					items = await snapshot.getPromise(cutBufferAtom);
+				} else if (type === 'copy') {
+					items = await snapshot.getPromise(copyBufferAtom);
+				}
+
+				const idx = items.findIndex((thing) => thing.id === item);
+				if (idx !== -1) {
+					const temp = [...items];
+					temp.splice(idx, 1);
+					if (type === 'cut') {
+						set(cutBufferAtom, temp);
+					} else if (type === 'copy') {
+						set(copyBufferAtom, temp);
+					}
+				}
+			},
+		[],
+	);
 }
 
 export function useAddCutItem() {

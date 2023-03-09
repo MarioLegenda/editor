@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 export const root = css``;
 
 export const heading = css`
-  font-size: 24px;
+  font-size: 20px;
   margin-bottom: 42px;
 `;
 
@@ -31,6 +31,17 @@ export const cardItemButton = css`
   &:hover {
     background-color: transparent;
   }
+`;
+
+export const removeButton = css`
+  font-weight: 400;
+  color: var(--color-lightError);
+`;
+
+export const buttonWrapper = css`
+  display: flex;
+  justify-content: left;
+  align-content: center;
 `;
 
 export const panel = css`

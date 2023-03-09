@@ -58,14 +58,18 @@ export function Main() {
 
 				<Tabs.Panel css={styles.panel} value="cut" pt="xs">
 					{cutBuffer.length !== 0 &&
-            cutBuffer.map((item, i) => <CardItem key={i} item={item} />)}
+            cutBuffer.map((item, i) => (
+            	<CardItem type="cut" key={i} item={item} />
+            ))}
 
 					{cutBuffer.length === 0 && <p css={styles.noItems}>No items</p>}
 				</Tabs.Panel>
 
 				<Tabs.Panel css={styles.panel} value="copy" pt="xs">
 					{copyBuffer.length !== 0 &&
-            copyBuffer.map((item, i) => <CardItem key={i} item={item} />)}
+            copyBuffer.map((item, i) => (
+            	<CardItem type="copy" key={i} item={item} />
+            ))}
 
 					{copyBuffer.length === 0 && <p css={styles.noItems}>No items</p>}
 				</Tabs.Panel>
