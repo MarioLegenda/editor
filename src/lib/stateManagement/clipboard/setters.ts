@@ -8,6 +8,8 @@ import {
 	useProject,
 } from '@/lib/stateManagement/project/getters';
 
+const MAX_ITEMS = 10;
+
 async function resolvePath(
 	fn: ReturnType<typeof useGetFilePath>,
 	item: string,
@@ -15,9 +17,20 @@ async function resolvePath(
 	projectName: string,
 ) {
 	const paths = await fn(item, projectId);
-	const path = `/${projectName}/${paths.map((item) => item.name).join('/')}`;
+	return `/${projectName}/${paths.map((item) => item.name).join('/')}`;
+}
 
-	return path;
+function resolveBuffer(buffer: ClipboardBufferItem[], path: string, item: string) {
+	const temp = [...buffer];
+
+	if (temp.length === MAX_ITEMS) {
+		temp.shift();
+	}
+
+	return [
+		...temp,
+		{ date: new Date(), item: path, id: item },
+	];
 }
 
 export function useResetCutBuffer() {
@@ -39,11 +52,18 @@ export function useAddCopyItem() {
 
 	return async (item: string) => {
 		const path = await resolvePath(getFilePath, item, project.id, project.name);
+		setBuffer((buffer) => resolveBuffer([...buffer], path, item));
+	};
+}
 
-		setBuffer((buffer) => [
-			...buffer,
-			{ date: new Date(), item: path, id: item },
-		]);
+export function useAddCutItem() {
+	const setBuffer = useSetRecoilState(cutBufferAtom);
+	const project = useProject();
+	const getFilePath = useGetFilePath();
+
+	return async (item: string) => {
+		const path = await resolvePath(getFilePath, item, project.id, project.name);
+		setBuffer((buffer) => resolveBuffer([...buffer], path, item));
 	};
 }
 
@@ -71,19 +91,4 @@ export function useRemoveBufferItem() {
 			},
 		[],
 	);
-}
-
-export function useAddCutItem() {
-	const setBuffer = useSetRecoilState(cutBufferAtom);
-	const project = useProject();
-	const getFilePath = useGetFilePath();
-
-	return async (item: string) => {
-		const path = await resolvePath(getFilePath, item, project.id, project.name);
-
-		setBuffer((buffer) => [
-			...buffer,
-			{ date: new Date(), item: path, id: item },
-		]);
-	};
 }
