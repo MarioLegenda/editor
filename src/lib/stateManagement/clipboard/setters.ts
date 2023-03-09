@@ -20,17 +20,18 @@ async function resolvePath(
 	return `/${projectName}/${paths.map((item) => item.name).join('/')}`;
 }
 
-function resolveBuffer(buffer: ClipboardBufferItem[], path: string, item: string) {
+function resolveBuffer(
+	buffer: ClipboardBufferItem[],
+	path: string,
+	item: string,
+) {
 	const temp = [...buffer];
 
 	if (temp.length === MAX_ITEMS) {
 		temp.shift();
 	}
 
-	return [
-		...temp,
-		{ date: new Date(), item: path, id: item },
-	];
+	return [{ date: new Date(), item: path, id: item }, ...temp];
 }
 
 export function useResetCutBuffer() {
