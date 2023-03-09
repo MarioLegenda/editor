@@ -39,7 +39,7 @@ interface Props {
   isDirectory: boolean;
 }
 
-export function AbstractContextMenu({
+export function DirectoryContextMenu({
 	id,
 	projectId,
 	isDirectory,

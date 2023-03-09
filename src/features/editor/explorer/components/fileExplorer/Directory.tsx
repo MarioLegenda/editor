@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParentFiles } from '@/lib/stateManagement/project/getters';
 import { FileListing } from '@/features/editor/explorer/components/fileExplorer/FileListing';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
-import { AbstractContextMenu } from '@/features/editor/explorer/components/fileExplorer/contextMenu/AbstractContextMenu';
+import { DirectoryContextMenu } from '@/features/editor/explorer/components/fileExplorer/contextMenu/DirectoryContextMenu';
 import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
 import PubSub from 'pubsub-js';
 import { RenamedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/RenamedFileSubscriber';
@@ -92,7 +92,7 @@ export function Directory({ item, isRoot, childSpace }: Props) {
 			</ContextMenuTrigger>
 
 			{!isRoot && (
-				<AbstractContextMenu
+				<DirectoryContextMenu
 					value={item.name}
 					fileType={item.file_type}
 					projectId={item.project_id}

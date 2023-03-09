@@ -1,7 +1,6 @@
 import * as styles from '@/styles/editor/explorer/fileExplorer/File.styles';
 import { LanguageIcon } from '@/lib/components/LanguageIcon';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
-import { AbstractContextMenu } from '@/features/editor/explorer/components/fileExplorer/contextMenu/AbstractContextMenu';
 import { useCallback, useEffect, useState } from 'react';
 import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
 import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
@@ -13,6 +12,7 @@ import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/ke
 import { RenamedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/RenamedFileSubscriber';
 import { createRenamedFileTopic } from '@/lib/stateManagement/eventSubscriber/keys/createRenamedFileTopic';
 import { createSelectedFileTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedFileTopic';
+import { FileContextMenu } from '@/features/editor/explorer/components/fileExplorer/contextMenu/FileContextMenu';
 
 interface Props {
   item: AppFile;
@@ -95,10 +95,9 @@ export function File({ item, isRoot = false, childSpace }: Props) {
 				</div>
 			</ContextMenuTrigger>
 
-			<AbstractContextMenu
+			<FileContextMenu
 				value={name}
 				fileType={item.file_type}
-				isDirectory={item.is_directory}
 				projectId={item.project_id}
 				id={item.id}
 			/>
