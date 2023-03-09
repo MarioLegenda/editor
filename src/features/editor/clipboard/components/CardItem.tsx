@@ -12,7 +12,9 @@ export function CardItem({ item }: Props) {
 				{item.item}
 			</Text>
 
-			<Button variant="default">Select</Button>
+			<Button css={styles.cardItemButton} color="white" variant="subtle">
+        Select
+			</Button>
 		</Card>
 	);
 }

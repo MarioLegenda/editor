@@ -20,6 +20,18 @@ async function resolvePath(
 	return path;
 }
 
+export function useResetCutBuffer() {
+	const setCutBuffer = useSetRecoilState(cutBufferAtom);
+
+	return () => setCutBuffer([]);
+}
+
+export function useResetCopyBuffer() {
+	const setCopyBuffer = useSetRecoilState(copyBufferAtom);
+
+	return () => setCopyBuffer([]);
+}
+
 export function useAddCopyItem() {
 	const setBuffer = useSetRecoilState(copyBufferAtom);
 	const project = useProject();

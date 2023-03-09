@@ -3,23 +3,16 @@ import { Main } from '@/features/editor/clipboard/components/Main';
 
 interface Props {
   show: boolean;
-  cutPaths: ClipboardBufferItem[];
-  copyPaths: ClipboardBufferItem[];
   onCancel: () => void;
   paths: string[];
 }
 
-export function PasteBufferView({
-	show,
-	cutPaths,
-	copyPaths,
-	onCancel,
-}: Props) {
+export function PasteBufferView({ show, onCancel }: Props) {
 	return (
 		<>
 			{show && (
 				<BaseModal size="xl" show={show} onCancel={onCancel}>
-					<Main cutPaths={cutPaths} copyPaths={copyPaths} />
+					<Main />
 				</BaseModal>
 			)}
 		</>

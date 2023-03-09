@@ -25,11 +25,7 @@ import { DeleteFileModal } from '@/features/editor/explorer/modals/DeleteFileMod
 import { RenameFileModal } from '@/features/editor/explorer/modals/RenameFileModal';
 import { RenameDirectoryModal } from '@/features/editor/explorer/modals/RenameDirectoryModal';
 import { PasteBufferView } from '@/features/editor/clipboard/modals/PasteBufferView';
-import {
-	useGetCopyBuffer,
-	useGetCutBuffer,
-	useIsBufferEmpty,
-} from '@/lib/stateManagement/clipboard/getters';
+import { useIsBufferEmpty } from '@/lib/stateManagement/clipboard/getters';
 import {
 	useAddCopyItem,
 	useAddCutItem,
@@ -61,8 +57,6 @@ export function AbstractContextMenu({
 	const isBufferEmpty = useIsBufferEmpty();
 	const addCopyItem = useAddCopyItem();
 	const addCutItem = useAddCutItem();
-	const copyBuffer = useGetCopyBuffer();
-	const cutBuffer = useGetCutBuffer();
 
 	return (
 		<>
@@ -157,8 +151,6 @@ export function AbstractContextMenu({
 
 			{pasteModalId && (
 				<PasteBufferView
-					cutPaths={cutBuffer}
-					copyPaths={copyBuffer}
 					id={pasteModalId}
 					show={Boolean(pasteModalId)}
 					onCancel={() => setPasteModalId(undefined)}
