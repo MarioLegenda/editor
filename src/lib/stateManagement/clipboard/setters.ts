@@ -92,8 +92,27 @@ export function useRemoveCutItem() {
 	);
 }
 
+export function useRemoveCopyItem() {
+	return useRecoilCallback(
+		({ snapshot, set }) =>
+			async (item: string) => {
+				const buffer = await snapshot.getPromise(copyBufferAtom);
+
+				const idx = buffer.findIndex((itm) => itm.id === item);
+
+				if (idx !== -1) {
+					const temp = [...buffer];
+					temp.splice(idx, 1);
+					set(copyBufferAtom, temp);
+				}
+			},
+		[],
+	);
+}
+
+
 export function useCutFile() {
-	const removeCutItem = useRemoveCutItem();
+	const removeItem = useRemoveCutItem();
 
 	return useRecoilCallback(
 		({ snapshot, set }) =>
@@ -113,7 +132,30 @@ export function useCutFile() {
 						temp[idx] = tempFile;
 						set(fileSystemAtom, temp);
 
-						removeCutItem(item.id);
+						removeItem(item.id);
+					}
+				}
+			},
+		[],
+	);
+}
+
+export function useCopyFile() {
+	const removeItem = useRemoveCopyItem();
+
+	return useRecoilCallback(
+		({ snapshot, set }) =>
+			async (item: CutFile) => {
+				const files = await snapshot.getPromise(fileSystemAtom);
+				const project = await snapshot.getPromise(projectAtom);
+				const account = await snapshot.getPromise(accountAtom);
+
+				if (project && account) {
+					const idx = files.findIndex((f) => f.id === item.id);
+					if (idx !== -1) {
+						const file = files[idx];
+
+						removeItem(item.id);
 					}
 				}
 			},
