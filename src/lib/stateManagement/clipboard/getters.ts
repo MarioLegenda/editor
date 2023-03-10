@@ -1,19 +1,19 @@
 import { useRecoilValue } from 'recoil';
 import {
-  copyBufferAtom,
-  cutBufferAtom,
+	copyBufferAtom,
+	cutBufferAtom,
 } from '@/lib/stateManagement/clipboard/atoms';
 
 export function useGetCutBuffer() {
-  return useRecoilValue(cutBufferAtom);
+	return useRecoilValue(cutBufferAtom);
 }
 export function useGetCopyBuffer() {
-  return useRecoilValue(copyBufferAtom);
+	return useRecoilValue(copyBufferAtom);
 }
 
 export function useIsBufferEmpty() {
-  const copy = useGetCopyBuffer();
-  const cut = useGetCutBuffer();
+	const copy = useGetCopyBuffer();
+	const cut = useGetCutBuffer();
 
-  return copy.length === 0 && cut.length === 0;
+	return copy.length === 0 && cut.length === 0;
 }

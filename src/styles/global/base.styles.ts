@@ -1,3 +1,3 @@
 export const spacing = {
-  base: '24px',
+	base: '24px',
 };

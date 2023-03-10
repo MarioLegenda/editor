@@ -5,19 +5,19 @@ import { authStateAtom } from '@/lib/stateManagement/auth/state';
 import { AuthState } from '@/lib/stateManagement/types/authState';
 
 export function useSetAccount() {
-  const setAccount = useSetRecoilState(accountAtom);
+	const setAccount = useSetRecoilState(accountAtom);
 
-  return (account: User) => setAccount(account);
+	return (account: User) => setAccount(account);
 }
 
 export function useResetAccount() {
-  const reset = useResetRecoilState(accountAtom);
+	const reset = useResetRecoilState(accountAtom);
 
-  return () => reset();
+	return () => reset();
 }
 
 export function useSetAuthState() {
-  const setAccount = useSetRecoilState(authStateAtom);
+	const setAccount = useSetRecoilState(authStateAtom);
 
-  return (state: AuthState) => setAccount(state);
+	return (state: AuthState) => setAccount(state);
 }

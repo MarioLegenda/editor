@@ -10,18 +10,18 @@ interface Props {
 }
 
 export function EditProjectModal({ show, onCancel, item, id, onDone }: Props) {
-  return (
-    <>
-      {show && (
-        <BaseModal show={show} onCancel={onCancel}>
-          <EditProjectForm
-            item={item}
-            id={id}
-            onCancel={onCancel}
-            onDone={onDone}
-          />
-        </BaseModal>
-      )}
-    </>
-  );
+	return (
+		<>
+			{show && (
+				<BaseModal show={show} onCancel={onCancel}>
+					<EditProjectForm
+						item={item}
+						id={id}
+						onCancel={onCancel}
+						onDone={onDone}
+					/>
+				</BaseModal>
+			)}
+		</>
+	);
 }

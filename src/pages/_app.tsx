@@ -13,24 +13,24 @@ RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
-  return (
-    <MantineProvider
-      withGlobalStyles
-      withNormalizeCSS
-      theme={{
-        colorScheme: 'dark',
-        loader: 'oval',
-      }}>
-      <RouterTransition />
-      <NotificationsProvider position="top-right">
-        <QueryClientProvider client={queryClient}>
-          <RecoilRoot>
-            <DataSourceEventsProvider>
-              <Component {...pageProps} />
-            </DataSourceEventsProvider>
-          </RecoilRoot>
-        </QueryClientProvider>
-      </NotificationsProvider>
-    </MantineProvider>
-  );
+	return (
+		<MantineProvider
+			withGlobalStyles
+			withNormalizeCSS
+			theme={{
+				colorScheme: 'dark',
+				loader: 'oval',
+			}}>
+			<RouterTransition />
+			<NotificationsProvider position="top-right">
+				<QueryClientProvider client={queryClient}>
+					<RecoilRoot>
+						<DataSourceEventsProvider>
+							<Component {...pageProps} />
+						</DataSourceEventsProvider>
+					</RecoilRoot>
+				</QueryClientProvider>
+			</NotificationsProvider>
+		</MantineProvider>
+	);
 }

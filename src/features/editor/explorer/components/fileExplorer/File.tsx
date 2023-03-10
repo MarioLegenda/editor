@@ -21,86 +21,86 @@ interface Props {
 }
 
 export function File({ item, isRoot = false, childSpace }: Props) {
-  const [selectedFile, setSelectedFile] = useState<string>();
-  const nextChildSpace = childSpace + 3;
-  const addTab = useAddTab();
-  const [name, setName] = useState(item.name);
+	const [selectedFile, setSelectedFile] = useState<string>();
+	const nextChildSpace = childSpace + 3;
+	const addTab = useAddTab();
+	const [name, setName] = useState(item.name);
 
-  useEffect(() => {
-    const selectedFileUnsubscribe = SelectedFileSubscriber.create().subscribe(
-      createSelectedFileTopic(item.id),
-      (selected, data) => {
-        if (isFile(data)) {
-          setSelectedFile(data.id);
+	useEffect(() => {
+		const selectedFileUnsubscribe = SelectedFileSubscriber.create().subscribe(
+			createSelectedFileTopic(item.id),
+			(selected, data) => {
+				if (isFile(data)) {
+					setSelectedFile(data.id);
 
-          return;
-        }
+					return;
+				}
 
-        setSelectedFile(undefined);
-      },
-    );
+				setSelectedFile(undefined);
+			},
+		);
 
-    const renameFileUnsubscribe = RenamedFileSubscriber.create().subscribe(
-      createRenamedFileTopic(item.id, false),
-      (msg, data) => {
-        if (typeof data === 'string') {
-          setName(data);
-        }
-      },
-    );
+		const renameFileUnsubscribe = RenamedFileSubscriber.create().subscribe(
+			createRenamedFileTopic(item.id, false),
+			(msg, data) => {
+				if (typeof data === 'string') {
+					setName(data);
+				}
+			},
+		);
 
-    return () => {
-      PubSub.unsubscribe(renameFileUnsubscribe);
-      PubSub.unsubscribe(selectedFileUnsubscribe);
-    };
-  }, []);
+		return () => {
+			PubSub.unsubscribe(renameFileUnsubscribe);
+			PubSub.unsubscribe(selectedFileUnsubscribe);
+		};
+	}, []);
 
-  const onAddTab = useCallback(() => {
-    const i = { ...item };
-    i.name = name;
-    const tab = createTabFromFile(i);
+	const onAddTab = useCallback(() => {
+		const i = { ...item };
+		i.name = name;
+		const tab = createTabFromFile(i);
 
-    addTab(tab);
-    SelectedTabSubscriber.create().publish(
-      createSelectedTabTopic(item.id),
-      tab,
-    );
-  }, [name]);
+		addTab(tab);
+		SelectedTabSubscriber.create().publish(
+			createSelectedTabTopic(item.id),
+			tab,
+		);
+	}, [name]);
 
-  return (
-    <div
-      css={[styles.root]}
-      onDoubleClick={onAddTab}
-      onClick={(e) => {
-        if (!e.detail || e.detail == 1) {
-          SelectedFileSubscriber.create().publish(
-            createSelectedFileTopic(item.id),
-            item,
-          );
-        }
-      }}>
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/*
+	return (
+		<div
+			css={[styles.root]}
+			onDoubleClick={onAddTab}
+			onClick={(e) => {
+				if (!e.detail || e.detail == 1) {
+					SelectedFileSubscriber.create().publish(
+						createSelectedFileTopic(item.id),
+						item,
+					);
+				}
+			}}>
+			{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+			{/*
           // @ts-ignore */}
-      <ContextMenuTrigger id={item.id}>
-        <div
-          css={[
-            styles.content,
-            styles.move(isRoot ? 5 : nextChildSpace),
-            selectedFile === item.id ? styles.open : undefined,
-          ]}>
-          <LanguageIcon name={name} fileType={item.file_type as FileType} />
+			<ContextMenuTrigger id={item.id}>
+				<div
+					css={[
+						styles.content,
+						styles.move(isRoot ? 5 : nextChildSpace),
+						selectedFile === item.id ? styles.open : undefined,
+					]}>
+					<LanguageIcon name={name} fileType={item.file_type as FileType} />
 
-          <p css={styles.title}>{name}</p>
-        </div>
-      </ContextMenuTrigger>
+					<p css={styles.title}>{name}</p>
+				</div>
+			</ContextMenuTrigger>
 
-      <FileContextMenu
-        value={name}
-        fileType={item.file_type}
-        projectId={item.project_id}
-        id={item.id}
-      />
-    </div>
-  );
+			<FileContextMenu
+				value={name}
+				fileType={item.file_type}
+				projectId={item.project_id}
+				id={item.id}
+			/>
+		</div>
+	);
 }

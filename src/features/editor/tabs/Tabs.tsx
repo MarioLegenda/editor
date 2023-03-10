@@ -3,17 +3,17 @@ import { useGetTabs } from '@/lib/stateManagement/tabs/getters';
 import { Tab } from '@/features/editor/tabs/Tab';
 
 export function Tabs() {
-  const tabs = useGetTabs();
+	const tabs = useGetTabs();
 
-  return (
-    <>
-      {tabs.length !== 0 && (
-        <div id="tabsId" css={styles.root}>
-          {tabs.map((item) => (
-            <Tab key={item.id} item={item} />
-          ))}
-        </div>
-      )}
-    </>
-  );
+	return (
+		<>
+			{tabs.length !== 0 && (
+				<div id="tabsId" css={styles.root}>
+					{tabs.map((item) => (
+						<Tab key={item.id} item={item} />
+					))}
+				</div>
+			)}
+		</>
+	);
 }

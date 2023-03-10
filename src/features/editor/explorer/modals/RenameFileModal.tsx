@@ -12,28 +12,28 @@ interface Props {
 }
 
 export function RenameFileModal({
-  projectId,
-  fileType,
-  show,
-  value,
-  parent,
-  onCancel,
-  fileId,
+	projectId,
+	fileType,
+	show,
+	value,
+	parent,
+	onCancel,
+	fileId,
 }: Props) {
-  return (
-    <>
-      {show && (
-        <BaseModal show={show} onCancel={onCancel}>
-          <RenameFileForm
-            parent={parent}
-            value={value}
-            fileType={fileType}
-            projectId={projectId}
-            fileId={fileId}
-            onCancel={onCancel}
-          />
-        </BaseModal>
-      )}
-    </>
-  );
+	return (
+		<>
+			{show && (
+				<BaseModal show={show} onCancel={onCancel}>
+					<RenameFileForm
+						parent={parent}
+						value={value}
+						fileType={fileType}
+						projectId={projectId}
+						fileId={fileId}
+						onCancel={onCancel}
+					/>
+				</BaseModal>
+			)}
+		</>
+	);
 }

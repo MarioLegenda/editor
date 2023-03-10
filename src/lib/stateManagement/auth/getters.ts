@@ -5,13 +5,13 @@ import { authStateAtom } from '@/lib/stateManagement/auth/state';
 import { User } from '@supabase/gotrue-js';
 
 export function useAccount() {
-  const account = useRecoilValue(accountAtom);
+	const account = useRecoilValue(accountAtom);
 
-  return useCallback(() => account as User, [account]);
+	return useCallback(() => account as User, [account]);
 }
 
 export function useAuthState() {
-  const state = useRecoilValue(authStateAtom);
+	const state = useRecoilValue(authStateAtom);
 
-  return useCallback(() => state, [state]);
+	return useCallback(() => state, [state]);
 }

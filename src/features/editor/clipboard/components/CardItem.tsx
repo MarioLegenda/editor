@@ -1,8 +1,8 @@
 import { Button, Card, Text } from '@mantine/core';
 import * as styles from '@/styles/editor/pasteBuffer/Main.styles';
 import {
-  useCutFile,
-  useRemoveBufferItem,
+	useCutFile,
+	useRemoveBufferItem,
 } from '@/lib/stateManagement/clipboard/setters';
 import { useCallback } from 'react';
 import { useIsChildDirectory } from '@/lib/stateManagement/project/getters';
@@ -15,54 +15,54 @@ interface Props {
 }
 
 export function CardItem({ item, type, destination }: Props) {
-  const removeItem = useRemoveBufferItem();
-  const cutFile = useCutFile();
-  const isChildDirectory = useIsChildDirectory();
+	const removeItem = useRemoveBufferItem();
+	const cutFile = useCutFile();
+	const isChildDirectory = useIsChildDirectory();
 
-  const onDoOperation = useCallback(async () => {
-    if (await isChildDirectory(item.id, destination)) {
-      showNotification({
-        id: 'cutCopyError',
-        title: 'Cut error',
-        autoClose: 10000,
-        message: 'Cannot cut or copy into a child directory',
-        color: 'red',
-        loading: false,
-      });
+	const onDoOperation = useCallback(async () => {
+		if (await isChildDirectory(item.id, destination)) {
+			showNotification({
+				id: 'cutCopyError',
+				title: 'Cut error',
+				autoClose: 10000,
+				message: 'Cannot cut or copy into a child directory',
+				color: 'red',
+				loading: false,
+			});
 
-      return;
-    }
+			return;
+		}
 
-    if (type === 'cut') {
-      await cutFile({
-        id: item.id,
-        newParent: destination,
-      });
-    }
-  }, []);
+		if (type === 'cut') {
+			await cutFile({
+				id: item.id,
+				newParent: destination,
+			});
+		}
+	}, []);
 
-  return (
-    <Card css={styles.card} shadow="sm" radius="md" withBorder>
-      <Text size="sm" color="dimmed">
-        {item.item}
-      </Text>
+	return (
+		<Card css={styles.card} shadow="sm" radius="md" withBorder>
+			<Text size="sm" color="dimmed">
+				{item.item}
+			</Text>
 
-      <div css={styles.buttonWrapper}>
-        <Button
-          onClick={() => removeItem(type, item.id)}
-          css={[styles.cardItemButton, styles.removeButton]}
-          color="white"
-          variant="subtle">
+			<div css={styles.buttonWrapper}>
+				<Button
+					onClick={() => removeItem(type, item.id)}
+					css={[styles.cardItemButton, styles.removeButton]}
+					color="white"
+					variant="subtle">
           Remove
-        </Button>
-        <Button
-          onClick={onDoOperation}
-          css={styles.cardItemButton}
-          color="white"
-          variant="subtle">
+				</Button>
+				<Button
+					onClick={onDoOperation}
+					css={styles.cardItemButton}
+					color="white"
+					variant="subtle">
           Select
-        </Button>
-      </div>
-    </Card>
-  );
+				</Button>
+			</div>
+		</Card>
+	);
 }

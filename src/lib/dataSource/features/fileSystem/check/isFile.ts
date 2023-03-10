@@ -1,8 +1,8 @@
 export function isFile(item: unknown): item is AppFile {
-  const a = item as AppFile;
+	const a = item as AppFile;
 
-  return (
-    a &&
+	return (
+		a &&
     Object.hasOwn(a, 'id') &&
     Object.hasOwn(a, 'name') &&
     Object.hasOwn(a, 'project_id') &&
@@ -14,5 +14,5 @@ export function isFile(item: unknown): item is AppFile {
     Boolean(a.user_id) &&
     Boolean(a.project_id) &&
     Boolean(a.id)
-  );
+	);
 }

@@ -10,7 +10,7 @@ export const root = css`
 `;
 
 export const avatarBackground = (color: string) => {
-  return css`
+	return css`
     background-color: ${color};
   `;
 };
