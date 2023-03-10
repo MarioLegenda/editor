@@ -150,7 +150,7 @@ export function useRemoveTab() {
 					const selectedTab = tabsHistory[tabsHistory.length - 1];
 					// if removed tab is a selected tab,
 					// select previous and remove selected from history
-					if (selectedTab.id === tab.id) {
+					if (selectedTab && selectedTab.id === tab.id) {
 						const idx = tabsHistory.length - 2;
 						const previousTab = tabsHistory[idx];
 						if (previousTab) {
@@ -183,17 +183,17 @@ export function useRemoveTab() {
 						updateHistory(project.id, account.id, JSON.stringify(t));
 
 						return;
+					} else {
+						const historyIdx = tabsHistory.findIndex(
+							(item) => item.id === tab.id,
+						);
+						const temp = [...tabsHistory];
+						temp.splice(historyIdx, 1);
+
+						const t = [...temp];
+						updateHistory(project.id, account.id, JSON.stringify(t));
+						set(tabsHistoryAtom, t);
 					}
-
-					const historyIdx = tabsHistory.findIndex(
-						(item) => item.id === tab.id,
-					);
-					const temp = [...tabsHistory];
-					temp.splice(historyIdx, 1);
-
-					const t = [...temp];
-					updateHistory(project.id, account.id, JSON.stringify(t));
-					set(tabsHistoryAtom, t);
 				}
 			},
 		[],
