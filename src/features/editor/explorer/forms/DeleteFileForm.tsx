@@ -5,6 +5,7 @@ import { useDeleteFile } from '@/lib/dataSource/features/fileSystem/useDeleteFil
 import { IconArrowBackUp } from '@tabler/icons';
 
 import * as styles from '@/styles/editor/modals/DeleteFileForm.styles';
+import { useRemoveTab } from '@/lib/stateManagement/tabs/setters';
 
 interface Props {
   onCancel: () => void;
@@ -24,9 +25,19 @@ export function DeleteFileForm({
 		deleteFile,
 	} = useDeleteFile(fileId, isDirectory);
 	const setFiles = useSetFilesystem();
+	const removeTab = useRemoveTab();
 
 	useRunOnDone(isLoading, isSuccess, () => {
 		setFiles((files) => files.filter((file) => file.id !== fileId));
+		removeTab({
+			id: fileId,
+			name: '',
+			projectId: projectId,
+			userId: '',
+			parent: '',
+			fileType: null,
+			fileExtension: null,
+		});
 		onCancel();
 	});
 
