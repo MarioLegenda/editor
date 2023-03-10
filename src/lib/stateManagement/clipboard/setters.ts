@@ -14,6 +14,7 @@ import {
 import { cutFile } from '@/lib/dataSource/features/fileSystem/implementation/cutFile';
 import { accountAtom } from '@/lib/stateManagement/auth/account';
 import { createFile } from '@/lib/dataSource/features/fileSystem/implementation/createFile';
+import { getFileChildren } from '@/lib/helpers/getFileChildren';
 
 const MAX_ITEMS = 10;
 
@@ -169,6 +170,20 @@ export function useCopyFile() {
 
 							const temp = [...files, newFile];
 							set(fileSystemAtom, temp);
+						}
+
+						if (file.is_directory) {
+							const children = getFileChildren(file, files);
+							const temp = { ...file };
+							temp.parent = item.newParent;
+
+							children.push(temp);
+
+							for (const child of children) {
+								delete (child as Partial<AppFile>).id;
+							}
+
+							// await bulkInsertFiles(children);
 						}
 					}
 				}
