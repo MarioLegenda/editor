@@ -14,6 +14,7 @@ import { SelectedTabSubscriber } from '@/lib/stateManagement/eventSubscriber/Sel
 import { createTabFromFile } from '@/lib/helpers/createTabFromFile';
 import { useAddTab } from '@/lib/stateManagement/tabs/setters';
 import { createSelectedTabTopic } from '@/lib/stateManagement/eventSubscriber/keys/createSelectedTabTopic';
+import { doesFileExist } from '@/lib/helpers/doesFileExist';
 
 interface Props {
   fileType: FileType;
@@ -75,14 +76,15 @@ export function CreateFileForm({
 					return invalid;
 				}
 
-				for (const file of files) {
-					if (
-						file.parent === parent &&
-            file.name === fileMetadata.derivedOriginal() &&
-            !file.is_directory
-					) {
-						return `File with name ${fileMetadata.derivedOriginal()} already exists`;
-					}
+				if (
+					doesFileExist(
+						files,
+						parent,
+						fileMetadata.derivedOriginal(),
+						projectId,
+					)
+				) {
+					return `File with name ${fileMetadata.derivedOriginal()} already exists`;
 				}
 
 				return null;

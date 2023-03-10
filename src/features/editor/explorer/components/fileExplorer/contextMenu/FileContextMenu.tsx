@@ -60,7 +60,7 @@ export function FileContextMenu({ id, projectId, fileType, value }: Props) {
 			{isDeleteFileModal && (
 				<DeleteFileModal
 					projectId={projectId}
-					isDirectory={isDirectory}
+					isDirectory={false}
 					fileId={id}
 					show={isDeleteFileModal}
 					onCancel={() => setIsDeleteFileModal(false)}

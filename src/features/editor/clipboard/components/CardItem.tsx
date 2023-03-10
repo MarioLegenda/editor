@@ -1,6 +1,7 @@
 import { Button, Card, Text } from '@mantine/core';
 import * as styles from '@/styles/editor/pasteBuffer/Main.styles';
 import {
+	useCopyFile,
 	useCutFile,
 	useRemoveBufferItem,
 } from '@/lib/stateManagement/clipboard/setters';
@@ -17,6 +18,7 @@ interface Props {
 export function CardItem({ item, type, destination }: Props) {
 	const removeItem = useRemoveBufferItem();
 	const cutFile = useCutFile();
+	const copyFile = useCopyFile();
 	const isChildDirectory = useIsChildDirectory();
 
 	const onDoOperation = useCallback(async () => {
@@ -38,7 +40,14 @@ export function CardItem({ item, type, destination }: Props) {
 				id: item.id,
 				newParent: destination,
 			});
+		} else if (type === 'copy') {
+			await copyFile({
+				id: item.id,
+				newParent: destination,
+			});
 		}
+
+		removeItem(type, item.id);
 	}, []);
 
 	return (

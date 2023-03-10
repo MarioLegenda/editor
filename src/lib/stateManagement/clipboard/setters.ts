@@ -13,6 +13,7 @@ import {
 } from '@/lib/stateManagement/project/atoms';
 import { cutFile } from '@/lib/dataSource/features/fileSystem/implementation/cutFile';
 import { accountAtom } from '@/lib/stateManagement/auth/account';
+import { createFile } from '@/lib/dataSource/features/fileSystem/implementation/createFile';
 
 const MAX_ITEMS = 10;
 
@@ -110,7 +111,6 @@ export function useRemoveCopyItem() {
 	);
 }
 
-
 export function useCutFile() {
 	const removeItem = useRemoveCutItem();
 
@@ -141,11 +141,9 @@ export function useCutFile() {
 }
 
 export function useCopyFile() {
-	const removeItem = useRemoveCopyItem();
-
 	return useRecoilCallback(
 		({ snapshot, set }) =>
-			async (item: CutFile) => {
+			async (item: CopyFile) => {
 				const files = await snapshot.getPromise(fileSystemAtom);
 				const project = await snapshot.getPromise(projectAtom);
 				const account = await snapshot.getPromise(accountAtom);
@@ -155,7 +153,23 @@ export function useCopyFile() {
 					if (idx !== -1) {
 						const file = files[idx];
 
-						removeItem(item.id);
+						if (!file.is_directory) {
+							const newFile = { ...file };
+							newFile.parent = item.newParent;
+
+							await createFile(
+								newFile.name,
+								newFile.parent,
+								false,
+								project.id,
+								newFile.user_id,
+								newFile.file_extension,
+								newFile.file_type,
+							);
+
+							const temp = [...files, newFile];
+							set(fileSystemAtom, temp);
+						}
 					}
 				}
 			},

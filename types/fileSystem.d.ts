@@ -15,6 +15,11 @@ interface CutFile {
   newParent: string;
 }
 
+interface CopyFile {
+  id: string;
+  newParent: string;
+}
+
 interface RenameFile {
   name: string;
   projectId: string;
@@ -40,7 +45,7 @@ interface AppFile {
   parent: string;
   is_directory: boolean;
   file_type: FileType | null;
-  file_extension: ExtensionType | null;
+  file_extension: ExtensionType[] | null;
 
   created_at: string;
   updated_at: string;

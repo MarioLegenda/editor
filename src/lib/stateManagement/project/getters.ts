@@ -29,7 +29,6 @@ export function useRootFile() {
 export function useParentFiles(parentId: string) {
 	return useRecoilValue(parentFileStructureSelectorFamily(parentId));
 }
-
 export function useGetFilePath() {
 	return useRecoilCallback(
 		({ snapshot }) =>

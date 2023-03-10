@@ -5,7 +5,7 @@ interface Tab {
   userId: string;
   parent: string | null;
   fileType: FileType | null;
-  fileExtension: ExtensionType | null;
+  fileExtension: ExtensionType[] | null;
 }
 
 interface RawHistory {
