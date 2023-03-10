@@ -20,98 +20,98 @@ interface Props {
 }
 
 export function Directory({ item, isRoot, childSpace }: Props) {
-	const [isOpen, setIsOpen] = useState(false);
-	const [selectedFile, setSelectedFile] = useState<string>();
-	const files = useParentFiles(item.id);
-	const nextChildSpace = childSpace + 3;
-	const [name, setName] = useState(item.name);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<string>();
+  const files = useParentFiles(item.id);
+  const nextChildSpace = childSpace + 3;
+  const [name, setName] = useState(item.name);
 
-	useEffect(() => {
-		const addedUnsubscribe = SelectedFileSubscriber.create().subscribe(
-			`${item.id}_addedFile`,
-			() => {
-				setIsOpen(true);
-				SelectedFileSubscriber.create().publish(
-					createSelectedFileTopic(item.id),
-					item.id,
-				);
-			},
-		);
+  useEffect(() => {
+    const addedUnsubscribe = SelectedFileSubscriber.create().subscribe(
+      `${item.id}_addedFile`,
+      () => {
+        setIsOpen(true);
+        SelectedFileSubscriber.create().publish(
+          createSelectedFileTopic(item.id),
+          item.id,
+        );
+      },
+    );
 
-		const selectedUnsubscribe =
+    const selectedUnsubscribe =
       SelectedFileSubscriber.create().subscribe<string>(
-      	createSelectedFileTopic(item.id),
-      	(selected, data) => {
-      		setSelectedFile(data);
-      	},
+        createSelectedFileTopic(item.id),
+        (selected, data) => {
+          setSelectedFile(data);
+        },
       );
 
-		const renameFileUnsubscribe = RenamedFileSubscriber.create().subscribe(
-			createRenamedFileTopic(item.id, true),
-			(msg, data) => {
-				if (typeof data === 'string') {
-					setName(data);
-				}
-			},
-		);
+    const renameFileUnsubscribe = RenamedFileSubscriber.create().subscribe(
+      createRenamedFileTopic(item.id, true),
+      (msg, data) => {
+        if (typeof data === 'string') {
+          setName(data);
+        }
+      },
+    );
 
-		return () => {
-			PubSub.unsubscribe(addedUnsubscribe);
-			PubSub.unsubscribe(selectedUnsubscribe);
-			PubSub.unsubscribe(renameFileUnsubscribe);
-		};
-	}, []);
+    return () => {
+      PubSub.unsubscribe(addedUnsubscribe);
+      PubSub.unsubscribe(selectedUnsubscribe);
+      PubSub.unsubscribe(renameFileUnsubscribe);
+    };
+  }, []);
 
-	const onOpen = useCallback(() => {
-		setIsOpen((open) => !open);
+  const onOpen = useCallback(() => {
+    setIsOpen((open) => !open);
 
-		SelectedFileSubscriber.create().publish(
-			createSelectedFileTopic(item.id),
-			item.id,
-		);
-	}, [isOpen]);
+    SelectedFileSubscriber.create().publish(
+      createSelectedFileTopic(item.id),
+      item.id,
+    );
+  }, [isOpen]);
 
-	return (
-		<div css={[styles.root]}>
-			{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-			{/*
+  return (
+    <div css={[styles.root]}>
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/*
           // @ts-ignore */}
-			<ContextMenuTrigger id={item.id}>
-				<div
-					onClick={onOpen}
-					css={[
-						styles.content,
-						styles.move(isRoot ? 5 : nextChildSpace),
-						isOpen && selectedFile !== item.id ? styles.softOpen : undefined,
-						selectedFile === item.id ? styles.open : undefined,
-					]}>
-					{isOpen ? <DirOpen width={20} /> : <DirClosed width={20} />}
+      <ContextMenuTrigger id={item.id}>
+        <div
+          onClick={onOpen}
+          css={[
+            styles.content,
+            styles.move(isRoot ? 5 : nextChildSpace),
+            isOpen && selectedFile !== item.id ? styles.softOpen : undefined,
+            selectedFile === item.id ? styles.open : undefined,
+          ]}>
+          {isOpen ? <DirOpen width={20} /> : <DirClosed width={20} />}
 
-					<p css={styles.title}>{name}</p>
-				</div>
-			</ContextMenuTrigger>
+          <p css={styles.title}>{name}</p>
+        </div>
+      </ContextMenuTrigger>
 
-			{!isRoot && (
-				<DirectoryContextMenu
-					value={item.name}
-					fileType={item.file_type}
-					projectId={item.project_id}
-					isDirectory={item.is_directory}
-					id={item.id}
-				/>
-			)}
+      {!isRoot && (
+        <DirectoryContextMenu
+          value={item.name}
+          fileType={item.file_type}
+          projectId={item.project_id}
+          isDirectory={item.is_directory}
+          id={item.id}
+        />
+      )}
 
-			{isRoot && (
-				<RootContextMenu
-					id={item.id}
-					projectId={item.project_id}
-					isDirectory={true}
-				/>
-			)}
+      {isRoot && (
+        <RootContextMenu
+          id={item.id}
+          projectId={item.project_id}
+          isDirectory={true}
+        />
+      )}
 
-			{isOpen && (
-				<FileListing childSpace={nextChildSpace} isRoot={false} files={files} />
-			)}
-		</div>
-	);
+      {isOpen && (
+        <FileListing childSpace={nextChildSpace} isRoot={false} files={files} />
+      )}
+    </div>
+  );
 }

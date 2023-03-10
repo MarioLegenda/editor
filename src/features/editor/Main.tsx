@@ -6,8 +6,8 @@ import { Main as FilePathMain } from '@/features/editor/filePath/Main';
 import { Main as MenuMain } from '@/features/editor/menu/Main';
 import { useProjectDataResolver } from '@/lib/dataSource/features/projects/useProjectDataResolver';
 import {
-	useFilesystem,
-	useProject,
+  useFilesystem,
+  useProject,
 } from '@/lib/stateManagement/project/getters';
 import { useEffect } from 'react';
 import { SelectedFileSubscriber } from '@/lib/stateManagement/eventSubscriber/SelectedFileSubscriber';
@@ -15,31 +15,31 @@ import { CodeEditorWrapper } from '@/features/editor/codeEditor/CodeEditorWrappe
 import { Tabs } from '@/features/editor/tabs/Tabs';
 
 export function Main() {
-	useRedirectIfSignedOut();
-	const { isLoading, notFound } = useProjectDataResolver();
+  useRedirectIfSignedOut();
+  const { isLoading, notFound } = useProjectDataResolver();
 
-	const project = useProject();
-	const fileSystem = useFilesystem();
+  const project = useProject();
+  const fileSystem = useFilesystem();
 
-	useEffect(() => {
-		return () => {
-			SelectedFileSubscriber.create().close();
-		};
-	}, []);
+  useEffect(() => {
+    return () => {
+      SelectedFileSubscriber.create().close();
+    };
+  }, []);
 
-	return (
-		<>
-			<LoadingLayout notFound={notFound} loading={isLoading} />
+  return (
+    <>
+      <LoadingLayout notFound={notFound} loading={isLoading} />
 
-			{project && fileSystem && (
-				<Layout
-					filePath={<FilePathMain />}
-					menu={<MenuMain />}
-					tabs={<Tabs />}
-					editor={<CodeEditorWrapper />}
-					explorer={<ExplorerMain />}
-				/>
-			)}
-		</>
-	);
+      {project && fileSystem && (
+        <Layout
+          filePath={<FilePathMain />}
+          menu={<MenuMain />}
+          tabs={<Tabs />}
+          editor={<CodeEditorWrapper />}
+          explorer={<ExplorerMain />}
+        />
+      )}
+    </>
+  );
 }

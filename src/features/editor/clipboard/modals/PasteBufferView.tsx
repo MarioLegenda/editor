@@ -8,13 +8,13 @@ interface Props {
 }
 
 export function PasteBufferView({ show, onCancel, id }: Props) {
-	return (
-		<>
-			{show && (
-				<BaseModal size="xl" show={show} onCancel={onCancel}>
-					<Main destination={id} />
-				</BaseModal>
-			)}
-		</>
-	);
+  return (
+    <>
+      {show && (
+        <BaseModal size="xl" show={show} onCancel={onCancel}>
+          <Main destination={id} />
+        </BaseModal>
+      )}
+    </>
+  );
 }

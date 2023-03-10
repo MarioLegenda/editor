@@ -1,3 +1,3 @@
 export function createSelectedFileTopic(id: string): string {
-	return `selected_file.${id}`;
+  return `selected_file.${id}`;
 }

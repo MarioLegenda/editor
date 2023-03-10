@@ -11,8 +11,8 @@ import { DeleteFileModal } from '@/features/editor/explorer/modals/DeleteFileMod
 import { RenameFileModal } from '@/features/editor/explorer/modals/RenameFileModal';
 import { RenameDirectoryModal } from '@/features/editor/explorer/modals/RenameDirectoryModal';
 import {
-	useAddCopyItem,
-	useAddCutItem,
+  useAddCopyItem,
+  useAddCutItem,
 } from '@/lib/stateManagement/clipboard/setters';
 
 interface Props {
@@ -23,83 +23,83 @@ interface Props {
 }
 
 export function FileContextMenu({ id, projectId, fileType, value }: Props) {
-	const [createFileModalData, setCreateFileModalData] =
+  const [createFileModalData, setCreateFileModalData] =
     useState<FileType | null>(null);
-	const [isDeleteFileModal, setIsDeleteFileModal] = useState(false);
-	const [isRenameFileModal, setIsRenameFileModal] = useState(false);
-	const [isRenameDirectoryModal, setIsRenameDirectoryModal] = useState(false);
+  const [isDeleteFileModal, setIsDeleteFileModal] = useState(false);
+  const [isRenameFileModal, setIsRenameFileModal] = useState(false);
+  const [isRenameDirectoryModal, setIsRenameDirectoryModal] = useState(false);
 
-	const addCopyItem = useAddCopyItem();
-	const addCutItem = useAddCutItem();
+  const addCopyItem = useAddCopyItem();
+  const addCutItem = useAddCutItem();
 
-	return (
-		<>
-			<ContextMenu
-				id={id}
-				appendTo="body"
-				preventHideOnScroll={true}
-				preventHideOnResize={true}>
-				<ContextMenuItem onClick={() => addCutItem(id)}>
-					<Item leftIcon={<IconScissors size={18} />} name="Cut" />
-				</ContextMenuItem>
+  return (
+    <>
+      <ContextMenu
+        id={id}
+        appendTo="body"
+        preventHideOnScroll={true}
+        preventHideOnResize={true}>
+        <ContextMenuItem onClick={() => addCutItem(id)}>
+          <Item leftIcon={<IconScissors size={18} />} name="Cut" />
+        </ContextMenuItem>
 
-				<ContextMenuItem onClick={() => addCopyItem(id)}>
-					<Item leftIcon={<IconFiles size={18} />} name="Copy" />
-				</ContextMenuItem>
+        <ContextMenuItem onClick={() => addCopyItem(id)}>
+          <Item leftIcon={<IconFiles size={18} />} name="Copy" />
+        </ContextMenuItem>
 
-				<ContextMenuItem onClick={() => setIsRenameFileModal(true)}>
-					<Item leftIcon={<IconEdit size={18} />} name="Rename" />
-				</ContextMenuItem>
-				<ContextMenuItem
-					onClick={() => setIsDeleteFileModal(true)}
-					css={styles.danger}>
-					<Item leftIcon={<IconTrash size={18} />} name="Delete" danger />
-				</ContextMenuItem>
-			</ContextMenu>
+        <ContextMenuItem onClick={() => setIsRenameFileModal(true)}>
+          <Item leftIcon={<IconEdit size={18} />} name="Rename" />
+        </ContextMenuItem>
+        <ContextMenuItem
+          onClick={() => setIsDeleteFileModal(true)}
+          css={styles.danger}>
+          <Item leftIcon={<IconTrash size={18} />} name="Delete" danger />
+        </ContextMenuItem>
+      </ContextMenu>
 
-			{isDeleteFileModal && (
-				<DeleteFileModal
-					projectId={projectId}
-					isDirectory={isDirectory}
-					fileId={id}
-					show={isDeleteFileModal}
-					onCancel={() => setIsDeleteFileModal(false)}
-				/>
-			)}
+      {isDeleteFileModal && (
+        <DeleteFileModal
+          projectId={projectId}
+          isDirectory={isDirectory}
+          fileId={id}
+          show={isDeleteFileModal}
+          onCancel={() => setIsDeleteFileModal(false)}
+        />
+      )}
 
-			{isRenameFileModal && (
-				<RenameFileModal
-					projectId={projectId}
-					value={value}
-					parent={id}
-					fileId={id}
-					fileType={fileType}
-					show={isRenameFileModal}
-					onCancel={() => setIsRenameFileModal(false)}
-				/>
-			)}
+      {isRenameFileModal && (
+        <RenameFileModal
+          projectId={projectId}
+          value={value}
+          parent={id}
+          fileId={id}
+          fileType={fileType}
+          show={isRenameFileModal}
+          onCancel={() => setIsRenameFileModal(false)}
+        />
+      )}
 
-			{createFileModalData && (
-				<CreateFileModal
-					projectId={projectId}
-					parent={id}
-					fileType={createFileModalData}
-					show={Boolean(createFileModalData)}
-					onCancel={() => setCreateFileModalData(null)}
-				/>
-			)}
+      {createFileModalData && (
+        <CreateFileModal
+          projectId={projectId}
+          parent={id}
+          fileType={createFileModalData}
+          show={Boolean(createFileModalData)}
+          onCancel={() => setCreateFileModalData(null)}
+        />
+      )}
 
-			{isRenameDirectoryModal && (
-				<RenameDirectoryModal
-					projectId={projectId}
-					value={value}
-					fileType={fileType}
-					parent={id}
-					fileId={id}
-					show={isRenameDirectoryModal}
-					onCancel={() => setIsRenameDirectoryModal(null)}
-				/>
-			)}
-		</>
-	);
+      {isRenameDirectoryModal && (
+        <RenameDirectoryModal
+          projectId={projectId}
+          value={value}
+          fileType={fileType}
+          parent={id}
+          fileId={id}
+          show={isRenameDirectoryModal}
+          onCancel={() => setIsRenameDirectoryModal(null)}
+        />
+      )}
+    </>
+  );
 }

@@ -17,99 +17,99 @@ interface Props {
 }
 
 export function DeleteProjectForm({
-	projectName,
-	id,
-	userId,
-	onDeleted,
-	onCancel,
+  projectName,
+  id,
+  userId,
+  onDeleted,
+  onCancel,
 }: Props) {
-	const {
-		mutation: { isLoading, isSuccess, isError },
-		deleteProject,
-	} = useDeleteProject(id, userId);
-	useRunOnDone(isLoading, isSuccess, onDeleted);
+  const {
+    mutation: { isLoading, isSuccess, isError },
+    deleteProject,
+  } = useDeleteProject(id, userId);
+  useRunOnDone(isLoading, isSuccess, onDeleted);
 
-	const form = useForm({
-		initialValues: {
-			name: '',
-		},
-		validate: {
-			name: (value: string) => {
-				const errors = combine(
-					[
-						required('Name is required'),
-						min(1, 'Name cannot have less than 1 character'),
-						max(100, 'Name cannot have more than 100 characters'),
-					],
-					value || '',
-				);
+  const form = useForm({
+    initialValues: {
+      name: '',
+    },
+    validate: {
+      name: (value: string) => {
+        const errors = combine(
+          [
+            required('Name is required'),
+            min(1, 'Name cannot have less than 1 character'),
+            max(100, 'Name cannot have more than 100 characters'),
+          ],
+          value || '',
+        );
 
-				if (errors) return errors[0];
+        if (errors) return errors[0];
 
-				if (value !== projectName) {
-					return 'Provided name does not match the name of the project';
-				}
+        if (value !== projectName) {
+          return 'Provided name does not match the name of the project';
+        }
 
-				return null;
-			},
-		},
-	});
+        return null;
+      },
+    },
+  });
 
-	const onDeleteProject = useCallback(() => {
-		deleteProject({
-			id: id,
-			userId: userId,
-		});
-	}, []);
+  const onDeleteProject = useCallback(() => {
+    deleteProject({
+      id: id,
+      userId: userId,
+    });
+  }, []);
 
-	return (
-		<>
-			<h2 css={[styles.heading, formStyles.spacing]}>
+  return (
+    <>
+      <h2 css={[styles.heading, formStyles.spacing]}>
         Are you sure you which to delete this project?
-			</h2>
+      </h2>
 
-			<p css={formStyles.spacing}>
+      <p css={formStyles.spacing}>
         This action is permanent. Please, type in your{' '}
-				<strong css={styles.projectName}>{projectName}</strong> below just to be
+        <strong css={styles.projectName}>{projectName}</strong> below just to be
         sure.
-			</p>
+      </p>
 
-			<form onSubmit={form.onSubmit(onDeleteProject)}>
-				{isError && (
-					<div css={formStyles.spacing}>
-						<Error />
-					</div>
-				)}
+      <form onSubmit={form.onSubmit(onDeleteProject)}>
+        {isError && (
+          <div css={formStyles.spacing}>
+            <Error />
+          </div>
+        )}
 
-				<div css={formStyles.spacing}>
-					<TextInput
-						data-autofocus
-						name="name"
-						placeholder="Name"
-						{...form.getInputProps('name')}
-					/>
-				</div>
+        <div css={formStyles.spacing}>
+          <TextInput
+            data-autofocus
+            name="name"
+            placeholder="Name"
+            {...form.getInputProps('name')}
+          />
+        </div>
 
-				<Group position="right" mt="lg">
-					<Button
-						onClick={onCancel}
-						type="button"
-						size="md"
-						variant="light"
-						color="gray">
+        <Group position="right" mt="lg">
+          <Button
+            onClick={onCancel}
+            type="button"
+            size="md"
+            variant="light"
+            color="gray">
             Cancel
-					</Button>
+          </Button>
 
-					<Button
-						disabled={!form.isValid('name')}
-						loading={isLoading}
-						type="submit"
-						size="md"
-						color="red">
+          <Button
+            disabled={!form.isValid('name')}
+            loading={isLoading}
+            type="submit"
+            size="md"
+            color="red">
             Delete
-					</Button>
-				</Group>
-			</form>
-		</>
-	);
+          </Button>
+        </Group>
+      </form>
+    </>
+  );
 }

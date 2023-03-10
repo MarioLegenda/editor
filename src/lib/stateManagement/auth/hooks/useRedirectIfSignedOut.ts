@@ -4,12 +4,12 @@ import { useEffect } from 'react';
 import { AuthState } from '@/lib/stateManagement/types/authState';
 
 export function useRedirectIfSignedOut(path = '/sign-in') {
-	const { push } = useRouter();
-	const authState = useAuthState();
+  const { push } = useRouter();
+  const authState = useAuthState();
 
-	useEffect(() => {
-		if (authState() === AuthState.SIGNED_OUT) {
-			push(path);
-		}
-	}, [authState]);
+  useEffect(() => {
+    if (authState() === AuthState.SIGNED_OUT) {
+      push(path);
+    }
+  }, [authState]);
 }

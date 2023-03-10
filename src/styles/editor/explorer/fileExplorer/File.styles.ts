@@ -18,7 +18,7 @@ export const content = css`
 `;
 
 export const move = (num: number) => {
-	return css`
+  return css`
     padding-left: ${num * 4}px;
   `;
 };

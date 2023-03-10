@@ -9,14 +9,14 @@ interface Props {
 }
 
 export function Item({ name, rightIcon, leftIcon, disabled }: Props) {
-	return (
-		<div css={[styles.root, disabled ? styles.disabled : undefined]}>
-			<div css={styles.leftSection}>
-				{leftIcon && leftIcon}
-				<p>{name}</p>
-			</div>
+  return (
+    <div css={[styles.root, disabled ? styles.disabled : undefined]}>
+      <div css={styles.leftSection}>
+        {leftIcon && leftIcon}
+        <p>{name}</p>
+      </div>
 
-			{rightIcon && rightIcon}
-		</div>
-	);
+      {rightIcon && rightIcon}
+    </div>
+  );
 }

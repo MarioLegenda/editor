@@ -11,26 +11,26 @@ interface Props {
 }
 
 export function DeleteProjectModal({
-	show,
-	onCancel,
-	projectName,
-	id,
-	userId,
-	onDeleted,
+  show,
+  onCancel,
+  projectName,
+  id,
+  userId,
+  onDeleted,
 }: Props) {
-	return (
-		<>
-			{show && (
-				<BaseModal show={show} onCancel={onCancel}>
-					<DeleteProjectForm
-						projectName={projectName}
-						id={id}
-						userId={userId}
-						onCancel={onCancel}
-						onDeleted={onDeleted}
-					/>
-				</BaseModal>
-			)}
-		</>
-	);
+  return (
+    <>
+      {show && (
+        <BaseModal show={show} onCancel={onCancel}>
+          <DeleteProjectForm
+            projectName={projectName}
+            id={id}
+            userId={userId}
+            onCancel={onCancel}
+            onDeleted={onDeleted}
+          />
+        </BaseModal>
+      )}
+    </>
+  );
 }

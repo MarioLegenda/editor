@@ -4,24 +4,24 @@ import { useCallback } from 'react';
 import { DataSourceError } from '@/lib/dataSource/error/DataSourceError';
 
 export function useSignIn() {
-	const mutation = useMutation(async (values: LoginUser) => {
-		const { data, error } = await getClient().auth.signInWithPassword({
-			email: values.email,
-			password: values.password,
-		});
+  const mutation = useMutation(async (values: LoginUser) => {
+    const { data, error } = await getClient().auth.signInWithPassword({
+      email: values.email,
+      password: values.password,
+    });
 
-		if (error) {
-			throw new DataSourceError('Cannot sign in user', {
-				code: error.name,
-				status: error.status,
-			});
-		}
+    if (error) {
+      throw new DataSourceError('Cannot sign in user', {
+        code: error.name,
+        status: error.status,
+      });
+    }
 
-		return data;
-	});
+    return data;
+  });
 
-	return {
-		mutation,
-		signIn: useCallback((values: LoginUser) => mutation.mutate(values), []),
-	};
+  return {
+    mutation,
+    signIn: useCallback((values: LoginUser) => mutation.mutate(values), []),
+  };
 }

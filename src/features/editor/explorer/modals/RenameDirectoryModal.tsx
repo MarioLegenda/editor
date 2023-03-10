@@ -12,26 +12,26 @@ interface Props {
 }
 
 export function RenameDirectoryModal({
-	projectId,
-	show,
-	value,
-	parent,
-	onCancel,
-	fileId,
+  projectId,
+  show,
+  value,
+  parent,
+  onCancel,
+  fileId,
 }: Props) {
-	return (
-		<>
-			{show && (
-				<BaseModal show={show} onCancel={onCancel}>
-					<RenameDirectoryForm
-						parent={parent}
-						value={value}
-						projectId={projectId}
-						fileId={fileId}
-						onCancel={onCancel}
-					/>
-				</BaseModal>
-			)}
-		</>
-	);
+  return (
+    <>
+      {show && (
+        <BaseModal show={show} onCancel={onCancel}>
+          <RenameDirectoryForm
+            parent={parent}
+            value={value}
+            projectId={projectId}
+            fileId={fileId}
+            onCancel={onCancel}
+          />
+        </BaseModal>
+      )}
+    </>
+  );
 }
