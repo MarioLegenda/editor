@@ -10,6 +10,11 @@ interface NewFile {
   extension: ExtensionType[] | null;
 }
 
+interface CutFile {
+  id: string;
+  newParent: string;
+}
+
 interface RenameFile {
   name: string;
   projectId: string;

@@ -4,15 +4,15 @@ import { Main } from '@/features/editor/clipboard/components/Main';
 interface Props {
   show: boolean;
   onCancel: () => void;
-  paths: string[];
+  id: string;
 }
 
-export function PasteBufferView({ show, onCancel }: Props) {
+export function PasteBufferView({ show, onCancel, id }: Props) {
 	return (
 		<>
 			{show && (
 				<BaseModal size="xl" show={show} onCancel={onCancel}>
-					<Main />
+					<Main destination={id} />
 				</BaseModal>
 			)}
 		</>

@@ -93,6 +93,7 @@ export function FileContextMenu({ id, projectId, fileType, value }: Props) {
 				<RenameDirectoryModal
 					projectId={projectId}
 					value={value}
+					fileType={fileType}
 					parent={id}
 					fileId={id}
 					show={isRenameDirectoryModal}
