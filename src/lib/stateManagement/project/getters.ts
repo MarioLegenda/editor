@@ -7,6 +7,8 @@ import {
 	projectTotalAtom,
 	rootFileAtom,
 } from '@/lib/stateManagement/project/atoms';
+import { doesFileExist } from '@/lib/helpers/doesFileExist';
+import { isFile } from '@/lib/dataSource/features/fileSystem/check/isFile';
 
 export function useTotal() {
 	const total = useRecoilValue(projectTotalAtom);
@@ -29,6 +31,27 @@ export function useRootFile() {
 export function useParentFiles(parentId: string) {
 	return useRecoilValue(parentFileStructureSelectorFamily(parentId));
 }
+
+export function useDoesFileExist() {
+	return useRecoilCallback(
+		({ snapshot }) =>
+			async (id: string, parent: string) => {
+				const project = await snapshot.getPromise(projectAtom);
+				const files = await snapshot.getPromise(fileSystemAtom);
+
+				if (project) {
+					const file = files.find((item) => item.id === id);
+					if (isFile(file)) {
+						return doesFileExist(files, parent, file.name, project.id);
+					}
+				}
+
+				return false;
+			},
+		[],
+	);
+}
+
 export function useGetFilePath() {
 	return useRecoilCallback(
 		({ snapshot }) =>

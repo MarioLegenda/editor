@@ -6,7 +6,10 @@ import {
 	useRemoveBufferItem,
 } from '@/lib/stateManagement/clipboard/setters';
 import { useCallback } from 'react';
-import { useIsChildDirectory } from '@/lib/stateManagement/project/getters';
+import {
+	useDoesFileExist,
+	useIsChildDirectory,
+} from '@/lib/stateManagement/project/getters';
 import { showNotification } from '@mantine/notifications';
 
 interface Props {
@@ -20,14 +23,28 @@ export function CardItem({ item, type, destination }: Props) {
 	const cutFile = useCutFile();
 	const copyFile = useCopyFile();
 	const isChildDirectory = useIsChildDirectory();
+	const doesFileExist = useDoesFileExist();
 
 	const onDoOperation = useCallback(async () => {
 		if (await isChildDirectory(item.id, destination)) {
 			showNotification({
 				id: 'cutCopyError',
 				title: 'Cut error',
-				autoClose: 10000,
+				autoClose: 5000,
 				message: 'Cannot cut or copy into a child directory',
+				color: 'red',
+				loading: false,
+			});
+
+			return;
+		}
+
+		if (await doesFileExist(item.id, destination)) {
+			showNotification({
+				id: 'cutCopyError',
+				title: 'Copy error',
+				autoClose: 5000,
+				message: 'File with this name already exists',
 				color: 'red',
 				loading: false,
 			});
