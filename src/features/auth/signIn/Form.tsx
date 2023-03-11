@@ -71,7 +71,7 @@ export function Form() {
 
 				<Group position="right" mt="md">
 					<Button type="submit" disabled={isLoading} loading={isLoading}>
-            Sign up
+            Sign in
 					</Button>
 				</Group>
 			</>
