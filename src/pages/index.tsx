@@ -1,17 +1,12 @@
 import Head from 'next/head';
 import { useRunInBrowser } from '@/lib/helpers/useRunInBrowser';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import {Button, Center} from '@mantine/core';
+
+import * as styles from '@/styles/index/index.styles';
+import {IconLogin, IconUserPlus} from '@tabler/icons';
 
 export default function Home() {
 	const inBrowser = useRunInBrowser();
-	const { push } = useRouter();
-
-	useEffect(() => {
-		if (inBrowser) {
-			push('/sign-in');
-		}
-	}, [inBrowser]);
 
 	return (
 		<>
@@ -22,7 +17,14 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main>{inBrowser && <div />}</main>
+			<main>{inBrowser &&
+				<Center css={styles.fullHeight}>
+					<div css={styles.root}>
+						<Button leftIcon={<IconUserPlus />} component="a" size="lg" href="/sign-up" variant="default">Sign up</Button>
+						<Button leftIcon={<IconLogin />} component="a" size="lg" href="/sign-in" variant="default">Sign in</Button>
+					</div>
+				</Center>
+			}</main>
 		</>
 	);
 }
